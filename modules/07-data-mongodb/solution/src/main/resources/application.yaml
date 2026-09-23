@@ -4,3 +4,10 @@ spring:
   threads:
     virtual:
       enabled: true
+  mongodb:
+    database: bookstore
+  data:
+    mongodb:
+      auto-index-creation: true
+      representation:
+        big-decimal: decimal128
