@@ -5,32 +5,37 @@
 
 ## 🇹🇷 Bu modülde
 
-- ...
+- Entity eşleme, 1–N ve N–N ilişkiler, persistence context, dirty checking
+- Türetilmiş sorgular, sayfalama ve sıralama
+- N+1 problemi: ölçmek, `@EntityGraph` ve `join fetch` ile düzeltmek
+- Interface ve record projection'ları, `Specification` ile dinamik arama
+- Auditing, `@Version` ile iyimser ve `FOR UPDATE` ile kötümser kilitleme
 
 ## 🇬🇧 In this module
 
-- ...
+- Entity mapping, 1–N and N–N relationships, persistence context, dirty checking
+- Derived queries, paging and sorting
+- The N+1 problem: measuring it, fixing it with `@EntityGraph` and `join fetch`
+- Interface and record projections, dynamic search with `Specification`
+- Auditing, optimistic locking with `@Version`, pessimistic locking with `FOR UPDATE`
 
 ## Çalıştırma / How to run
 
-Ön koşul / Prerequisite: JDK 27, Docker — `export JAVA_HOME=$(/usr/libexec/java_home -v 27)`
+Ön koşul / Prerequisite: JDK 27 ve **Docker** — `export JAVA_HOME=$(/usr/libexec/java_home -v 27)`
 
 ```bash
-# Ders kodunu çalıştır — gereken altyapı Docker Compose ile otomatik başlar
-# Run the lesson — required infrastructure starts automatically via Docker Compose
-./mvnw -pl modules/06-data-jpa-postgres/lesson spring-boot:run
+# PostgreSQL otomatik başlar / PostgreSQL starts automatically
+./mvnw -pl modules/06-data-jpa-postgres/lesson -am spring-boot:run
 
-# Altyapı zaten çalışıyorsa (docker compose --profile ... up -d) / If infrastructure is already running
-./mvnw -pl modules/06-data-jpa-postgres/lesson spring-boot:run -Dspring-boot.run.arguments=--spring.docker.compose.enabled=false
+# Temiz veritabanı / Clean database
+docker compose --profile postgres down -v
 
 # Testler / Tests (Testcontainers)
-./mvnw -pl modules/06-data-jpa-postgres/lesson verify
+./mvnw -pl modules/06-data-jpa-postgres/lesson -am verify
 
 # Ödevler / Exercises (kırmızı başlar / start red)
-./mvnw -Pexercises -pl modules/06-data-jpa-postgres/exercise test
+./mvnw -Pexercises -pl modules/06-data-jpa-postgres/exercise -am test
 ```
-
-HTTP örnekleri / HTTP examples: [requests.http](requests.http)
 
 ## Yapı / Layout
 

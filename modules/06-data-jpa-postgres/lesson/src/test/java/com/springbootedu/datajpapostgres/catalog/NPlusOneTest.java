@@ -43,6 +43,7 @@ class NPlusOneTest {
         return list.stream().mapToInt(author -> author.getBooks().size()).sum();   // touches every lazy collection
     }
 
+    // tag::measure[]
     @Test
     void lazyCollectionsCauseOneQueryPerAuthor() {
         List<Author> all = authors.findAll();
@@ -51,6 +52,7 @@ class NPlusOneTest {
         assertThat(books).isEqualTo(6);
         assertThat(statistics.getPrepareStatementCount()).isEqualTo(1 + all.size()); // 1 for authors + 1 per author
     }
+    // end::measure[]
 
     @Test
     void anEntityGraphLoadsEverythingInOneQuery() {
