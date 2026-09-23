@@ -162,6 +162,7 @@ class BookController {                       // Lesson 3.1 — minimal REST cont
 - Spring Data Redis 4 + Lettuce writes the cache **asynchronously** by default (`put`/`evict`/`clear` return before Redis acks) → read-after-write races. Build the writer with `RedisCacheWriter.create(factory, w -> w.immediateWrites())` in a `RedisCacheManagerBuilderCustomizer` (no Boot property). Use `Cache.invalidate()` in test setup.
 - A locally installed Redis (Homebrew) on `127.0.0.1:6379` shadows the compose port — `lsof -iTCP:6379` before trusting `redis-cli` output.
 - Never gate a commit on `grep` of Maven output — check the exit code (`mvn … && git commit …`).
+- Hazelcast 5.5 Community: the CP Subsystem (`FencedLock`, `IAtomicLong`, …) is Enterprise-only and throws `UnsupportedOperationException`. Use `IMap.lock/tryLock` and `EntryProcessor` (SPEC decision 10).
 - Elasticsearch needs ≥ 2 GB Docker memory; Kafka runs in KRaft mode (no ZooKeeper).
 - Spring AI tests never call a real LLM: use a mocked `ChatModel` or Testcontainers Ollama with a tiny model, tagged `*IT`.
 - Spring Boot's Docker Compose support starts services on `spring-boot:run`; in tests it is disabled — Testcontainers is used instead.

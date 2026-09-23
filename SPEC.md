@@ -68,7 +68,7 @@ Modül id'leri sabittir, sonradan yeniden adlandırılmaz.
 | 06 | `06-data-jpa-postgres` | JPA/Hibernate 7, ilişkiler, N+1 ve fetch stratejileri, projection, Specification/Query by Example, auditing, locking, Spring Data AOT repositories | PostgreSQL | 05 |
 | 07 | `07-data-mongodb` | Spring Data MongoDB, document modelleme, aggregation, index, transaction | MongoDB | 02 |
 | 08 | `08-redis-caching` | Spring Cache abstraction, Redis cache, TTL, `RedisTemplate`, Redis veri yapıları, pub/sub, Spring Session | Redis (yavaş kaynak bilerek bellek içi simüle edilir; cache etkisi ölçülebilir) | 06 |
-| 09 | `09-hazelcast` | Embedded vs client-server, `IMap`, near cache, distributed lock, Hazelcast ile cache | Hazelcast, PostgreSQL | 08 |
+| 09 | `09-hazelcast` | Embedded vs client-server, `IMap`, near cache, `IMap` kilidi + `EntryProcessor` (bkz. karar 10), Hazelcast ile cache | Hazelcast, PostgreSQL | 08 |
 | 10 | `10-elasticsearch` | Spring Data Elasticsearch, mapping, full-text search, aggregation, highlight, PostgreSQL'den senkronizasyon | Elasticsearch, PostgreSQL | 06 |
 | 11 | `11-messaging-kafka` | Producer/consumer, JSON serileştirme, consumer group, retry + DLT, Kafka transaction, transactional outbox, Kafka Streams girişi | Kafka, PostgreSQL | 06 |
 | 12 | `12-security` | Spring Security 7: filter chain, form/basic, parola saklama, method security, JWT resource server, OAuth2 login, Authorization Server, CORS/CSRF | PostgreSQL | 03, 06 |
@@ -84,7 +84,7 @@ Modül id'leri sabittir, sonradan yeniden adlandırılmaz.
 | 22 | `22-kubernetes` | kind ile lokal cluster, Deployment/Service/ConfigMap/Secret, probe'lar, kaynak limitleri, Kustomize overlay'leri, HPA, rolling update | kind | 20 |
 | 23 | `23-spring-cloud` | Spring Cloud Gateway, Config Server, OpenFeign vs HTTP interface, LoadBalancer, Circuit Breaker (Resilience4j), Spring Cloud Kubernetes (ConfigMap/discovery) | kind, PostgreSQL | 04, 15, 22 |
 | 24 | `24-spring-ai` | Spring AI: ChatClient, prompt şablonları, structured output, chat memory, RAG (pgvector), tool calling, MCP girişi — model Ollama ile lokal | Ollama, PostgreSQL (pgvector) | 06 |
-| — | `capstone` | **Bitirme projesi — Kitapçı platformu:** sipariş (PostgreSQL/JPA), katalog (MongoDB), arama (Elasticsearch), cache (Redis), dağıtık lock/rate-limit (Hazelcast), sipariş event'leri (Kafka), güvenlik (JWT), API Gateway (Spring Cloud), servisler arası gRPC, gözlemlenebilirlik; Docker Compose ile tek komutla, ayrıca kind üzerinde Kubernetes (Helm) ile ayağa kalkar | Tümü | tümü |
+| — | `capstone` | **Bitirme projesi — Kitapçı platformu:** sipariş (PostgreSQL/JPA), katalog (MongoDB), arama (Elasticsearch), cache (Redis), dağıtık lock (`IMap` kilidi)/rate-limit (Hazelcast), sipariş event'leri (Kafka), güvenlik (JWT), API Gateway (Spring Cloud), servisler arası gRPC, gözlemlenebilirlik; Docker Compose ile tek komutla, ayrıca kind üzerinde Kubernetes (Helm) ile ayağa kalkar | Tümü | tümü |
 
 **Sıralama:** 00 → 01 → … → 20 → 21 → 22 → 23 → 24 → capstone
 (Numara = önerilen öğrenme sırası. 07, 15, 19, 21, 24 gibi modüller bağımlılıkları bitince paralel yazılabilir.)
@@ -189,6 +189,8 @@ Kurallar CLAUDE.md'de. Özet: constructor injection, Lombok yok, DTO'lar `record
 7. PDF: kapak sayfası, logo ve renk teması var (T0.5).
 8. **GraalVM for JDK 27 yok** (en güncel: GraalVM CE 25.0.4). `19-native-performance` modülünün native-image kısmı **GraalVM 25 ile ve `release 25`** ile derlenir; JVM AOT cache/CDS kısmı Java 27'de kalır. GraalVM 27 çıkınca güncellenir.
 9. Java 27 dil/API durumu (T0.2 probe): record/sealed/pattern matching, `ScopedValue`, stream gatherers, virtual threads, compact source files (`void main` + `IO`) **final**; `StructuredTaskScope` hâlâ **preview** → `00-setup-modern-java` içinde ayrı `preview` profilinde gösterilir.
+
+10. **Hazelcast CP Subsystem Enterprise'a özel** (2026-09-23 spike): Hazelcast 5.5.0 Community'de `getCPSubsystem().getLock()` / `getAtomicLong()` → `UnsupportedOperationException: CP subsystem is a licensed feature`. Dağıtık kilit **`IMap.lock/tryLock`** (anahtar başına kilit) ile, atomik güncellemeler **`EntryProcessor`** ile öğretilir. `FencedLock`/CP yalnızca kavram olarak, "Enterprise özelliği" notuyla anlatılır. Modül 09 ve capstone bu karara göre yazılır.
 
 ## Open Questions
 
