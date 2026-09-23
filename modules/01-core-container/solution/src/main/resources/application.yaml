@@ -1,0 +1,6 @@
+spring:
+  application:
+    name: 01-core-container
+  threads:
+    virtual:
+      enabled: true
