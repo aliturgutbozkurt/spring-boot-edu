@@ -36,7 +36,7 @@ class BookCachingTest {
 
     @BeforeEach
     void reset() {
-        Objects.requireNonNull(caches.getCache("books")).invalidate();    // clear() may be deferred; invalidate() is immediate
+        Objects.requireNonNull(caches.getCache("books")).invalidate();    // invalidate() is immediate; clear() may be deferred
         repository.reset();
     }
 
