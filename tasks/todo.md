@@ -129,7 +129,7 @@ Ortak doğrulama komutu (aşağıda `VERIFY(<id>)` olarak geçer):
 
 ### 09-hazelcast · #23
 - [x] **M09.a Kod** — embedded Hazelcast + auto-config; client-server (compose); `IMap`, TTL, near cache; Spring Cache ile Hazelcast; `IMap.lock/tryLock` ile dağıtık kilit + `EntryProcessor` ile kilitsiz atomik güncelleme (CP/`FencedLock` Enterprise — SPEC karar 10); iki instance ile cluster demosu
-- [ ] **M09.b Ödevler** — stok rezervasyonunda dağıtık kilit (`IMap` kilidi veya `EntryProcessor`); near cache performans karşılaştırması; Redis vs Hazelcast karşılaştırma raporu
+- [x] **M09.b Ödevler** — stok rezervasyonunda dağıtık kilit (`IMap` kilidi veya `EntryProcessor`); near cache performans karşılaştırması; Redis vs Hazelcast karşılaştırma raporu
 - [ ] **M09.c Doküman** — Verify: `VERIFY(09-hazelcast)`
 
 ### 10-elasticsearch · #24
