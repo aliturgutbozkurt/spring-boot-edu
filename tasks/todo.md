@@ -53,7 +53,7 @@ Ortak doğrulama komutu (aşağıda `VERIFY(<id>)` olarak geçer):
   - Verify: Push sonrası workflow yeşil (JDK: Corretto 27 — Temurin 27 henüz yok)
   - Files: `.github/workflows/ci.yml`
 
-- [ ] **#9 T0.9 Kök README (TR + EN)**
+- [x] **#9 T0.9 Kök README (TR + EN)**
   - Acceptance: Önkoşullar (JDK 27, Docker, ≥ 8 GB RAM; modül 22–23 için kind/kubectl/helm; 24 için Ollama), hızlı başlangıç, modül tablosu, ödev çözme akışı
   - Files: `README.md`
 
