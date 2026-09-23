@@ -46,6 +46,7 @@ docker compose down -v                         # stop + wipe volumes
 ./scripts/build-pdfs.sh 06-data-jpa-postgres            # one module
 ./scripts/check-module.sh 06-data-jpa-postgres          # structure, TR/EN parity, snippets, fresh PDFs
 ./scripts/check-module.sh --strict 06-data-jpa-postgres # + finished content — required for Definition of Done
+./scripts/sync-snippets.sh 06-data-jpa-postgres         # refresh doc code blocks from // tag:: regions in the source
 ./scripts/new-module.sh 06-data-jpa-postgres --title-tr "..." --title-en "..." --infra postgres   # scaffold (id must be in SPEC)
 ./scripts/kind-up.sh / kind-down.sh            # local Kubernetes cluster (modules 22, 23, capstone)
 ```
@@ -115,7 +116,7 @@ class BookController {                       // Lesson 3.1 — minimal REST cont
 
 - TR and EN docs are **parallel**: same sections, same numbering, same code snippets. Changing one requires changing the other in the same commit.
 - Lesson doc structure (from `docs/templates/`): Learning goals → Concepts → Step-by-step examples (linked to real source files) → Common mistakes → Summary → Further reading (official docs).
-- Code snippets in docs must be copied from compiled source. Put `<!-- snippet: lesson/src/main/java/...#L10-L25 -->` (path relative to the module) directly above the code block; `check-module.sh` fails if the block and the source lines differ. Never write untested code in docs.
+- Code snippets in docs come from compiled source. Mark the region in the source with `// tag::name[]` … `// end::name[]`, put `<!-- snippet: lesson/src/main/java/.../File.java#name -->` (path relative to the module) directly above the code block, and run `./scripts/sync-snippets.sh <module>` to copy the code in. `check-module.sh` fails when a block and its source differ. Prefer tags over `#L10-L25` line ranges (they break when code moves). Never write untested code in docs.
 - Every doc starts with YAML front matter: `title`, `subtitle`, `module`, `lang` (`tr-TR` / `en-US`), `date`.
 - Callouts use GitHub alert syntax (`> [!NOTE]`, `[!TIP]`, `[!IMPORTANT]`, `[!WARNING]`, `[!CAUTION]`) — rendered natively on GitHub and as coloured boxes in the PDF. Do not use raw LaTeX in Markdown.
 - Pipeline self-test: `./scripts/build-pdfs.sh --force docs/templates/pandoc/samples` (TR + EN sample exercising every feature).

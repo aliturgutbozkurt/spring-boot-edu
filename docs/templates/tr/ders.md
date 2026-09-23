@@ -11,7 +11,8 @@ date: "{{DATE}}"
   - Bölüm numaraları EN dokümanla birebir aynı kalmalı (check-module.sh başlık sayısını karşılaştırır).
   - Koddaki "// Ders 3.2 / Lesson 3.2" yorumları bu dokümandaki 3.2 başlığını gösterir.
   - Kod parçaları derlenen kaynaktan kopyalanır. Her kod bloğunun hemen üstüne kaynağını bir HTML yorumu olarak yazın
-    (içerik: snippet: lesson/src/main/java/com/springbootedu/<paket>/Dosya.java#L10-L25) — aşağıdaki 3.1 örneğine bakın.
+    Kaynakta bölgeyi // tag::etiket-adi[] ... // end::etiket-adi[] ile işaretleyin, ./scripts/sync-snippets.sh kodu kopyalar.
+    (içerik: snippet: lesson/src/main/java/com/springbootedu/<paket>/Dosya.java#etiket-adi) — aşağıdaki 3.1 örneğine bakın.
     check-module.sh bu satırları kaynakla karşılaştırır.
   - Not kutuları: > [!NOTE], > [!TIP], > [!IMPORTANT], > [!WARNING], > [!CAUTION]
 -->

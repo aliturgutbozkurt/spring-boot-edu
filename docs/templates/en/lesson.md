@@ -11,7 +11,8 @@ date: "{{DATE}}"
   - Section numbers must match the TR document exactly (check-module.sh compares heading counts).
   - "// Ders 3.2 / Lesson 3.2" comments in the code point to section 3.2 of this document.
   - Code snippets are copied from compiled source. Put the source right above every code block as an HTML comment
-    (content: snippet: lesson/src/main/java/com/springbootedu/<package>/File.java#L10-L25) — see example 3.1 below.
+    Mark the region in the source with // tag::tag-name[] ... // end::tag-name[]; ./scripts/sync-snippets.sh copies the code.
+    (content: snippet: lesson/src/main/java/com/springbootedu/<package>/File.java#tag-name) — see example 3.1 below.
     check-module.sh compares these lines with the source.
   - Callouts: > [!NOTE], > [!TIP], > [!IMPORTANT], > [!WARNING], > [!CAUTION]
 -->

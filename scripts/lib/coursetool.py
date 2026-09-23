@@ -3,6 +3,7 @@
 
     coursetool.py new   <module-id> [--title-tr T] [--title-en T] [--infra p1,p2] [--force]
     coursetool.py check <module-id>... | --all  [--strict]
+    coursetool.py sync-snippets <module-id>...   # refresh doc code blocks from their source
 
 Only the Python standard library is used, so the scripts run anywhere Python 3.9+ exists.
 """
@@ -27,7 +28,10 @@ ID_PATTERN = re.compile(r"^\d{2}-[a-z0-9]+(-[a-z0-9]+)*$")
 INFRA_PROFILES = {"postgres", "mongo", "elastic", "redis", "kafka", "hazelcast", "observability", "ai"}
 DOC_PAIRS = [("tr/ders.md", "en/lesson.md"), ("tr/odevler.md", "en/exercises.md")]
 PDFS = ["tr/ders.pdf", "tr/odevler.pdf", "en/lesson.pdf", "en/exercises.pdf"]
-SNIPPET = re.compile(r"^<!-- snippet: (\S+)#L(\d+)-L(\d+) -->\s*$")
+# <!-- snippet: lesson/src/main/java/.../File.java#tag-name -->   (region between // tag::tag-name[] and // end::tag-name[])
+# <!-- snippet: lesson/src/main/java/.../File.java#L10-L25 -->    (fixed line range)
+SNIPPET = re.compile(r"^<!-- snippet: (\S+?)#(?:L(\d+)-L(\d+)|([a-z0-9][a-z0-9-]*)) -->\s*$")
+TAG_LINE = re.compile(r"(tag|end)::[a-z0-9][a-z0-9-]*\[\]")
 
 
 # ---------------------------------------------------------------------------------------------
@@ -107,6 +111,7 @@ APPLICATION = """package com.springbootedu.{pkg};
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+// tag::application[]
 @SpringBootApplication
 public class {prefix}Application {{
 
@@ -114,6 +119,7 @@ public class {prefix}Application {{
         SpringApplication.run({prefix}Application.class, args);
     }}
 }}
+// end::application[]
 """
 
 PACKAGE_INFO = """/**
@@ -276,9 +282,8 @@ def cmd_new(args: argparse.Namespace) -> int:
 
     # the lesson template's example snippet points at the generated application class
     app_rel = Path("lesson") / java_dir / f"{fmt['prefix']}Application.java"
-    app_lines = (module_dir / app_rel).read_text().rstrip("\n").split("\n")
-    v["APP_SNIPPET"] = f"{app_rel.as_posix()}#L1-L{len(app_lines)}"
-    v["APP_SNIPPET_CODE"] = "\n".join(app_lines)
+    v["APP_SNIPPET"] = f"{app_rel.as_posix()}#application"
+    v["APP_SNIPPET_CODE"] = "\n".join(extract_snippet(module_dir / app_rel, SNIPPET.match(f"<!-- snippet: {v['APP_SNIPPET']} -->")))
 
     docs = {"tr/ders.md": "tr/ders.md", "tr/odevler.md": "tr/odevler.md",
             "en/lesson.md": "en/lesson.md", "en/exercises.md": "en/exercises.md"}
@@ -328,28 +333,80 @@ def sha256(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
-def check_snippets(r: Report, module_dir: Path, doc: Path) -> None:
+def extract_snippet(source: Path, m: re.Match) -> list[str] | str:
+    """Returns the snippet lines, or an error message."""
+    lines = source.read_text().split("\n")
+    if m.group(4):
+        tag = m.group(4)
+        begin = next((i for i, l in enumerate(lines) if f"tag::{tag}[]" in l), None)
+        finish = next((i for i, l in enumerate(lines) if f"end::{tag}[]" in l), None)
+        if begin is None or finish is None or finish < begin:
+            return f"tag '{tag}' not found in {m.group(1)} (need // tag::{tag}[] ... // end::{tag}[])"
+        body = [l for l in lines[begin + 1:finish] if not TAG_LINE.search(l)]
+    else:
+        start, end = int(m.group(2)), int(m.group(3))
+        if end > len(lines):
+            return f"{m.group(1)} has only {len(lines)} lines (snippet asks for {start}-{end})"
+        body = [l for l in lines[start - 1:end] if not TAG_LINE.search(l)]
+    body = [l.rstrip() for l in body]
+    indent = min((len(l) - len(l.lstrip()) for l in body if l.strip()), default=0)
+    return [l[indent:] for l in body]
+
+
+def iter_snippets(doc: Path):
+    """Yields (line index of marker, match, index of code block start, index of code block end)."""
     lines = doc.read_text().split("\n")
     for i, line in enumerate(lines):
         m = SNIPPET.match(line)
         if not m:
             continue
+        if i + 1 >= len(lines) or not lines[i + 1].startswith("```"):
+            yield i, m, None, None
+            continue
+        close = next((j for j in range(i + 2, len(lines)) if lines[j].startswith("```")), None)
+        yield i, m, i + 1, close
+
+
+def check_snippets(r: Report, module_dir: Path, doc: Path) -> None:
+    lines = doc.read_text().split("\n")
+    for i, m, open_idx, close_idx in iter_snippets(doc):
         where = f"{doc.relative_to(module_dir)}:{i + 1}"
         source = module_dir / m.group(1)
-        start, end = int(m.group(2)), int(m.group(3))
         if not r.check(source.is_file(), f"{where}: snippet source {m.group(1)} does not exist"):
             continue
-        if not r.check(i + 1 < len(lines) and lines[i + 1].startswith("```"),
+        if not r.check(open_idx is not None and close_idx is not None,
                        f"{where}: snippet marker must be directly followed by a code block"):
             continue
-        block = []
-        for body in lines[i + 2:]:
-            if body.startswith("```"):
-                break
-            block.append(body.rstrip())
-        expected = [s.rstrip() for s in source.read_text().split("\n")[start - 1:end]]
-        r.check(block == expected, f"{where}: code block differs from {m.group(1)} lines {start}-{end} "
-                                   "— copy the current source into the doc")
+        expected = extract_snippet(source, m)
+        if not r.check(not isinstance(expected, str), f"{where}: {expected}"):
+            continue
+        block = [l.rstrip() for l in lines[open_idx + 1:close_idx]]
+        r.check(block == expected, f"{where}: code block differs from its source {m.group(0)[14:-4]} "
+                                   f"— run ./scripts/sync-snippets.sh {module_dir.name}")
+
+
+def cmd_sync(args: argparse.Namespace) -> int:
+    status = 0
+    for module_id in args.module_ids:
+        module_dir = MODULES / module_id
+        for doc in sorted((module_dir / "docs").rglob("*.md")):
+            lines = doc.read_text().split("\n")
+            changed = 0
+            # walk backwards so earlier indexes stay valid while replacing blocks
+            for i, m, open_idx, close_idx in reversed(list(iter_snippets(doc))):
+                source = module_dir / m.group(1)
+                snippet = extract_snippet(source, m) if source.is_file() else f"missing {m.group(1)}"
+                if isinstance(snippet, str) or open_idx is None or close_idx is None:
+                    print(f"✗ {doc.relative_to(ROOT)}:{i + 1}: {snippet if isinstance(snippet, str) else 'no code block'}")
+                    status = 1
+                    continue
+                if lines[open_idx + 1:close_idx] != snippet:
+                    lines[open_idx + 1:close_idx] = snippet
+                    changed += 1
+            if changed:
+                doc.write_text("\n".join(lines))
+                print(f"✓ {doc.relative_to(ROOT)}: {changed} snippet(s) updated")
+    return status
 
 
 def check_module(module_id: str, strict: bool) -> Report:
@@ -482,6 +539,10 @@ def main() -> int:
     check.add_argument("--all", action="store_true")
     check.add_argument("--strict", action="store_true", help="also require finished content (DoD)")
     check.set_defaults(func=cmd_check)
+
+    sync = sub.add_parser("sync-snippets", help="copy current source into the docs' snippet code blocks")
+    sync.add_argument("module_ids", nargs="+")
+    sync.set_defaults(func=cmd_sync)
 
     args = parser.parse_args()
     return args.func(args)
