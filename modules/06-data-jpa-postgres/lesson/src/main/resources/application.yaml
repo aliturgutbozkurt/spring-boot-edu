@@ -4,6 +4,13 @@ spring:
   threads:
     virtual:
       enabled: true
+  # All modules share the "bookstore" database of compose.yaml. Each one keeps its tables and its Flyway
+  # history in its own schema, so running one module never breaks another.
+  flyway:
+    schemas: data_jpa                   # created by Flyway if missing
+  datasource:
+    hikari:
+      schema: data_jpa                  # every connection works in this schema
   docker:
     compose:
       # Reuse the root compose.yaml; only the listed profiles are started.
@@ -12,6 +19,10 @@ spring:
         active: postgres
       # Keep containers running between restarts (stop them with: docker compose --profile all down)
       lifecycle-management: start-only
+      # Run "docker compose up" even if another module already started some services:
+      # it is idempotent and starts only what is missing (default "if-running" would skip it)
+      start:
+        skip: never
   # tag::jpa-config[]
   jpa:
     open-in-view: false            # no lazy loading in the web layer: queries stay in the service layer

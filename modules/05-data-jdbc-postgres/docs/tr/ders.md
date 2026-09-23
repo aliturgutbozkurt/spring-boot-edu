@@ -73,6 +73,10 @@ docker:
       active: postgres
     # Keep containers running between restarts (stop them with: docker compose --profile all down)
     lifecycle-management: start-only
+    # Run "docker compose up" even if another module already started some services:
+    # it is idempotent and starts only what is missing (default "if-running" would skip it)
+    start:
+      skip: never
 ```
 
 **Beklenen çıktı:**
@@ -91,7 +95,12 @@ jdbc:postgresql://127.0.0.1:5432/bookstore?ApplicationName=05-data-jdbc-postgres
 
 **Amaç:** Şemayı kodla birlikte sürümlemek ve her ortamda aynı sırayla uygulamak.
 
-`src/main/resources/db/migration/` altındaki `V<sürüm>__<açıklama>.sql` dosyaları, uygulama başlarken sırayla çalıştırılır. Uygulananlar `flyway_schema_history` tablosuna yazılır:
+`src/main/resources/db/migration/` altındaki `V<sürüm>__<açıklama>.sql` dosyaları, uygulama başlarken sırayla çalıştırılır. Uygulananlar `flyway_schema_history` tablosuna yazılır.
+
+> [!NOTE]
+> Bu kurstaki tüm modüller `compose.yaml` dosyasındaki `bookstore` veritabanını paylaşır. Tabloları ve Flyway geçmişleri çakışmasın diye her modül kendi şemasında çalışır. Bu modül `data_jdbc` kullanır: `spring.flyway.schemas: data_jdbc` Flyway'in şemayı oluşturmasını, `spring.datasource.hikari.schema: data_jdbc` ise her bağlantının onu kullanmasını sağlar (bkz. `application.yaml`).
+
+İlk migration:
 
 <!-- snippet: lesson/src/main/resources/db/migration/V1__create_schema.sql#schema -->
 ```sql

@@ -73,6 +73,10 @@ docker:
       active: postgres
     # Keep containers running between restarts (stop them with: docker compose --profile all down)
     lifecycle-management: start-only
+    # Run "docker compose up" even if another module already started some services:
+    # it is idempotent and starts only what is missing (default "if-running" would skip it)
+    start:
+      skip: never
 ```
 
 **Expected output:**
@@ -91,7 +95,12 @@ jdbc:postgresql://127.0.0.1:5432/bookstore?ApplicationName=05-data-jdbc-postgres
 
 **Goal:** version the schema together with the code and apply it in the same order everywhere.
 
-The `V<version>__<description>.sql` files in `src/main/resources/db/migration/` run in order when the application starts. Applied migrations are recorded in the `flyway_schema_history` table:
+The `V<version>__<description>.sql` files in `src/main/resources/db/migration/` run in order when the application starts. Applied migrations are recorded in the `flyway_schema_history` table.
+
+> [!NOTE]
+> All modules of this course share the `bookstore` database of `compose.yaml`. So that their tables and Flyway histories never collide, every module works in its own schema. This module uses `data_jdbc`: `spring.flyway.schemas: data_jdbc` makes Flyway create the schema, and `spring.datasource.hikari.schema: data_jdbc` makes every connection use it (see `application.yaml`).
+
+The first migration:
 
 <!-- snippet: lesson/src/main/resources/db/migration/V1__create_schema.sql#schema -->
 ```sql

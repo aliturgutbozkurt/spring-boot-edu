@@ -20,7 +20,7 @@ class FlywayMigrationTest {
 
     @Test
     void appliedTheSchemaAndTheSeedData() {
-        assertThat(jdbc.sql("select version from flyway_schema_history where success order by installed_rank")
+        assertThat(jdbc.sql("select version from flyway_schema_history where success and version is not null order by installed_rank")
                 .query(String.class).list())
                 .containsExactly("1", "2");
         assertThat(jdbc.sql("select count(*) from book").query(Integer.class).single()).isEqualTo(5);

@@ -203,6 +203,10 @@ COMPOSE_YAML = """  docker:
         active: {profiles}
       # Keep containers running between restarts (stop them with: docker compose --profile all down)
       lifecycle-management: start-only
+      # Run "docker compose up" even if another module already started some services:
+      # it is idempotent and starts only what is missing (default "if-running" would skip it)
+      start:
+        skip: never
 """
 
 REQUESTS_HTTP = """# HTTP examples for module {module_id}. Run them from IntelliJ IDEA / VS Code (REST Client).

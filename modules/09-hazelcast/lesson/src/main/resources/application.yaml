@@ -14,6 +14,10 @@ spring:
         active: hazelcast
       # Keep containers running between restarts (stop them with: docker compose --profile all down)
       lifecycle-management: start-only
+      # Run "docker compose up" even if another module already started some services:
+      # it is idempotent and starts only what is missing (default "if-running" would skip it)
+      start:
+        skip: never
 logging:
   level:
     root: warn
