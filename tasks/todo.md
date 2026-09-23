@@ -125,7 +125,7 @@ Ortak doğrulama komutu (aşağıda `VERIFY(<id>)` olarak geçer):
 ### 08-redis-caching · #22
 - [x] **M08.a Kod** — `@Cacheable/@CachePut/@CacheEvict`; Redis cache manager + TTL + JSON serileştirme; cache-aside vs write-through anlatımı; `RedisTemplate` / `StringRedisTemplate` ile veri yapıları (list, set, sorted set → "en çok satanlar"); pub/sub; Spring Session Redis; `@DataRedisTest`
 - [x] **M08.b Ödevler** — kitap detay cache'i + invalidation; sorted set ile leaderboard; basit rate limiter
-- [ ] **M08.c Doküman** — Verify: `VERIFY(08-redis-caching)`
+- [x] **M08.c Doküman** — Verify: `VERIFY(08-redis-caching)`
 
 ### 09-hazelcast · #23
 - [ ] **M09.a Kod** — embedded Hazelcast + auto-config; client-server (compose); `IMap`, TTL, near cache; Spring Cache ile Hazelcast; `FencedLock` ile dağıtık kilit; entry processor; iki instance ile cluster demosu

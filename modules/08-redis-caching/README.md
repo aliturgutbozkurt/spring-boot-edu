@@ -5,11 +5,19 @@
 
 ## 🇹🇷 Bu modülde
 
-- ...
+- `@Cacheable` / `@CachePut` / `@CacheEvict`: cache-aside ve write-through
+- Redis cache manager: önbellek başına TTL, JSON değerler, anında yazma
+- Veri yapıları: sorted set (en çok satanlar), list (son bakılanlar), atomik sayaçlar
+- Pub/sub ile mesajlaşma, Spring Session ile Redis'te HTTP oturumu
+- `@DataRedisTest` ve Testcontainers
 
 ## 🇬🇧 In this module
 
-- ...
+- `@Cacheable` / `@CachePut` / `@CacheEvict`: cache-aside and write-through
+- The Redis cache manager: TTL per cache, JSON values, immediate writes
+- Data structures: sorted set (best sellers), list (recently viewed), atomic counters
+- Pub/sub messaging, the HTTP session in Redis with Spring Session
+- `@DataRedisTest` and Testcontainers
 
 ## Çalıştırma / How to run
 

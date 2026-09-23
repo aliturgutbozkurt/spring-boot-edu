@@ -1,5 +1,7 @@
 # HTTP examples for module 08-redis-caching. Run them from IntelliJ IDEA / VS Code (REST Client).
 # Start the lesson first: ./mvnw -pl modules/08-redis-caching/lesson spring-boot:run
 
-### Example
-GET http://localhost:8080/
+### Lesson 3.7 — the session lives in Redis: run it several times, the count grows (the client keeps the cookie)
+GET http://localhost:8080/api/visits
+
+### Inspect the session keys: docker compose exec redis redis-cli KEYS "spring:session:*"
