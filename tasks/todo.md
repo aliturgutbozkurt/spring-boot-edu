@@ -28,7 +28,7 @@ Ortak doğrulama komutu (aşağıda `VERIFY(<id>)` olarak geçer):
   - Verify: `./mvnw verify` yeşil (henüz modül yok); JDK 23 ile çalıştırınca enforcer anlaşılır bir hata veriyor
   - Files: `pom.xml`, `build-parent/pom.xml`
 
-- [ ] **#4 T0.4 Root compose.yaml (profilli altyapı)**
+- [x] **#4 T0.4 Root compose.yaml (profilli altyapı)**
   - Acceptance: `postgres:18`, `mongo:8`, `elasticsearch:9.4.x` (security kapalı, 512 MB heap), `redis:8`, `apache/kafka:4.2.x` (KRaft), `hazelcast/hazelcast:5.5`, `grafana/otel-lgtm`, `ollama/ollama` (+ pgvector'lü postgres image); hepsinde healthcheck; profiller: `postgres, mongo, elastic, redis, kafka, hazelcast, observability, ai, all` (`all` Ollama'yı içermez); şifreler `.env.example` üzerinden
   - Verify: `docker compose --profile all up -d && docker compose ps` → hepsi `healthy`
   - Files: `compose.yaml`, `.env.example`
