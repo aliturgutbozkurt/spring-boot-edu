@@ -115,6 +115,9 @@ class BookController {                       // Lesson 3.1 — minimal REST cont
 - TR and EN docs are **parallel**: same sections, same numbering, same code snippets. Changing one requires changing the other in the same commit.
 - Lesson doc structure (from `docs/templates/`): Learning goals → Concepts → Step-by-step examples (linked to real source files) → Common mistakes → Summary → Further reading (official docs).
 - Code snippets in docs must be copied from compiled source (reference file + line range); never write untested code in docs.
+- Every doc starts with YAML front matter: `title`, `subtitle`, `module`, `lang` (`tr-TR` / `en-US`), `date`.
+- Callouts use GitHub alert syntax (`> [!NOTE]`, `[!TIP]`, `[!IMPORTANT]`, `[!WARNING]`, `[!CAUTION]`) — rendered natively on GitHub and as coloured boxes in the PDF. Do not use raw LaTeX in Markdown.
+- Pipeline self-test: `./scripts/build-pdfs.sh --force docs/templates/pandoc/samples` (TR + EN sample exercising every feature).
 - Regenerate the PDFs after any MD change (`./scripts/build-pdfs.sh <module>`) and commit them together.
 - Cite official Spring docs for version-specific claims; if unsure whether a feature exists in Boot 4.1, verify in docs before writing about it.
 

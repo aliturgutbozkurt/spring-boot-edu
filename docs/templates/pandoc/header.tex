@@ -1,0 +1,32 @@
+% Extra LaTeX for all course PDFs (included via defaults.yaml → include-in-header).
+% Colour theme: course green + slate. Keep in sync with docs/assets/logo.svg.
+
+\usepackage{xcolor}
+\definecolor{edu-primary}{HTML}{1F6F43}
+\definecolor{edu-primary-light}{HTML}{E3F2E8}
+\definecolor{edu-slate}{HTML}{37474F}
+\definecolor{edu-blue}{HTML}{1565C0}
+\definecolor{edu-blue-light}{HTML}{E3F0FB}
+\definecolor{edu-amber}{HTML}{B26A00}
+\definecolor{edu-amber-light}{HTML}{FFF4E0}
+\definecolor{edu-red}{HTML}{B3261E}
+\definecolor{edu-red-light}{HTML}{FCE8E6}
+\definecolor{edu-purple}{HTML}{6A1B9A}
+\definecolor{edu-purple-light}{HTML}{F3E5F5}
+
+% Headings in the course colour
+\usepackage{sectsty}
+\allsectionsfont{\color{edu-primary}\sffamily}
+
+% Callout boxes produced by callouts.lua
+\usepackage[most]{tcolorbox}
+\newcommand{\educallout}[4]{%
+  \newtcolorbox{#1}[1]{enhanced, breakable, colback=#3, colframe=#2,
+    boxrule=0pt, leftrule=3pt, arc=2pt, left=8pt, right=8pt, top=6pt, bottom=6pt,
+    fonttitle=\sffamily\bfseries\color{#2}, coltitle=#2, colbacktitle=#3,
+    title={#4~##1}, attach title to upper={\par\smallskip}, before skip=10pt, after skip=10pt}}
+\educallout{callout-note}{edu-blue}{edu-blue-light}{\textbf{i}}
+\educallout{callout-tip}{edu-primary}{edu-primary-light}{\textbf{$\star$}}
+\educallout{callout-important}{edu-purple}{edu-purple-light}{\textbf{!}}
+\educallout{callout-warning}{edu-amber}{edu-amber-light}{\textbf{!}}
+\educallout{callout-caution}{edu-red}{edu-red-light}{\textbf{!!}}

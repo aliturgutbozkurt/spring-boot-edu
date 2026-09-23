@@ -33,10 +33,10 @@ Ortak doğrulama komutu (aşağıda `VERIFY(<id>)` olarak geçer):
   - Verify: `docker compose --profile all up -d && docker compose ps` → hepsi `healthy`
   - Files: `compose.yaml`, `.env.example`
 
-- [ ] **#5 T0.5 PDF hattı**
+- [x] **#5 T0.5 PDF hattı**
   - Acceptance: `scripts/build-pdfs.sh [modül-id]` Docker'daki `pandoc/extra` ile tüm `docs/**/*.md` dosyalarını yanlarına PDF olarak üretiyor; XeLaTeX + Türkçe karakter destekli font (ör. DejaVu / Noto); kod blokları renkli; kapak sayfası (logo, başlık, modül no, dil, tarih, lisans) YAML front matter'dan; tutarlı renk teması (başlıklar, kod blokları, not/uyarı kutuları); basit SVG logo `docs/assets/logo.svg`
   - Verify: `ç ğ ı İ ö ş ü` içeren örnek TR dokümanın PDF'i doğru görünüyor (açıp göz kontrolü)
-  - Files: `scripts/build-pdfs.sh`, `docs/templates/pandoc/defaults.yaml`, `docs/templates/pandoc/header.tex`, `docs/templates/pandoc/cover.tex`, `docs/assets/logo.svg`
+  - Files: `scripts/build-pdfs.sh`, `docs/templates/pandoc/{defaults.yaml,header.tex,callouts.lua,Dockerfile}`, `docs/templates/pandoc/samples/`, `docs/assets/logo.svg` (kapak Eisvogel şablonuyla — ayrı `cover.tex` gerekmedi; Türkçe için `babel-turkish` eklenmiş yerel image)
 
 - [ ] **#6 T0.6 Doküman şablonları**
   - Acceptance: `docs/templates/{tr,en}/{ders|lesson,odevler|exercises}.md` SPEC'teki 6 bölümlük yapıya uygun; module `README.md` şablonu (TR+EN)

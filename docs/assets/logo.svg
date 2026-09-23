@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256">
+  <!-- Spring Boot Edu course logo: an open book with code braces. Original artwork, CC BY-SA 4.0. -->
+  <rect x="8" y="8" width="240" height="240" rx="48" fill="#1F6F43"/>
+  <path d="M128 78 C104 64 72 62 48 68 L48 184 C72 178 104 180 128 194 Z" fill="#FFFFFF"/>
+  <path d="M128 78 C152 64 184 62 208 68 L208 184 C184 178 152 180 128 194 Z" fill="#E3F2E8"/>
+  <path d="M128 78 L128 194" stroke="#1F6F43" stroke-width="4"/>
+  <text x="88" y="146" font-family="DejaVu Sans Mono, monospace" font-size="44" font-weight="bold" fill="#1F6F43" text-anchor="middle">{</text>
+  <text x="168" y="146" font-family="DejaVu Sans Mono, monospace" font-size="44" font-weight="bold" fill="#1F6F43" text-anchor="middle">}</text>
+</svg>

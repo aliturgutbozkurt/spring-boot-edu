@@ -31,3 +31,7 @@ application-local.yaml
 
 # Kubernetes local
 kubeconfig*
+
+# PDF pipeline self-test output
+docs/templates/pandoc/samples/*.pdf
+docs/templates/pandoc/samples/.pdf-manifest

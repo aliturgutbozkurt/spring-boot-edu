@@ -1,0 +1,32 @@
+# Pandoc defaults for all course PDFs. Used by scripts/build-pdfs.sh inside the pandoc/extra image.
+# Per-document values (title, subtitle, lang, module, date) come from each Markdown file's front matter.
+from: markdown+rebase_relative_paths
+pdf-engine: xelatex
+template: eisvogel
+filters:
+  - docs/templates/pandoc/callouts.lua
+include-in-header:
+  - docs/templates/pandoc/header.tex
+syntax-highlighting: tango
+variables:
+  author: "Spring Boot Edu"
+  # Cover page
+  titlepage: true
+  titlepage-color: "1F6F43"
+  titlepage-text-color: "FFFFFF"
+  titlepage-rule-color: "E3F2E8"
+  titlepage-rule-height: 2
+  logo-width: 35mm
+  # Body
+  toc: true
+  toc-own-page: true
+  mainfont: "DejaVu Serif"
+  sansfont: "DejaVu Sans"
+  monofont: "DejaVu Sans Mono"
+  fontsize: 10pt
+  code-block-font-size: \small
+  colorlinks: true
+  linkcolor: "edu-primary"
+  urlcolor: "edu-blue"
+  # Header / footer
+  footer-left: "CC BY-SA 4.0 · Spring Boot Edu"
