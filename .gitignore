@@ -35,3 +35,5 @@ kubeconfig*
 # PDF pipeline self-test output
 docs/templates/pandoc/samples/*.pdf
 docs/templates/pandoc/samples/.pdf-manifest
+docs/templates/**/*.pdf
+docs/templates/**/.pdf-manifest

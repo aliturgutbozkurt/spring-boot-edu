@@ -38,7 +38,7 @@ Ortak doğrulama komutu (aşağıda `VERIFY(<id>)` olarak geçer):
   - Verify: `ç ğ ı İ ö ş ü` içeren örnek TR dokümanın PDF'i doğru görünüyor (açıp göz kontrolü)
   - Files: `scripts/build-pdfs.sh`, `docs/templates/pandoc/{defaults.yaml,header.tex,callouts.lua,Dockerfile}`, `docs/templates/pandoc/samples/`, `docs/assets/logo.svg` (kapak Eisvogel şablonuyla — ayrı `cover.tex` gerekmedi; Türkçe için `babel-turkish` eklenmiş yerel image)
 
-- [ ] **#6 T0.6 Doküman şablonları**
+- [x] **#6 T0.6 Doküman şablonları**
   - Acceptance: `docs/templates/{tr,en}/{ders|lesson,odevler|exercises}.md` SPEC'teki 6 bölümlük yapıya uygun; module `README.md` şablonu (TR+EN)
   - Verify: Şablonlardan PDF üretiliyor
   - Files: `docs/templates/tr/ders.md`, `docs/templates/tr/odevler.md`, `docs/templates/en/lesson.md`, `docs/templates/en/exercises.md`, `docs/templates/README.module.md`
