@@ -23,8 +23,8 @@ Ortak doğrulama komutu (aşağıda `VERIFY(<id>)` olarak geçer):
   - Verify: `./mvnw -v` → Java 27; hello uygulaması `./mvnw verify` yeşil
   - Files: `mvnw`, `mvnw.cmd`, `.mvn/wrapper/maven-wrapper.properties`, `SPEC.md`
 
-- [ ] **#3 T0.3 Root aggregator + build-parent**
-  - Acceptance: `build-parent` → `spring-boot-starter-parent:4.1.1`, `java.version=27`, BOM import: Spring Cloud 2025.1.3, Spring AI 2.0.1, Spring Modulith 2.1.1; enforcer (Java ≥ 27, Maven ≥ 3.9, dependency convergence), surefire (`*Test`) + failsafe (`*IT`), `-Xlint:all,-processing`; root `pom.xml` lesson + solution modüllerini, `exercises` profili exercise modüllerini içeriyor
+- [x] **#3 T0.3 Root aggregator + build-parent**
+  - Acceptance: `build-parent` → `spring-boot-starter-parent:4.1.1`, `java.version=27`, BOM import: Spring Cloud 2025.1.3, Spring AI 2.0.1, Spring Modulith 2.1.1; enforcer (Java ≥ 27, Maven ≥ 3.9, Lombok yasak — *dependencyConvergence bilinçli olarak eklenmedi: BOM'lar sürümleri hizalıyor, Cloud/AI ağaçlarında yanlış alarm üretiyor*), surefire (`*Test`) + failsafe (`*IT`), `-Xlint:deprecation,removal,unchecked` + `failOnWarning`; root `pom.xml` lesson + solution modüllerini, `exercises` profili exercise modüllerini içeriyor
   - Verify: `./mvnw verify` yeşil (henüz modül yok); JDK 23 ile çalıştırınca enforcer anlaşılır bir hata veriyor
   - Files: `pom.xml`, `build-parent/pom.xml`
 

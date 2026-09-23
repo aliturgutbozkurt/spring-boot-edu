@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Root aggregator. It only lists modules; all build configuration lives in build-parent/pom.xml.
+
+  ./mvnw verify               → build-parent + every lesson/ and solution/ module (always green)
+  ./mvnw -Pexercises test     → additionally the exercise/ modules (red until the student solves them)
+
+  Module entries are added by scripts/new-module.sh — keep the markers below intact.
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.springbootedu</groupId>
+    <artifactId>spring-boot-edu</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+    <name>Spring Boot Edu</name>
+
+    <properties>
+        <maven.deploy.skip>true</maven.deploy.skip>
+    </properties>
+
+    <modules>
+        <module>build-parent</module>
+        <!-- course-modules:begin -->
+        <!-- course-modules:end -->
+    </modules>
+
+    <profiles>
+        <profile>
+            <id>exercises</id>
+            <modules>
+                <!-- exercise-modules:begin -->
+                <!-- exercise-modules:end -->
+            </modules>
+        </profile>
+    </profiles>
+</project>
