@@ -1,5 +1,0 @@
-# HTTP examples for module 07-data-mongodb. Run them from IntelliJ IDEA / VS Code (REST Client).
-# Start the lesson first: ./mvnw -pl modules/07-data-mongodb/lesson spring-boot:run
-
-### Example
-GET http://localhost:8080/

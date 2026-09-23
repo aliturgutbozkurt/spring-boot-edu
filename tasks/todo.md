@@ -114,7 +114,7 @@ Ortak doğrulama komutu (aşağıda `VERIFY(<id>)` olarak geçer):
 ### 07-data-mongodb · #20
 - [x] **M07.a Kod** — document modelleme (embed vs reference); `MongoRepository` + derived query; `MongoTemplate` + `Criteria`; aggregation pipeline; index yönetimi; multi-document transaction (replica set); `@DataMongoTest`
 - [x] **M07.b Ödevler** — ürün kataloğu (değişken özellikler); kategori bazlı aggregation raporu; tam metin index
-- [ ] **M07.c Doküman** — Verify: `VERIFY(07-data-mongodb)`
+- [x] **M07.c Doküman** — Verify: `VERIFY(07-data-mongodb)`
 
 **🔶 Checkpoint 3 (#21)**
 

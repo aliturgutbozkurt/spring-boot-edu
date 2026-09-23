@@ -11,7 +11,7 @@ spring:
     mongodb:
       auto-index-creation: true            # create @Indexed / @TextIndexed indexes at startup
       representation:
-        big-decimal: decimal128            # exact decimals; needed for $sum / $avg on prices
+        big-decimal: decimal128            # exact decimals (the current default) — stated explicitly
   # end::mongo-config[]
   docker:
     compose:
