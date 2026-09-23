@@ -416,7 +416,10 @@ def check_module(module_id: str, strict: bool) -> Report:
         return r
 
     # 1. required files
-    required = ["README.md", "requests.http", "lesson/pom.xml", "exercise/pom.xml", "solution/pom.xml"]
+    required = ["README.md", "lesson/pom.xml", "exercise/pom.xml", "solution/pom.xml"]
+    lesson_pom = module_dir / "lesson/pom.xml"
+    if lesson_pom.is_file() and re.search(r"spring-boot-starter-web(mvc|flux)?<|spring-boot-starter-graphql<", lesson_pom.read_text()):
+        required.append("requests.http")      # HTTP examples are only expected from modules that serve HTTP
     required += [f"docs/{d}" for pair in DOC_PAIRS for d in pair] + [f"docs/{p}" for p in PDFS]
     for rel in required:
         r.check((module_dir / rel).is_file(), f"missing {rel}")

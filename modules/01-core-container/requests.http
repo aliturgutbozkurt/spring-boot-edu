@@ -1,5 +1,0 @@
-# HTTP examples for module 01-core-container. Run them from IntelliJ IDEA / VS Code (REST Client).
-# Start the lesson first: ./mvnw -pl modules/01-core-container/lesson spring-boot:run
-
-### Example
-GET http://localhost:8080/
