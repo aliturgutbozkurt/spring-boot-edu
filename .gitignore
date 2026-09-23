@@ -1,0 +1,33 @@
+# Maven
+target/
+!.mvn/wrapper/maven-wrapper.jar
+pom.xml.versionsBackup
+dependency-reduced-pom.xml
+
+# IDE
+.idea/
+*.iml
+.vscode/
+!.vscode/extensions.json
+.classpath
+.project
+.settings/
+.factorypath
+bin/
+out/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Env / secrets
+.env
+*.local.yaml
+application-local.yaml
+
+# Logs & tooling
+*.log
+.claude/settings.local.json
+
+# Kubernetes local
+kubeconfig*

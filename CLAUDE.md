@@ -11,6 +11,7 @@ The source of truth for scope is [SPEC.md](SPEC.md); the build order is [tasks/p
 3. **Test-first for code** (`/test`): write the failing test, make it pass, refactor.
 4. **Review before a module is "done"** (`/review`): run the Module Definition of Done below.
 5. Keep changes small: one task ≈ one commit (Conventional Commits: `feat(06-data-jpa-postgres): ...`, `docs(06-data-jpa-postgres): ...`).
+6. **GitHub issues:** every task/module has an issue (numbers in `tasks/todo.md`, map in `tasks/issues.json`, milestones = phases). Commits say `Refs #N`; the commit finishing a task says `Closes #N`. Module issues close only when all a/b/c items are done.
 
 ## Tech Stack (pinned — do not change without asking)
 
