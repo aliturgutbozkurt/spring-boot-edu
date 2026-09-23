@@ -30,6 +30,9 @@ jobs:
       - name: Build, unit tests and integration tests (Testcontainers)
         run: ./mvnw -B -ntp verify
 
+      - name: Preview features (module 00, structured concurrency)
+        run: ./mvnw -B -ntp -Ppreview -pl modules/00-setup-modern-java/lesson verify
+
       - name: Exercises compile (their tests are red on purpose)
         run: ./mvnw -B -ntp -Pexercises test-compile
 

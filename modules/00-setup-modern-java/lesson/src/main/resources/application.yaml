@@ -1,0 +1,12 @@
+spring:
+  application:
+    name: 00-setup-modern-java
+  threads:
+    virtual:
+      enabled: true
+
+# Keep the console readable: only this module logs at INFO.
+logging:
+  level:
+    root: warn
+    com.springbootedu: info

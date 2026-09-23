@@ -225,11 +225,20 @@ def fill(template: str, values: dict[str, str]) -> str:
 
 
 def register_in_root_pom(module_id: str) -> None:
+    """Adds the module between the pom.xml markers, keeping each list sorted by module id."""
     pom = ROOT_POM.read_text()
-    course = f"        <module>modules/{module_id}/lesson</module>\n        <module>modules/{module_id}/solution</module>\n"
-    exercise = f"                <module>modules/{module_id}/exercise</module>\n"
-    pom = pom.replace("        <!-- course-modules:end -->", course + "        <!-- course-modules:end -->")
-    pom = pom.replace("                <!-- exercise-modules:end -->", exercise + "                <!-- exercise-modules:end -->")
+
+    def add(pom: str, begin: str, end: str, indent: str, entries: list[str]) -> str:
+        head, rest = pom.split(begin, 1)
+        body, tail = rest.split(end, 1)
+        lines = {l.strip() for l in body.splitlines() if l.strip()} | set(entries)
+        block = "".join(f"\n{indent}{l}" for l in sorted(lines))
+        return f"{head}{begin}{block}\n{indent}{end}{tail}"
+
+    pom = add(pom, "<!-- course-modules:begin -->", "<!-- course-modules:end -->", " " * 8,
+              [f"<module>modules/{module_id}/lesson</module>", f"<module>modules/{module_id}/solution</module>"])
+    pom = add(pom, "<!-- exercise-modules:begin -->", "<!-- exercise-modules:end -->", " " * 16,
+              [f"<module>modules/{module_id}/exercise</module>"])
     ROOT_POM.write_text(pom)
 
 
