@@ -4,3 +4,14 @@ spring:
   threads:
     virtual:
       enabled: true
+  http:
+    clients:
+      imperative:
+        factory: jdk
+    serviceclient:
+      reviews:                                     # Exercise 1
+        base-url: http://localhost:9090
+
+bookstore:
+  partner:
+    base-url: http://localhost:9090                # Exercises 2 and 3
