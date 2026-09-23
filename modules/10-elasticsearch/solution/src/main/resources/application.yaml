@@ -1,0 +1,6 @@
+spring:
+  application:
+    name: 10-elasticsearch
+  threads:
+    virtual:
+      enabled: true

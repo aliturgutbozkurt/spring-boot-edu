@@ -1,0 +1,20 @@
+# HTTP examples for module 10-elasticsearch. Run them from IntelliJ IDEA / VS Code (REST Client).
+# Start the lesson first: ./mvnw -pl modules/10-elasticsearch/lesson spring-boot:run
+
+### Lesson 3.3/3.5 — full-text search with hits, highlights and category facets
+GET http://localhost:8080/api/search?q=java
+
+### Filters: only one category, at most 60
+GET http://localhost:8080/api/search?q=java&category=programming&maxPrice=60
+
+### The Turkish analyzer: "kitap" finds "kitaplar", "istanbul" finds "İstanbul"
+GET http://localhost:8080/api/search?q=kitap
+
+### Look at the index directly: the mapping Spring Data created
+GET http://localhost:9200/books/_mapping
+
+### How the Turkish analyzer splits a text
+POST http://localhost:9200/_analyze
+Content-Type: application/json
+
+{ "analyzer": "turkish", "text": "İstanbul'daki kitapçılar" }

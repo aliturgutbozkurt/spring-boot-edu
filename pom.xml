@@ -47,6 +47,8 @@
         <module>modules/08-redis-caching/solution</module>
         <module>modules/09-hazelcast/lesson</module>
         <module>modules/09-hazelcast/solution</module>
+        <module>modules/10-elasticsearch/lesson</module>
+        <module>modules/10-elasticsearch/solution</module>
         <!-- course-modules:end -->
     </modules>
 
@@ -65,6 +67,7 @@
                 <module>modules/07-data-mongodb/exercise</module>
                 <module>modules/08-redis-caching/exercise</module>
                 <module>modules/09-hazelcast/exercise</module>
+                <module>modules/10-elasticsearch/exercise</module>
                 <!-- exercise-modules:end -->
             </modules>
         </profile>
