@@ -1,0 +1,9 @@
+# HTTP examples for module 09-hazelcast. Run them from IntelliJ IDEA / VS Code (REST Client).
+# The lesson itself has no web layer. These requests talk to the Hazelcast member from compose.yaml,
+# started by: ./mvnw -pl modules/09-hazelcast/lesson spring-boot:run -Dspring-boot.run.profiles=client
+
+### Is the member ready? (REST health endpoint, enabled in compose.yaml)
+GET http://localhost:5701/hazelcast/health/ready
+
+### Cluster state, member count and more
+GET http://localhost:5701/hazelcast/health

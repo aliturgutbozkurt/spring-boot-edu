@@ -1,0 +1,6 @@
+spring:
+  application:
+    name: 09-hazelcast
+  threads:
+    virtual:
+      enabled: true

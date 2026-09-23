@@ -1,0 +1,20 @@
+spring:
+  application:
+    name: 09-hazelcast
+  threads:
+    virtual:
+      enabled: true
+  docker:
+    compose:
+      # Default profile: Hazelcast runs embedded inside the application, no container needed.
+      # The "client" profile (application-client.yaml) switches this on.
+      enabled: false
+      file: ../../../compose.yaml
+      profiles:
+        active: hazelcast
+      # Keep containers running between restarts (stop them with: docker compose --profile all down)
+      lifecycle-management: start-only
+logging:
+  level:
+    root: warn
+    com.springbootedu: info

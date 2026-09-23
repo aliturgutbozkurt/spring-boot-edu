@@ -163,6 +163,7 @@ class BookController {                       // Lesson 3.1 — minimal REST cont
 - A locally installed Redis (Homebrew) on `127.0.0.1:6379` shadows the compose port — `lsof -iTCP:6379` before trusting `redis-cli` output.
 - Never gate a commit on `grep` of Maven output — check the exit code (`mvn … && git commit …`).
 - Hazelcast 5.5 Community: the CP Subsystem (`FencedLock`, `IAtomicLong`, …) is Enterprise-only and throws `UnsupportedOperationException`. Use `IMap.lock/tryLock` and `EntryProcessor` (SPEC decision 10).
+- Hazelcast in tests: Boot's Testcontainers support accepts a `GenericContainer` of `hazelcast/hazelcast`, but only with `@ServiceConnection(name = "hazelcast/hazelcast")`; it reads `HZ_CLUSTERNAME` for the client. An `EntryProcessor` runs on the member, so client-server needs its class on the server — lesson/tests use an embedded member for it.
 - Elasticsearch needs ≥ 2 GB Docker memory; Kafka runs in KRaft mode (no ZooKeeper).
 - Spring AI tests never call a real LLM: use a mocked `ChatModel` or Testcontainers Ollama with a tiny model, tagged `*IT`.
 - Spring Boot's Docker Compose support starts services on `spring-boot:run`; in tests it is disabled — Testcontainers is used instead.

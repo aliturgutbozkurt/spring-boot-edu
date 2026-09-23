@@ -1,0 +1,8 @@
+# Lesson 3.6 — run as a client of the Hazelcast member from compose.yaml:
+#   ./mvnw -pl modules/09-hazelcast/lesson spring-boot:run -Dspring-boot.run.profiles=client
+# tag::client-profile[]
+spring:
+  docker:
+    compose:
+      enabled: true                        # starts hazelcast/hazelcast and provides HazelcastConnectionDetails
+# end::client-profile[]
