@@ -57,7 +57,7 @@ Ortak doğrulama komutu (aşağıda `VERIFY(<id>)` olarak geçer):
   - Acceptance: Önkoşullar (JDK 27, Docker, ≥ 8 GB RAM; modül 22–23 için kind/kubectl/helm; 24 için Ollama), hızlı başlangıç, modül tablosu, ödev çözme akışı
   - Files: `README.md`
 
-**🔶 Checkpoint 0 (#10)** — plan.md'deki kriterler.
+**🔶 Checkpoint 0 (#10)** — ✅ geçti (2026-09-23).
 
 ---
 
