@@ -1,0 +1,6 @@
+spring:
+  application:
+    name: 07-data-mongodb
+  threads:
+    virtual:
+      enabled: true

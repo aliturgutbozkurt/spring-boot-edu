@@ -41,6 +41,8 @@
         <module>modules/05-data-jdbc-postgres/solution</module>
         <module>modules/06-data-jpa-postgres/lesson</module>
         <module>modules/06-data-jpa-postgres/solution</module>
+        <module>modules/07-data-mongodb/lesson</module>
+        <module>modules/07-data-mongodb/solution</module>
         <!-- course-modules:end -->
     </modules>
 
@@ -56,6 +58,7 @@
                 <module>modules/04-http-clients-resilience/exercise</module>
                 <module>modules/05-data-jdbc-postgres/exercise</module>
                 <module>modules/06-data-jpa-postgres/exercise</module>
+                <module>modules/07-data-mongodb/exercise</module>
                 <!-- exercise-modules:end -->
             </modules>
         </profile>
