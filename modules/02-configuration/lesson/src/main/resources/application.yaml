@@ -1,0 +1,51 @@
+# Lesson 3.1 — the lowest-priority, packaged defaults. Everything here can be overridden
+# by profile files, environment variables and command-line arguments.
+spring:
+  application:
+    name: 02-configuration
+  threads:
+    virtual:
+      enabled: true
+  # Lesson 3.5 — pull in more files. "optional:" = do not fail if the file is missing.
+  config:
+    import:
+      - optional:classpath:campaigns.yaml
+      - optional:file:./bookstore-local.yaml       # your machine-only overrides (git-ignored)
+  # Lesson 3.4 — a profile group: --spring.profiles.active=local activates dev and demo too
+  profiles:
+    group:
+      local: dev, demo
+
+# tag::store-yaml[]
+bookstore:
+  store:
+    name: Kitapçı
+    support-email: destek@kitapci.example           # kebab-case in YAML → supportEmail in Java
+    categories:
+      - roman
+      - bilim
+      - yazılım
+    shipping:
+      free-from: "500.00"                          # quoted: unquoted 500.00 is a YAML float → 500.0
+      delivery-time: 2d
+# end::store-yaml[]
+  # Lesson 3.6 — settings of our own starter (auto-completed in the IDE thanks to its metadata)
+  greeting:
+    prefix: Hoş geldiniz
+
+# Keep the console readable: only this module logs at INFO.
+logging:
+  level:
+    root: warn
+    com.springbootedu: info
+---
+# tag::profile-document[]
+# Lesson 3.4 — a second YAML document, applied only when the "demo" profile is active
+spring:
+  config:
+    activate:
+      on-profile: demo
+bookstore:
+  store:
+    banner: "DEMO — veriler gerçek değil / demo data"
+# end::profile-document[]

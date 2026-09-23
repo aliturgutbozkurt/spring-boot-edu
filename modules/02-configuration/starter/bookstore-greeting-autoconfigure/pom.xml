@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Lesson 3.6 — the auto-configuration half of a custom starter: the code and the conditions.
+  Applications do not depend on this module directly; they use bookstore-greeting-spring-boot-starter.
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.springbootedu</groupId>
+        <artifactId>build-parent</artifactId>
+        <version>1.0.0-SNAPSHOT</version>
+        <relativePath>../../../../build-parent/pom.xml</relativePath>
+    </parent>
+
+    <artifactId>bookstore-greeting-autoconfigure</artifactId>
+    <name>02 · Configuration :: bookstore-greeting-autoconfigure</name>
+
+    <properties>
+        <!-- a library, not an application: lets "./mvnw -pl <lesson> -am spring-boot:run" skip this module -->
+        <spring-boot.run.skip>true</spring-boot.run.skip>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-autoconfigure</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <!-- Also pre-computes the auto-configuration conditions for faster startup -->
+                    <annotationProcessorPaths combine.children="append">
+                        <path>
+                            <groupId>org.springframework.boot</groupId>
+                            <artifactId>spring-boot-autoconfigure-processor</artifactId>
+                        </path>
+                    </annotationProcessorPaths>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>

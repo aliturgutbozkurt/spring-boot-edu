@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Lesson 3.6 — the starter half: no code, only dependencies. Applications add this one artifact.
+  Naming: official starters are spring-boot-starter-*, third-party starters are *-spring-boot-starter.
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.springbootedu</groupId>
+        <artifactId>build-parent</artifactId>
+        <version>1.0.0-SNAPSHOT</version>
+        <relativePath>../../../../build-parent/pom.xml</relativePath>
+    </parent>
+
+    <artifactId>bookstore-greeting-spring-boot-starter</artifactId>
+    <name>02 · Configuration :: bookstore-greeting-spring-boot-starter</name>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.springbootedu</groupId>
+            <artifactId>bookstore-greeting-autoconfigure</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+    </dependencies>
+</project>

@@ -81,7 +81,7 @@ Ortak doğrulama komutu (aşağıda `VERIFY(<id>)` olarak geçer):
 - [x] **M00.c Doküman** — kurulum (JDK 27, IDE, Docker), repo kullanımı, ödev akışı + Java yenilikleri. Verify: `VERIFY(00-setup-modern-java)`
 
 ### 02-configuration · #14
-- [ ] **M02.a Kod** — auto-configuration'ı inceleme (`--debug`, conditions report); `application.yaml` + profiller + config öncelik sırası; `@ConfigurationProperties` record + validation; `@Value` ve neden az kullanılmalı; config import (`optional:file:`), env var eşlemesi; **kendi starter'ını yazma** (autoconfigure + starter ayrı modül, `AutoConfiguration.imports`)
+- [x] **M02.a Kod** — auto-configuration'ı inceleme (`--debug`, conditions report); `application.yaml` + profiller + config öncelik sırası; `@ConfigurationProperties` record + validation; `@Value` ve neden az kullanılmalı; config import (`optional:file:`), env var eşlemesi; **kendi starter'ını yazma** (autoconfigure + starter ayrı modül, `AutoConfiguration.imports`)
 - [ ] **M02.b Ödevler** — doğrulanan özellikler ile mağaza ayarları; profile göre farklı fiyatlandırma; `bookstore-greeting-starter`
 - [ ] **M02.c Doküman** — Verify: `VERIFY(02-configuration)`
 

@@ -44,3 +44,6 @@ __pycache__/
 
 # Claude Code local session state
 .claude/*.lock
+
+# Machine-only configuration overrides (module 02, spring.config.import)
+bookstore-local.yaml

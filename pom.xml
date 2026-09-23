@@ -29,6 +29,10 @@
         <module>modules/00-setup-modern-java/solution</module>
         <module>modules/01-core-container/lesson</module>
         <module>modules/01-core-container/solution</module>
+        <module>modules/02-configuration/lesson</module>
+        <module>modules/02-configuration/solution</module>
+        <module>modules/02-configuration/starter/bookstore-greeting-autoconfigure</module>
+        <module>modules/02-configuration/starter/bookstore-greeting-spring-boot-starter</module>
         <!-- course-modules:end -->
     </modules>
 
@@ -39,6 +43,7 @@
                 <!-- exercise-modules:begin -->
                 <module>modules/00-setup-modern-java/exercise</module>
                 <module>modules/01-core-container/exercise</module>
+                <module>modules/02-configuration/exercise</module>
                 <!-- exercise-modules:end -->
             </modules>
         </profile>

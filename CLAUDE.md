@@ -147,6 +147,8 @@ class BookController {                       // Lesson 3.1 — minimal REST cont
 - Container base image is `amazoncorretto:27-alpine` (no Temurin 27 yet). Native images use GraalVM 25 — only in module 19.
 - `docker compose up` failing with "No such image" right after a pull means the Docker VM disk is nearly full and images get evicted — free space (`docker builder prune`) before debugging anything else.
 - `new-module.sh` registers lesson/, solution/ and exercise/ in the root pom at once. Whenever you commit that pom change, also commit the scaffolded `solution/` and `exercise/` (even as placeholders) — otherwise CI fails with a missing module.
+- A module with extra Maven modules (e.g. 02's starter) must be run with `-am`: `./mvnw -pl modules/<id>/lesson -am spring-boot:run`. build-parent's `not-an-application` profile skips `spring-boot:run` in projects without `src/main/java`, so `-am` is always safe.
+- Boot registers its `ConditionEvaluationReport` as a bean named `autoConfigurationReport` — don't reuse that bean name.
 - Elasticsearch needs ≥ 2 GB Docker memory; Kafka runs in KRaft mode (no ZooKeeper).
 - Spring AI tests never call a real LLM: use a mocked `ChatModel` or Testcontainers Ollama with a tiny model, tagged `*IT`.
 - Spring Boot's Docker Compose support starts services on `spring-boot:run`; in tests it is disabled — Testcontainers is used instead.

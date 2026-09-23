@@ -1,0 +1,6 @@
+# Lesson 3.4 — loaded only with the "dev" profile; overrides application.yaml
+bookstore:
+  store:
+    name: Kitapçı (DEV)
+    shipping:
+      delivery-time: 1h

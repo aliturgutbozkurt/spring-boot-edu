@@ -1,0 +1,6 @@
+spring:
+  application:
+    name: 02-configuration
+  threads:
+    virtual:
+      enabled: true

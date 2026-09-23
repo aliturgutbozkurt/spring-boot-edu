@@ -76,6 +76,16 @@
                             <arg>-Xlint:deprecation,removal,unchecked</arg>
                         </compilerArgs>
                         <failOnWarning>true</failOnWarning>
+                        <!-- JDK 23+ runs annotation processors only when configured explicitly.
+                             The configuration processor generates metadata for @ConfigurationProperties
+                             (IDE auto-completion in application.yaml). Versions come from the Boot BOM. -->
+                        <annotationProcessorPathsUseDepMgmt>true</annotationProcessorPathsUseDepMgmt>
+                        <annotationProcessorPaths>
+                            <path>
+                                <groupId>org.springframework.boot</groupId>
+                                <artifactId>spring-boot-configuration-processor</artifactId>
+                            </path>
+                        </annotationProcessorPaths>
                     </configuration>
                 </plugin>
             </plugins>
@@ -127,4 +137,20 @@
             </plugin>
         </plugins>
     </build>
+
+    <profiles>
+        <!-- Projects without Java sources (this parent, pom-only starters) are not applications.
+             Lets "./mvnw -pl <lesson> -am spring-boot:run" run the lesson and skip the rest. -->
+        <profile>
+            <id>not-an-application</id>
+            <activation>
+                <file>
+                    <missing>${basedir}/src/main/java</missing>
+                </file>
+            </activation>
+            <properties>
+                <spring-boot.run.skip>true</spring-boot.run.skip>
+            </properties>
+        </profile>
+    </profiles>
 </project>

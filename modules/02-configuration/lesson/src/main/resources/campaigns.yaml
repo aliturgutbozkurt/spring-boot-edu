@@ -1,0 +1,8 @@
+# Lesson 3.5 — imported by application.yaml via spring.config.import
+bookstore:
+  campaigns:
+    active:
+      - code: OKULA-DONUS
+        percent: 15
+      - code: KITAP-FUARI
+        percent: 25

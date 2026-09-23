@@ -1,0 +1,2 @@
+# Lesson 3.6 — Spring Boot loads every auto-configuration class listed here (one per line).
+com.springbootedu.greeting.autoconfigure.GreetingAutoConfiguration

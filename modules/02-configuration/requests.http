@@ -1,0 +1,5 @@
+# HTTP examples for module 02-configuration. Run them from IntelliJ IDEA / VS Code (REST Client).
+# Start the lesson first: ./mvnw -pl modules/02-configuration/lesson spring-boot:run
+
+### Example
+GET http://localhost:8080/
