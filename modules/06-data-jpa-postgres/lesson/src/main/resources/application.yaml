@@ -1,0 +1,29 @@
+spring:
+  application:
+    name: 06-data-jpa-postgres
+  threads:
+    virtual:
+      enabled: true
+  docker:
+    compose:
+      # Reuse the root compose.yaml; only the listed profiles are started.
+      file: ../../../compose.yaml
+      profiles:
+        active: postgres
+      # Keep containers running between restarts (stop them with: docker compose --profile all down)
+      lifecycle-management: start-only
+  # tag::jpa-config[]
+  jpa:
+    open-in-view: false            # no lazy loading in the web layer: queries stay in the service layer
+    hibernate:
+      ddl-auto: validate           # Flyway owns the schema; Hibernate only checks that entities match it
+    properties:
+      hibernate:
+        generate_statistics: true  # Lesson 3.3: count SQL statements (keep it off in production)
+  # end::jpa-config[]
+
+logging:
+  level:
+    root: warn
+    com.springbootedu: info
+    org.flywaydb: info

@@ -107,7 +107,7 @@ Ortak doğrulama komutu (aşağıda `VERIFY(<id>)` olarak geçer):
 - [x] **M05.c Doküman** — Verify: `VERIFY(05-data-jdbc-postgres)`
 
 ### 06-data-jpa-postgres · #19
-- [ ] **M06.a Kod** — entity eşleme; OneToMany/ManyToMany; N+1 problemini gösterip `@EntityGraph`/fetch join ile çözme; interface/record projection; Specification + dinamik filtre; auditing (`@CreatedDate`); optimistic/pessimistic locking; Spring Data AOT repositories; `@DataJpaTest` + Testcontainers
+- [x] **M06.a Kod** — entity eşleme; OneToMany/ManyToMany; N+1 problemini gösterip `@EntityGraph`/fetch join ile çözme; interface/record projection; Specification + dinamik filtre; auditing (`@CreatedDate`); optimistic/pessimistic locking; `@DataJpaTest` + Testcontainers *(Spring Data AOT repositories → modül 19: `process-aot` uygulamayı build sırasında başlatır, native/AOT konusuyla birlikte işlenir)*
 - [ ] **M06.b Ödevler** — sipariş (Order/OrderLine) modeli; N+1'i tespit edip düzeltme (SQL sayısı testiyle); dinamik arama
 - [ ] **M06.c Doküman** — Verify: `VERIFY(06-data-jpa-postgres)`
 
@@ -190,7 +190,7 @@ Ortak doğrulama komutu (aşağıda `VERIFY(<id>)` olarak geçer):
 - [ ] **M18.c Doküman** — Verify: `VERIFY(18-modulith)`
 
 ### 19-native-performance · #35
-- [ ] **M19.a Kod** — AOT işleme (`process-aot`); GraalVM native image (`-Pnative`, GraalVM 25 + `release 25` — SPEC Karar 8); `RuntimeHints`; CDS / JVM AOT cache ile başlangıç iyileştirme; başlangıç süresi + bellek karşılaştırma script'i
+- [ ] **M19.a Kod** — AOT işleme (`process-aot`); Spring Data AOT repositories (modül 06'dan taşındı); GraalVM native image (`-Pnative`, GraalVM 25 + `release 25` — SPEC Karar 8); `RuntimeHints`; CDS / JVM AOT cache ile başlangıç iyileştirme; başlangıç süresi + bellek karşılaştırma script'i
 - [ ] **M19.b Ödevler** — reflection kullanan kodu native'e uyarlamak; AOT cache ile ölçüm; sonuç tablosu
 - [ ] **M19.c Doküman** — Verify: `VERIFY(19-native-performance)` (native build CI'da ayrı iş)
 

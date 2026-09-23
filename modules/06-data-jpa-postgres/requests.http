@@ -1,0 +1,5 @@
+# HTTP examples for module 06-data-jpa-postgres. Run them from IntelliJ IDEA / VS Code (REST Client).
+# Start the lesson first: ./mvnw -pl modules/06-data-jpa-postgres/lesson spring-boot:run
+
+### Example
+GET http://localhost:8080/
