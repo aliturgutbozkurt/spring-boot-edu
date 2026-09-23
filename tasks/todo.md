@@ -95,7 +95,7 @@ Ortak doğrulama komutu (aşağıda `VERIFY(<id>)` olarak geçer):
 - [x] **M04.b Ödevler** — dış "ISBN servisi" client'ı; retry + fallback; eşzamanlılık sınırı ile rate korunması
 - [x] **M04.c Doküman** — Verify: `VERIFY(04-http-clients-resilience)`
 
-**🔶 Checkpoint 2 (#17)**
+**🔶 Checkpoint 2 (#17)** — ✅ geçti (2026-09-23).
 
 ---
 
