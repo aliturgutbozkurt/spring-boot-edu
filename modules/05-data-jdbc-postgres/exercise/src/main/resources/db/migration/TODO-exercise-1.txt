@@ -1,0 +1,10 @@
+Exercise 1 — create the file V3__create_review.sql in this folder.
+
+Table "review":
+  id          bigserial primary key
+  book_id     not null, references book(id), reviews are deleted together with their book
+  stars       smallint, not null, only 1..5 allowed
+  comment     text
+  created_at  timestamptz, not null, filled by the database with the current time
+
+Flyway only runs files named V<version>__<description>.sql — this .txt file is ignored.
