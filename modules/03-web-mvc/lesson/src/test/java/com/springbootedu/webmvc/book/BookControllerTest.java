@@ -26,6 +26,7 @@ class BookControllerTest {
 
     // ---- 3.1 CRUD ----------------------------------------------------------------------------
 
+    // tag::mockmvctester[]
     @Test
     void getsABook() {
         assertThat(mvc.get().uri("/api/books/1"))
@@ -34,6 +35,7 @@ class BookControllerTest {
                         {"id": 1, "isbn": "9780134685991", "title": "Effective Java", "author": "Joshua Bloch",
                          "price": 89.90, "publishedOn": "2018-01-06"}""");
     }
+    // end::mockmvctester[]
 
     @Test
     @DirtiesContext
