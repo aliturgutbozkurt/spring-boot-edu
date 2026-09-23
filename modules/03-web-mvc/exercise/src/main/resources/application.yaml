@@ -4,3 +4,8 @@ spring:
   threads:
     virtual:
       enabled: true
+  mvc:
+    problemdetails:
+      enabled: true
+    # TODO 3a: enable API versioning with the request header "API-Version"
+    # TODO 3b: supported versions 1 and 2; requests without the header get version 1

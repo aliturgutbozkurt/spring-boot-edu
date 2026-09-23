@@ -4,3 +4,12 @@ spring:
   threads:
     virtual:
       enabled: true
+  mvc:
+    problemdetails:
+      enabled: true
+    # Exercise 3 — header-based API versioning
+    apiversion:
+      use:
+        header: API-Version
+      supported: 1, 2
+      default: 1

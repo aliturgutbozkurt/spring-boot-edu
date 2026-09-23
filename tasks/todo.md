@@ -87,7 +87,7 @@ Ortak doğrulama komutu (aşağıda `VERIFY(<id>)` olarak geçer):
 
 ### 03-web-mvc · #15
 - [x] **M03.a Kod** — Book CRUD REST API; DTO record + Bean Validation; `@RestControllerAdvice` + `ProblemDetail`; sayfalama/sıralama; **API versioning** (header/path/media-type); content negotiation; Jackson 3 özelleştirme; springdoc OpenAPI; virtual threads açık/kapalı karşılaştırma; `MockMvcTester` testleri
-- [ ] **M03.b Ödevler** — Author endpoint'leri + doğrulama; özel hata tipleri ile ProblemDetail; v1/v2 farklı response şekli
+- [x] **M03.b Ödevler** — Author endpoint'leri + doğrulama; özel hata tipleri ile ProblemDetail; v1/v2 farklı response şekli
 - [ ] **M03.c Doküman** — Verify: `VERIFY(03-web-mvc)`
 
 ### 04-http-clients-resilience · #16
