@@ -37,3 +37,10 @@ docs/templates/pandoc/samples/*.pdf
 docs/templates/pandoc/samples/.pdf-manifest
 docs/templates/**/*.pdf
 docs/templates/**/.pdf-manifest
+
+# Python bytecode (scripts/lib)
+__pycache__/
+*.pyc
+
+# Claude Code local session state
+.claude/*.lock
