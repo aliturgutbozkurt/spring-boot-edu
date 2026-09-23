@@ -1,0 +1,7 @@
+package com.springbootedu.setupmodernjava.exercise3;
+
+/**
+ * Exercise 3 — given.
+ */
+public record Cancel(String reason) implements OrderEvent {
+}

@@ -146,6 +146,7 @@ class BookController {                       // Lesson 3.1 — minimal REST cont
 - `StructuredTaskScope` is still preview in Java 27; only module 00's `preview` profile may use it.
 - Container base image is `amazoncorretto:27-alpine` (no Temurin 27 yet). Native images use GraalVM 25 — only in module 19.
 - `docker compose up` failing with "No such image" right after a pull means the Docker VM disk is nearly full and images get evicted — free space (`docker builder prune`) before debugging anything else.
+- `new-module.sh` registers lesson/, solution/ and exercise/ in the root pom at once. Whenever you commit that pom change, also commit the scaffolded `solution/` and `exercise/` (even as placeholders) — otherwise CI fails with a missing module.
 - Elasticsearch needs ≥ 2 GB Docker memory; Kafka runs in KRaft mode (no ZooKeeper).
 - Spring AI tests never call a real LLM: use a mocked `ChatModel` or Testcontainers Ollama with a tiny model, tagged `*IT`.
 - Spring Boot's Docker Compose support starts services on `spring-boot:run`; in tests it is disabled — Testcontainers is used instead.

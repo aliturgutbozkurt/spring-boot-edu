@@ -1,0 +1,6 @@
+spring:
+  application:
+    name: 00-setup-modern-java
+  threads:
+    virtual:
+      enabled: true
