@@ -18,7 +18,7 @@ Ortak doğrulama komutu (aşağıda `VERIFY(<id>)` olarak geçer):
   - Verify: `git status` temiz; `git check-ignore target/` eşleşiyor
   - Files: `.gitignore`, `.editorconfig`, `.gitattributes`, `LICENSE`, `LICENSE-docs`
 
-- [ ] **#2 T0.2 Java 27 araç zinciri smoke testi**
+- [x] **#2 T0.2 Java 27 araç zinciri smoke testi**
   - Acceptance: Maven Wrapper (3.9.x) JDK 27 ile çalışıyor; Boot 4.1.1 + `release 27` ile bir "hello" uygulaması derleniyor ve test ediliyor; `eclipse-temurin:27` image'ının varlığı ve GraalVM for JDK 27 durumu kontrol edilip sonuç SPEC'teki Karar 6'ya yazılıyor; kind/kubectl/helm kurulu mu kontrol ediliyor
   - Verify: `./mvnw -v` → Java 27; hello uygulaması `./mvnw verify` yeşil
   - Files: `mvnw`, `mvnw.cmd`, `.mvn/wrapper/maven-wrapper.properties`, `SPEC.md`
@@ -76,7 +76,7 @@ Ortak doğrulama komutu (aşağıda `VERIFY(<id>)` olarak geçer):
 ## Faz 2 — Çekirdek
 
 ### 00-setup-modern-java · #13
-- [ ] **M00.a Kod** — record + compact constructor; sealed interface + switch pattern matching; record patterns; `var` ve text blocks; virtual threads ile 10 000 görev; structured concurrency ve scoped values (API durumu T0.2'de doğrulanır; preview ise ayrı `preview` profili); Sequenced Collections; stream gatherers
+- [ ] **M00.a Kod** — record + compact constructor; sealed interface + switch pattern matching; record patterns; `var` ve text blocks; virtual threads ile 10 000 görev; scoped values (final); structured concurrency (preview → ayrı `preview` profili, SPEC Karar 9); compact source files (`void main` + `IO`); Sequenced Collections; stream gatherers
 - [ ] **M00.b Ödevler** — pattern matching ile fiyat hesaplayıcı; virtual thread'lerle paralel HTTP çağrısı; sealed hiyerarşi ile sipariş durum makinesi
 - [ ] **M00.c Doküman** — kurulum (JDK 27, IDE, Docker), repo kullanımı, ödev akışı + Java yenilikleri. Verify: `VERIFY(00-setup-modern-java)`
 
@@ -190,7 +190,7 @@ Ortak doğrulama komutu (aşağıda `VERIFY(<id>)` olarak geçer):
 - [ ] **M18.c Doküman** — Verify: `VERIFY(18-modulith)`
 
 ### 19-native-performance · #35
-- [ ] **M19.a Kod** — AOT işleme (`process-aot`); GraalVM native image (`-Pnative`); `RuntimeHints`; CDS / JVM AOT cache ile başlangıç iyileştirme; başlangıç süresi + bellek karşılaştırma script'i
+- [ ] **M19.a Kod** — AOT işleme (`process-aot`); GraalVM native image (`-Pnative`, GraalVM 25 + `release 25` — SPEC Karar 8); `RuntimeHints`; CDS / JVM AOT cache ile başlangıç iyileştirme; başlangıç süresi + bellek karşılaştırma script'i
 - [ ] **M19.b Ödevler** — reflection kullanan kodu native'e uyarlamak; AOT cache ile ölçüm; sonuç tablosu
 - [ ] **M19.c Doküman** — Verify: `VERIFY(19-native-performance)` (native build CI'da ayrı iş)
 

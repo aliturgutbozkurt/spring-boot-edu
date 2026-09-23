@@ -31,7 +31,8 @@ Spring Boot'un güncel (4.1) özelliklerini **bol çalışan örnekle**, modül 
 
 | Bileşen | Sürüm / Not |
 |---|---|
-| Java | 27 |
+| Java | 27 (JDK: Oracle/any OpenJDK 27; container: `amazoncorretto:27-alpine`) |
+| Maven | 3.9.16 via Maven Wrapper 3.3.4 (Maven 4 henüz RC — kullanılmıyor) |
 | Spring Boot | 4.1.1 → Spring Framework 7.0.9, Spring Security 7.1.1, Spring Data 2026.0.1, Spring Kafka 4.1.1 |
 | Hibernate / Validator | 7.4.5 / 9.1.3 (BOM) |
 | Flyway | 12.4.0 (BOM) |
@@ -184,8 +185,10 @@ Kurallar CLAUDE.md'de. Özet: constructor injection, Lombok yok, DTO'lar `record
 3. `24-spring-ai` kapsamda; model Ollama (lokal). Testlerde gerçek model yerine mock/Testcontainers Ollama.
 4. gRPC (`21`), Kubernetes (`22`), Spring Cloud (`23`) kapsama eklendi.
 5. Lisans: kod MIT, doküman CC BY-SA 4.0.
-6. Java 27 Docker base image — T0.2'de doğrulanacak; yoksa jlink ile özel runtime.
+6. Java 27 Docker base image (T0.2, 2026-09-23): `eclipse-temurin:27` henüz yok; **`amazoncorretto:27-alpine`** (JDK, jlink içerir) kullanılır. Runtime image'ları jlink ile küçültülür.
 7. PDF: kapak sayfası, logo ve renk teması var (T0.5).
+8. **GraalVM for JDK 27 yok** (en güncel: GraalVM CE 25.0.4). `19-native-performance` modülünün native-image kısmı **GraalVM 25 ile ve `release 25`** ile derlenir; JVM AOT cache/CDS kısmı Java 27'de kalır. GraalVM 27 çıkınca güncellenir.
+9. Java 27 dil/API durumu (T0.2 probe): record/sealed/pattern matching, `ScopedValue`, stream gatherers, virtual threads, compact source files (`void main` + `IO`) **final**; `StructuredTaskScope` hâlâ **preview** → `00-setup-modern-java` içinde ayrı `preview` profilinde gösterilir.
 
 ## Open Questions
 
