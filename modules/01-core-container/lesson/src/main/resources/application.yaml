@@ -1,0 +1,19 @@
+spring:
+  application:
+    name: 01-core-container
+  threads:
+    virtual:
+      enabled: true
+
+# Lesson 3.5 and 3.6 — try changing these values (or pass them on the command line) and run again.
+bookstore:
+  recommendations:
+    strategy: popular          # popular | budget
+  notifications:
+    channels: email,push       # any of: email, sms, push
+
+# Keep the console readable: only this module logs at INFO.
+logging:
+  level:
+    root: warn
+    com.springbootedu: info

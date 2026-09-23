@@ -63,7 +63,7 @@ Ortak doğrulama komutu (aşağıda `VERIFY(<id>)` olarak geçer):
 
 ## Faz 1 — Pilot: `01-core-container` · #11
 
-- [ ] **P1.a Lesson kodu + testler**
+- [x] **P1.a Lesson kodu + testler**
   - Örnekler (≥ 5): DI türleri (constructor vs setter, neden field değil); `@Component` / `@Bean` ve `@Configuration` proxy'si; bean scope'ları (singleton, prototype, request) ve prototype-in-singleton tuzağı; lifecycle (`@PostConstruct`, `SmartLifecycle`); `@Profile` ve `@Conditional*`; programatik kayıt için `BeanRegistrar` (Framework 7); `ApplicationEvent` + `@EventListener` + `@TransactionalEventListener` girişi; basit `@Aspect` ile loglama
   - Verify: `./mvnw -pl modules/01-core-container/lesson verify` yeşil; `spring-boot:run` çalışıyor
 - [ ] **P1.b Ödevler + çözümler** — 3 ödev: (1) strateji deseni için `Map<String, Strategy>` injection, (2) koşullu bean ile özellik bayrağı, (3) event tabanlı "kitap eklendi" bildirimi. Verify: solution yeşil, exercise derleniyor ve testleri kırmızı

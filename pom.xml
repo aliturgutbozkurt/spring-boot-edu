@@ -25,6 +25,8 @@
     <modules>
         <module>build-parent</module>
         <!-- course-modules:begin -->
+        <module>modules/01-core-container/lesson</module>
+        <module>modules/01-core-container/solution</module>
         <!-- course-modules:end -->
     </modules>
 
@@ -33,6 +35,7 @@
             <id>exercises</id>
             <modules>
                 <!-- exercise-modules:begin -->
+                <module>modules/01-core-container/exercise</module>
                 <!-- exercise-modules:end -->
             </modules>
         </profile>
