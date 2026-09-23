@@ -1,0 +1,26 @@
+spring:
+  application:
+    name: 08-redis-caching
+  threads:
+    virtual:
+      enabled: true
+  # tag::redis-config[]
+  cache:
+    redis:
+      time-to-live: 1h                     # default TTL for caches without their own configuration
+  session:
+    timeout: 30m                           # Spring Session: idle sessions expire in Redis too
+  # end::redis-config[]
+  docker:
+    compose:
+      # Reuse the root compose.yaml; only the listed profiles are started.
+      file: ../../../compose.yaml
+      profiles:
+        active: redis
+      # Keep containers running between restarts (stop them with: docker compose --profile all down)
+      lifecycle-management: start-only
+
+logging:
+  level:
+    root: warn
+    com.springbootedu: info

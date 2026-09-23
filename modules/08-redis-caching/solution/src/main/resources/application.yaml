@@ -1,0 +1,6 @@
+spring:
+  application:
+    name: 08-redis-caching
+  threads:
+    virtual:
+      enabled: true

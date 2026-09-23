@@ -43,6 +43,8 @@
         <module>modules/06-data-jpa-postgres/solution</module>
         <module>modules/07-data-mongodb/lesson</module>
         <module>modules/07-data-mongodb/solution</module>
+        <module>modules/08-redis-caching/lesson</module>
+        <module>modules/08-redis-caching/solution</module>
         <!-- course-modules:end -->
     </modules>
 
@@ -59,6 +61,7 @@
                 <module>modules/05-data-jdbc-postgres/exercise</module>
                 <module>modules/06-data-jpa-postgres/exercise</module>
                 <module>modules/07-data-mongodb/exercise</module>
+                <module>modules/08-redis-caching/exercise</module>
                 <!-- exercise-modules:end -->
             </modules>
         </profile>

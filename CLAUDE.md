@@ -157,6 +157,9 @@ class BookController {                       // Lesson 3.1 — minimal REST cont
 - Custom Docker images (e.g. `pgvector/pgvector`) need the label `org.springframework.boot.service-connection: postgres` for Boot's Docker Compose support, and `DockerImageName...asCompatibleSubstituteFor("postgres")` for Testcontainers.
 - MongoDB (Boot 4): connection settings are `spring.mongodb.*` (the old `spring.data.mongodb.uri/database/...` are deprecated); Spring Data settings stay under `spring.data.mongodb.*`. `BigDecimal` is stored as `Decimal128` by default in the Spring Data MongoDB of Boot 4.1 (older versions used strings); we still set `spring.data.mongodb.representation.big-decimal: decimal128` explicitly. Boot registers no MongoDB transaction manager — declare a `MongoTransactionManager` bean.
 - Testcontainers 2 `org.testcontainers.mongodb.MongoDBContainer` does NOT start a replica set by default: call `.withReplicaSet()` for transactions. Do not name the container `@Bean` method `mongo` — Boot's `MongoClient` bean already has that name.
+- `RestTestClient` / `@AutoConfigureRestTestClient` come with `spring-boot-starter-webmvc-test` (module `spring-boot-resttestclient`), not with `spring-boot-starter-restclient-test`.
+- Never make methods `final` on beans that get proxied (`@Repository`, `@Transactional`, `@Cacheable`, …): the proxy cannot override them, so they run on the empty proxy instance (fields are `null`).
+- `Cache.clear()` may be deferred; use `Cache.invalidate()` when the cache must be empty immediately (e.g. in test setup).
 - Elasticsearch needs ≥ 2 GB Docker memory; Kafka runs in KRaft mode (no ZooKeeper).
 - Spring AI tests never call a real LLM: use a mocked `ChatModel` or Testcontainers Ollama with a tiny model, tagged `*IT`.
 - Spring Boot's Docker Compose support starts services on `spring-boot:run`; in tests it is disabled — Testcontainers is used instead.

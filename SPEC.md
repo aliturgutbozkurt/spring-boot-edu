@@ -67,7 +67,7 @@ Modül id'leri sabittir, sonradan yeniden adlandırılmaz.
 | 05 | `05-data-jdbc-postgres` | `JdbcClient`, Flyway migration, Spring Data JDBC, transaction yönetimi | PostgreSQL | 02 |
 | 06 | `06-data-jpa-postgres` | JPA/Hibernate 7, ilişkiler, N+1 ve fetch stratejileri, projection, Specification/Query by Example, auditing, locking, Spring Data AOT repositories | PostgreSQL | 05 |
 | 07 | `07-data-mongodb` | Spring Data MongoDB, document modelleme, aggregation, index, transaction | MongoDB | 02 |
-| 08 | `08-redis-caching` | Spring Cache abstraction, Redis cache, TTL, `RedisTemplate`, Redis veri yapıları, pub/sub, Spring Session | Redis, PostgreSQL | 06 |
+| 08 | `08-redis-caching` | Spring Cache abstraction, Redis cache, TTL, `RedisTemplate`, Redis veri yapıları, pub/sub, Spring Session | Redis (yavaş kaynak bilerek bellek içi simüle edilir; cache etkisi ölçülebilir) | 06 |
 | 09 | `09-hazelcast` | Embedded vs client-server, `IMap`, near cache, distributed lock, Hazelcast ile cache | Hazelcast, PostgreSQL | 08 |
 | 10 | `10-elasticsearch` | Spring Data Elasticsearch, mapping, full-text search, aggregation, highlight, PostgreSQL'den senkronizasyon | Elasticsearch, PostgreSQL | 06 |
 | 11 | `11-messaging-kafka` | Producer/consumer, JSON serileştirme, consumer group, retry + DLT, Kafka transaction, transactional outbox, Kafka Streams girişi | Kafka, PostgreSQL | 06 |

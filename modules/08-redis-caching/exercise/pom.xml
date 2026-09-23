@@ -11,35 +11,39 @@
         <relativePath>../../../build-parent/pom.xml</relativePath>
     </parent>
 
-    <artifactId>03-web-mvc-lesson</artifactId>
-    <name>03 · REST APIs with Web MVC :: lesson</name>
+    <artifactId>08-redis-caching-exercise</artifactId>
+    <name>08 · Redis and Caching :: exercise</name>
 
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-webmvc</artifactId>
+            <artifactId>spring-boot-starter-data-redis</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-validation</artifactId>
-        </dependency>
-        <!-- Lesson 3.8: OpenAPI document + Swagger UI (not managed by the Boot BOM → version in build-parent) -->
-        <dependency>
-            <groupId>org.springdoc</groupId>
-            <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+            <artifactId>spring-boot-starter-cache</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
-        <!-- Boot 4: test slices live in per-technology test starters (@WebMvcTest, MockMvcTester, RestTestClient) -->
+        <!-- @DataRedisTest (Boot 4: per-technology test starters) -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-webmvc-test</artifactId>
+            <artifactId>spring-boot-starter-data-redis-test</artifactId>
             <scope>test</scope>
         </dependency>
-
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-testcontainers</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.redis</groupId>
+            <artifactId>testcontainers-redis</artifactId>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
     <build>
