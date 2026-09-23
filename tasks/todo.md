@@ -134,7 +134,7 @@ Ortak doğrulama komutu (aşağıda `VERIFY(<id>)` olarak geçer):
 
 ### 10-elasticsearch · #24
 - [x] **M10.a Kod** — `@Document` mapping + analyzer (Türkçe analyzer dahil); `ElasticsearchRepository`; `NativeQuery` ile bool/full-text sorgu; highlight; aggregation (facet); PostgreSQL → ES senkronizasyonu (event ile); `@DataElasticsearchTest` + Testcontainers
-- [ ] **M10.b Ödevler** — otomatik tamamlama; facet'li arama API'si; yeniden indeksleme job'ı
+- [x] **M10.b Ödevler** — otomatik tamamlama; facet'li arama API'si; yeniden indeksleme job'ı
 - [ ] **M10.c Doküman** — Verify: `VERIFY(10-elasticsearch)`
 
 ### 11-messaging-kafka · #25
