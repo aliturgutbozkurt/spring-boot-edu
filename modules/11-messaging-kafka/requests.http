@@ -1,0 +1,22 @@
+# Module 11-messaging-kafka has no HTTP API. Watch the topics with the Kafka tools inside the container instead.
+# Start the lesson first: ./mvnw -pl modules/11-messaging-kafka/lesson spring-boot:run
+
+# All topics (orders, orders.DLT, retry topics, Streams changelog/repartition topics …)
+#   docker compose exec kafka /opt/kafka/bin/kafka-topics.sh --bootstrap-server localhost:9092 --list
+
+# Read the order events from the beginning
+#   docker compose exec kafka /opt/kafka/bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 \
+#       --topic orders --from-beginning --property print.key=true --property print.headers=true
+
+# Read the dead letter topic
+#   docker compose exec kafka /opt/kafka/bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 \
+#       --topic orders.DLT --from-beginning --property print.headers=true
+
+# Consumer groups and their lag
+#   docker compose exec kafka /opt/kafka/bin/kafka-consumer-groups.sh --bootstrap-server localhost:9092 \
+#       --describe --group shipping
+
+# Sold copies per book, as written by Kafka Streams
+#   docker compose exec kafka /opt/kafka/bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 \
+#       --topic sales-per-book --from-beginning --property print.key=true \
+#       --value-deserializer org.apache.kafka.common.serialization.LongDeserializer

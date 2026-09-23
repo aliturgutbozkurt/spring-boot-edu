@@ -1,0 +1,51 @@
+spring:
+  application:
+    name: 11-messaging-kafka
+  threads:
+    virtual:
+      enabled: true
+  # All modules share the "bookstore" database of compose.yaml. Each one keeps its tables and its Flyway
+  # history in its own schema, so running one module never breaks another.
+  flyway:
+    schemas: messaging                  # created by Flyway if missing
+  datasource:
+    hikari:
+      schema: messaging                 # every connection works in this schema
+  # tag::kafka-config[]
+  kafka:
+    # bootstrap-servers defaults to localhost:9092 — the HOST listener of compose.yaml
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JacksonJsonSerializer
+      acks: all                                  # the broker confirms only after the write is replicated
+    consumer:
+      auto-offset-reset: earliest                # a new group starts at the beginning of the topic
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      # ErrorHandlingDeserializer: a message that is not valid JSON goes to the error handler (→ DLT)
+      # instead of failing the consumer forever
+      value-deserializer: org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
+      properties:
+        spring.deserializer.value.delegate.class: org.springframework.kafka.support.serializer.JacksonJsonDeserializer
+        spring.json.trusted.packages: com.springbootedu.messagingkafka.*
+    streams:
+      application-id: bookstore-sales-counter    # also the consumer group of the Streams application
+  # end::kafka-config[]
+  docker:
+    compose:
+      # Reuse the root compose.yaml; only the listed profiles are started.
+      file: ../../../compose.yaml
+      profiles:
+        active: kafka,postgres
+      # Keep containers running between restarts (stop them with: docker compose --profile all down)
+      lifecycle-management: start-only
+      # Run "docker compose up" even if another module already started some services:
+      # it is idempotent and starts only what is missing (default "if-running" would skip it)
+      start:
+        skip: never
+bookstore:
+  outbox:
+    relay-interval: 500ms                        # how often the relay looks for unsent events
+logging:
+  level:
+    root: warn
+    com.springbootedu: info

@@ -1,0 +1,6 @@
+spring:
+  application:
+    name: 11-messaging-kafka
+  threads:
+    virtual:
+      enabled: true

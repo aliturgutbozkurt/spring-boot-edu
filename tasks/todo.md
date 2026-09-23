@@ -138,7 +138,7 @@ Ortak doğrulama komutu (aşağıda `VERIFY(<id>)` olarak geçer):
 - [x] **M10.c Doküman** — Verify: `VERIFY(10-elasticsearch)`
 
 ### 11-messaging-kafka · #25
-- [ ] **M11.a Kod** — `KafkaTemplate` producer; `@KafkaListener` consumer + group; JSON serde; `DefaultErrorHandler` + retry + DLT; `@RetryableTopic`; Kafka transaction; **transactional outbox** (PostgreSQL); Kafka Streams ile basit sayaç; Testcontainers Kafka
+- [x] **M11.a Kod** — `KafkaTemplate` producer; `@KafkaListener` consumer + group; JSON serde; `DefaultErrorHandler` + retry + DLT; `@RetryableTopic`; Kafka transaction; **transactional outbox** (PostgreSQL); Kafka Streams ile basit sayaç; Testcontainers Kafka
 - [ ] **M11.b Ödevler** — `OrderPlaced` event'i ve stok güncelleyici consumer; zehirli mesajı DLT'ye yönlendirme; outbox relay
 - [ ] **M11.c Doküman** — Verify: `VERIFY(11-messaging-kafka)`
 

@@ -49,6 +49,8 @@
         <module>modules/09-hazelcast/solution</module>
         <module>modules/10-elasticsearch/lesson</module>
         <module>modules/10-elasticsearch/solution</module>
+        <module>modules/11-messaging-kafka/lesson</module>
+        <module>modules/11-messaging-kafka/solution</module>
         <!-- course-modules:end -->
     </modules>
 
@@ -68,6 +70,7 @@
                 <module>modules/08-redis-caching/exercise</module>
                 <module>modules/09-hazelcast/exercise</module>
                 <module>modules/10-elasticsearch/exercise</module>
+                <module>modules/11-messaging-kafka/exercise</module>
                 <!-- exercise-modules:end -->
             </modules>
         </profile>
