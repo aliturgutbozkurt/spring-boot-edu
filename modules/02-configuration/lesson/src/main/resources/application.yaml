@@ -7,10 +7,12 @@ spring:
     virtual:
       enabled: true
   # Lesson 3.5 — pull in more files. "optional:" = do not fail if the file is missing.
+  # tag::config-import[]
   config:
     import:
       - optional:classpath:campaigns.yaml
       - optional:file:./bookstore-local.yaml       # your machine-only overrides (git-ignored)
+  # end::config-import[]
   # Lesson 3.4 — a profile group: --spring.profiles.active=local activates dev and demo too
   profiles:
     group:

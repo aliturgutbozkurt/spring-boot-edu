@@ -83,7 +83,7 @@ Ortak doğrulama komutu (aşağıda `VERIFY(<id>)` olarak geçer):
 ### 02-configuration · #14
 - [x] **M02.a Kod** — auto-configuration'ı inceleme (`--debug`, conditions report); `application.yaml` + profiller + config öncelik sırası; `@ConfigurationProperties` record + validation; `@Value` ve neden az kullanılmalı; config import (`optional:file:`), env var eşlemesi; **kendi starter'ını yazma** (autoconfigure + starter ayrı modül, `AutoConfiguration.imports`)
 - [x] **M02.b Ödevler** — doğrulanan özellikler ile mağaza ayarları; profile göre farklı fiyatlandırma; `bookstore-greeting-starter`
-- [ ] **M02.c Doküman** — Verify: `VERIFY(02-configuration)`
+- [x] **M02.c Doküman** — Verify: `VERIFY(02-configuration)`
 
 ### 03-web-mvc · #15
 - [ ] **M03.a Kod** — Book CRUD REST API; DTO record + Bean Validation; `@RestControllerAdvice` + `ProblemDetail`; sayfalama/sıralama; **API versioning** (header/path/media-type); content negotiation; Jackson 3 özelleştirme; springdoc OpenAPI; virtual threads açık/kapalı karşılaştırma; `MockMvcTester` testleri

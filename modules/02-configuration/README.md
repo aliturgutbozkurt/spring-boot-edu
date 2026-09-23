@@ -5,38 +5,51 @@
 
 ## 🇹🇷 Bu modülde
 
-- ...
+- Ayar kaynakları, öncelik sırası ve relaxed binding
+- Doğrulanan `@ConfigurationProperties` record'ları, `@Value`
+- Profiller, profil grupları, `on-profile` belgeleri, `spring.config.import`
+- Kendi starter'ınızı yazmak (autoconfigure + starter modülleri)
+- Conditions report ile hata ayıklama
 
 ## 🇬🇧 In this module
 
-- ...
+- Property sources, their order and relaxed binding
+- Validated `@ConfigurationProperties` records, `@Value`
+- Profiles, profile groups, `on-profile` documents, `spring.config.import`
+- Writing your own starter (autoconfigure + starter modules)
+- Debugging with the conditions report
 
 ## Çalıştırma / How to run
 
-Ön koşul / Prerequisite: JDK 27, Docker — `export JAVA_HOME=$(/usr/libexec/java_home -v 27)`
+Ön koşul / Prerequisite: JDK 27 — `export JAVA_HOME=$(/usr/libexec/java_home -v 27)`. Bu modül Docker gerektirmez. / This module does not need Docker.
+
+Starter aynı build'de derlendiği için komutlarda `-am` vardır. / The starter is built in the same reactor, hence `-am`.
 
 ```bash
-# Ders kodunu çalıştır — gereken altyapı Docker Compose ile otomatik başlar
-# Run the lesson — required infrastructure starts automatically via Docker Compose
-./mvnw -pl modules/02-configuration/lesson spring-boot:run
+# Tüm örnekler / Every example
+./mvnw -pl modules/02-configuration/lesson -am spring-boot:run
 
-# Altyapı zaten çalışıyorsa (docker compose --profile ... up -d) / If infrastructure is already running
-./mvnw -pl modules/02-configuration/lesson spring-boot:run -Dspring-boot.run.arguments=--spring.docker.compose.enabled=false
+# Profil grubu ve komut satırı ezmesi / Profile group and a command-line override
+./mvnw -pl modules/02-configuration/lesson -am spring-boot:run \
+  -Dspring-boot.run.arguments="--spring.profiles.active=local --bookstore.store.name=Komut"
 
-# Testler / Tests (Testcontainers)
-./mvnw -pl modules/02-configuration/lesson verify
+# Conditions report
+./mvnw -pl modules/02-configuration/lesson -am spring-boot:run -Dspring-boot.run.arguments="--debug"
+
+# Testler / Tests
+./mvnw -pl modules/02-configuration/lesson -am verify
 
 # Ödevler / Exercises (kırmızı başlar / start red)
-./mvnw -Pexercises -pl modules/02-configuration/exercise test
+./mvnw -Pexercises -pl modules/02-configuration/exercise -am test
 ```
-
-HTTP örnekleri / HTTP examples: [requests.http](requests.http)
 
 ## Yapı / Layout
 
 | Klasör / Folder | İçerik / Content |
 |---|---|
 | `lesson/` | Çalışan örnekler + testler / Runnable examples + tests |
+| `starter/bookstore-greeting-autoconfigure/` | Starter'ın kodu ve koşulları / The starter's code and conditions |
+| `starter/bookstore-greeting-spring-boot-starter/` | Yalnızca bağımlılıklar / Dependencies only |
 | `exercise/` | TODO'lu başlangıç kodu / Starter code with TODOs |
 | `solution/` | Referans çözüm / Reference solution |
 | `docs/` | Ders ve ödev dokümanları (MD + PDF) / Lesson & exercise docs |
