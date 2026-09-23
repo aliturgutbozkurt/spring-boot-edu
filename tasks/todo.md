@@ -69,7 +69,7 @@ Ortak doğrulama komutu (aşağıda `VERIFY(<id>)` olarak geçer):
 - [x] **P1.b Ödevler + çözümler** — 3 ödev: (1) strateji deseni için `Map<String, Strategy>` injection, (2) koşullu bean ile özellik bayrağı, (3) event tabanlı "kitap eklendi" bildirimi. Verify: solution yeşil, exercise derleniyor ve testleri kırmızı
 - [x] **P1.c Doküman TR/EN + PDF** — Verify: `VERIFY(01-core-container)`
 
-**🔶 Checkpoint 1 (#12) — İNSAN ONAYI:** pilot modülün formatı onaylanmadan Faz 2'ye geçilmez. Gerekirse şablonlar (T0.6) ve scriptler güncellenir.
+**🔶 Checkpoint 1 (#12) — ✅ onaylandı (2026-09-23).** pilot modülün formatı onaylanmadan Faz 2'ye geçilmez. Gerekirse şablonlar (T0.6) ve scriptler güncellenir.
 
 ---
 
