@@ -1,0 +1,40 @@
+# HTTP examples for module 03-web-mvc (IntelliJ IDEA HTTP client / VS Code REST Client).
+# Start the lesson first: ./mvnw -pl modules/03-web-mvc/lesson -am spring-boot:run
+
+### 3.1 List (page 0, 20 per page, sorted by title)
+GET http://localhost:8080/api/books
+
+### 3.4 Paging and sorting
+GET http://localhost:8080/api/books?page=1&size=2&sort=price&direction=desc
+
+### 3.1 Get one book (default = version 1)
+GET http://localhost:8080/api/books/1
+
+### 3.5 The same book, version 2
+GET http://localhost:8080/api/books/1
+API-Version: 2
+
+### 3.1 + 3.2 Create a book (201 + Location)
+POST http://localhost:8080/api/books
+Content-Type: application/json
+
+{"isbn": "978-0-13-235088-4", "title": "Clean Code", "authors": ["Robert C. Martin"], "price": 75.50, "publishedOn": "2008-08-01"}
+
+### 3.2 + 3.3 Invalid input → 400 problem with field errors
+POST http://localhost:8080/api/books
+Content-Type: application/json
+
+{"isbn": "123", "title": "", "authors": [], "price": -5}
+
+### 3.3 Unknown book → 404 problem
+GET http://localhost:8080/api/books/99
+
+### 3.6 Content negotiation: CSV
+GET http://localhost:8080/api/books
+Accept: text/csv
+
+### 3.8 OpenAPI document (UI: http://localhost:8080/swagger-ui.html)
+GET http://localhost:8080/v3/api-docs
+
+### 3.9 Which thread handled this request?
+GET http://localhost:8080/api/runtime/thread

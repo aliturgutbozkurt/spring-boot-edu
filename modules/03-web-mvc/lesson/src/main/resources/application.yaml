@@ -1,0 +1,22 @@
+spring:
+  application:
+    name: 03-web-mvc
+  threads:
+    virtual:
+      enabled: true           # Lesson 3.9 — Tomcat handles each request on a virtual thread
+  # tag::api-versioning[]
+  mvc:
+    problemdetails:
+      enabled: true           # Lesson 3.3 — Spring MVC's own errors as application/problem+json
+    apiversion:               # Lesson 3.5 — Spring Framework 7 API versioning
+      use:
+        header: API-Version   # the client chooses the version with this request header
+      supported: 1, 2
+      default: 1              # requests without the header get version 1
+  # end::api-versioning[]
+
+logging:
+  level:
+    root: warn
+    com.springbootedu: info
+    org.springframework.boot.web: info    # shows "Tomcat started on port 8080"

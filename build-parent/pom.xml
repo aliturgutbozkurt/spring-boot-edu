@@ -29,6 +29,8 @@
         <spring-cloud.version>2025.1.3</spring-cloud.version>
         <spring-ai.version>2.0.1</spring-ai.version>
         <spring-modulith.version>2.1.1</spring-modulith.version>
+        <!-- Not in the Boot BOM; 3.1.x is built against Spring Boot 4.1 -->
+        <springdoc.version>3.1.1</springdoc.version>
 
         <!-- JDK 21+ warns when Mockito/Byte Buddy attach their agent at runtime; allow it explicitly in tests -->
         <argLine>-XX:+EnableDynamicAgentLoading</argLine>
@@ -52,6 +54,11 @@
                 <version>${spring-ai.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.springdoc</groupId>
+                <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+                <version>${springdoc.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.springframework.modulith</groupId>
