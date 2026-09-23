@@ -1,6 +1,26 @@
 spring:
   application:
-    name: 11-messaging-kafka
+    name: 11-messaging-kafka-exercises
   threads:
     virtual:
       enabled: true
+  flyway:
+    schemas: messaging_exercises
+  datasource:
+    hikari:
+      schema: messaging_exercises
+  kafka:
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JacksonJsonSerializer
+    consumer:
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
+      properties:
+        spring.deserializer.value.delegate.class: org.springframework.kafka.support.serializer.JacksonJsonDeserializer
+        spring.json.trusted.packages: com.springbootedu.messagingkafka.*
+logging:
+  level:
+    root: warn
+    com.springbootedu: info

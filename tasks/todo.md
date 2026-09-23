@@ -139,7 +139,7 @@ Ortak doğrulama komutu (aşağıda `VERIFY(<id>)` olarak geçer):
 
 ### 11-messaging-kafka · #25
 - [x] **M11.a Kod** — `KafkaTemplate` producer; `@KafkaListener` consumer + group; JSON serde; `DefaultErrorHandler` + retry + DLT; `@RetryableTopic`; Kafka transaction; **transactional outbox** (PostgreSQL); Kafka Streams ile basit sayaç; Testcontainers Kafka
-- [ ] **M11.b Ödevler** — `OrderPlaced` event'i ve stok güncelleyici consumer; zehirli mesajı DLT'ye yönlendirme; outbox relay
+- [x] **M11.b Ödevler** — `OrderPlaced` event'i ve stok güncelleyici consumer; zehirli mesajı DLT'ye yönlendirme; outbox relay
 - [ ] **M11.c Doküman** — Verify: `VERIFY(11-messaging-kafka)`
 
 **🔶 Checkpoint 4 (#26)**
