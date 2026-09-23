@@ -1,0 +1,21 @@
+spring:
+  application:
+    name: 05-data-jdbc-postgres
+  threads:
+    virtual:
+      enabled: true
+  docker:
+    compose:
+      # Reuse the root compose.yaml; only the listed profiles are started.
+      file: ../../../compose.yaml
+      profiles:
+        active: postgres
+      # Keep containers running between restarts (stop them with: docker compose --profile all down)
+      lifecycle-management: start-only
+
+logging:
+  level:
+    root: warn
+    com.springbootedu: info
+    org.flywaydb: info                     # shows which migrations Flyway applies
+    org.springframework.boot.docker: info  # shows the containers Docker Compose support starts

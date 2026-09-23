@@ -1,0 +1,6 @@
+spring:
+  application:
+    name: 05-data-jdbc-postgres
+  threads:
+    virtual:
+      enabled: true

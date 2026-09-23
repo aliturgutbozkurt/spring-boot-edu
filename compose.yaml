@@ -18,6 +18,10 @@ services:
     # PostgreSQL 18 with the pgvector extension (needed by 24-spring-ai; harmless elsewhere)
     image: pgvector/pgvector:0.8.6-pg18
     profiles: [postgres, ai, all]
+    labels:
+      # Spring Boot's Docker Compose support detects services by image name; this image is not
+      # called "postgres", so tell Boot explicitly which service connection it provides.
+      org.springframework.boot.service-connection: postgres
     environment:
       POSTGRES_DB: ${POSTGRES_DB:-bookstore}
       POSTGRES_USER: ${POSTGRES_USER:-bookstore}

@@ -102,7 +102,7 @@ Ortak doğrulama komutu (aşağıda `VERIFY(<id>)` olarak geçer):
 ## Faz 3 — Veri
 
 ### 05-data-jdbc-postgres · #18
-- [ ] **M05.a Kod** — module `compose.yaml` (postgres) + Docker Compose desteği; Flyway migration'ları (V1 şema, V2 seed); `JdbcClient` ile CRUD ve `RowMapper`/record eşleme; Spring Data JDBC aggregate'leri; `@Transactional` propagation/isolation örnekleri; Testcontainers `@ServiceConnection`
+- [x] **M05.a Kod** — module `compose.yaml` (postgres) + Docker Compose desteği; Flyway migration'ları (V1 şema, V2 seed); `JdbcClient` ile CRUD ve `RowMapper`/record eşleme; Spring Data JDBC aggregate'leri; `@Transactional` propagation/isolation örnekleri; Testcontainers `@ServiceConnection`
 - [ ] **M05.b Ödevler** — Review tablosu + migration; batch insert; rollback senaryosu testi
 - [ ] **M05.c Doküman** — Verify: `VERIFY(05-data-jdbc-postgres)`
 
