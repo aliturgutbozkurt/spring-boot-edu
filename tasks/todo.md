@@ -78,7 +78,7 @@ Ortak doğrulama komutu (aşağıda `VERIFY(<id>)` olarak geçer):
 ### 00-setup-modern-java · #13
 - [x] **M00.a Kod** — record + compact constructor; sealed interface + switch pattern matching; record patterns; `var` ve text blocks; virtual threads ile 10 000 görev; scoped values (final); structured concurrency (preview → ayrı `preview` profili, SPEC Karar 9); compact source files (`void main` + `IO`); Sequenced Collections; stream gatherers
 - [x] **M00.b Ödevler** — pattern matching ile fiyat hesaplayıcı; virtual thread'lerle paralel HTTP çağrısı; sealed hiyerarşi ile sipariş durum makinesi
-- [ ] **M00.c Doküman** — kurulum (JDK 27, IDE, Docker), repo kullanımı, ödev akışı + Java yenilikleri. Verify: `VERIFY(00-setup-modern-java)`
+- [x] **M00.c Doküman** — kurulum (JDK 27, IDE, Docker), repo kullanımı, ödev akışı + Java yenilikleri. Verify: `VERIFY(00-setup-modern-java)`
 
 ### 02-configuration · #14
 - [ ] **M02.a Kod** — auto-configuration'ı inceleme (`--debug`, conditions report); `application.yaml` + profiller + config öncelik sırası; `@ConfigurationProperties` record + validation; `@Value` ve neden az kullanılmalı; config import (`optional:file:`), env var eşlemesi; **kendi starter'ını yazma** (autoconfigure + starter ayrı modül, `AutoConfiguration.imports`)

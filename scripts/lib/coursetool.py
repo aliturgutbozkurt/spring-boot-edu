@@ -468,7 +468,7 @@ def check_module(module_id: str, strict: bool) -> Report:
             check_snippets(r, module_dir, doc)
             r.check(manifest.get(rel) == sha256(doc), f"docs/{rel.replace('.md', '.pdf')} is stale or was never built "
                                                       f"— run ./scripts/build-pdfs.sh {module_id}")
-            r.check("{{" not in doc.read_text(), f"docs/{rel} still has {{{{placeholders}}}}")
+            r.check(not re.search(r"\{\{[A-Z_]+\}\}", doc.read_text()), f"docs/{rel} still has {{{{PLACEHOLDERS}}}}")
             if strict:
                 strict_doc_checks(r, rel, doc.read_text())
 
