@@ -1,0 +1,30 @@
+spring:
+  application:
+    name: 04-http-clients-resilience
+  threads:
+    virtual:
+      enabled: true
+  # tag::http-config[]
+  http:
+    clients:                          # defaults for every HTTP client Boot creates (Lesson 3.8)
+      connect-timeout: 2s
+      read-timeout: 5s
+      imperative:
+        factory: jdk                  # RestClient on the JDK HttpClient (Reactor Netty is only for WebClient here)
+    serviceclient:
+      catalog:                        # the group of @ImportHttpServices(group = "catalog") (Lesson 3.4)
+        base-url: http://localhost:${server.port:8080}
+        read-timeout: 3s              # overrides the default for this group only
+  # end::http-config[]
+
+bookstore:
+  catalog:
+    base-url: http://localhost:${server.port:8080}   # used by CatalogRestClient and ReactiveCatalogClient
+    # The "remote" catalog is simulated by FakeCatalogController inside this application.
+
+logging:
+  level:
+    root: warn
+    com.springbootedu: info
+    # org.springframework.resilience: debug  # uncomment to watch @ConcurrencyLimit block and release callers
+    io.netty.resolver.dns.DnsServerAddressStreamProviders: off   # WebClient/Netty on macOS: harmless native-resolver notice

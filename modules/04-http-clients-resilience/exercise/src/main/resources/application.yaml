@@ -1,0 +1,6 @@
+spring:
+  application:
+    name: 04-http-clients-resilience
+  threads:
+    virtual:
+      enabled: true

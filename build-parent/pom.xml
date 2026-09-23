@@ -31,6 +31,8 @@
         <spring-modulith.version>2.1.1</spring-modulith.version>
         <!-- Not in the Boot BOM; 3.1.x is built against Spring Boot 4.1 -->
         <springdoc.version>3.1.1</springdoc.version>
+        <!-- Not in the Boot BOM; the standalone jar shades its own Jetty -->
+        <wiremock.version>3.13.2</wiremock.version>
 
         <!-- JDK 21+ warns when Mockito/Byte Buddy attach their agent at runtime; allow it explicitly in tests -->
         <argLine>-XX:+EnableDynamicAgentLoading</argLine>
@@ -59,6 +61,11 @@
                 <groupId>org.springdoc</groupId>
                 <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
                 <version>${springdoc.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.wiremock</groupId>
+                <artifactId>wiremock-standalone</artifactId>
+                <version>${wiremock.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.springframework.modulith</groupId>

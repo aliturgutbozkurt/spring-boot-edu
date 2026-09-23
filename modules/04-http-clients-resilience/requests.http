@@ -1,0 +1,14 @@
+# The "remote" catalog service that the clients of module 04 call. It is simulated inside the lesson app.
+# Start the lesson first: ./mvnw -pl modules/04-http-clients-resilience/lesson -am spring-boot:run
+
+### A book
+GET http://localhost:8080/catalog/books/9780134685991
+
+### Unknown book → 404
+GET http://localhost:8080/catalog/books/9780000000000
+
+### Price — fails with 503 twice per ISBN, then answers (the retry demo)
+GET http://localhost:8080/catalog/books/9781617297571/price
+
+### Cover — takes 200 ms (the concurrency-limit demo)
+GET http://localhost:8080/catalog/books/9780134685991/cover

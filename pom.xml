@@ -35,6 +35,8 @@
         <module>modules/02-configuration/starter/bookstore-greeting-spring-boot-starter</module>
         <module>modules/03-web-mvc/lesson</module>
         <module>modules/03-web-mvc/solution</module>
+        <module>modules/04-http-clients-resilience/lesson</module>
+        <module>modules/04-http-clients-resilience/solution</module>
         <!-- course-modules:end -->
     </modules>
 
@@ -47,6 +49,7 @@
                 <module>modules/01-core-container/exercise</module>
                 <module>modules/02-configuration/exercise</module>
                 <module>modules/03-web-mvc/exercise</module>
+                <module>modules/04-http-clients-resilience/exercise</module>
                 <!-- exercise-modules:end -->
             </modules>
         </profile>
