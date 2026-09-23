@@ -22,13 +22,15 @@ class CatalogRestClientTest extends WireMockCatalogTest {
     @Autowired
     CatalogRestClient client;
 
+    // tag::wiremock[]
     @Test
     void readsABook() {
-        catalog.stubFor(get("/catalog/books/9780134685991").willReturn(okJson(EFFECTIVE_JAVA)));
+        catalog.stubFor(get("/catalog/books/9780134685991").willReturn(okJson(EFFECTIVE_JAVA)));   // fake response
 
         assertThat(client.find("9780134685991"))
                 .isEqualTo(new BookInfo("9780134685991", "Effective Java", java.util.List.of("Joshua Bloch"), 412));
     }
+    // end::wiremock[]
 
     @Test
     void a404BecomesADomainException() {

@@ -149,6 +149,9 @@ class BookController {                       // Lesson 3.1 — minimal REST cont
 - `new-module.sh` registers lesson/, solution/ and exercise/ in the root pom at once. Whenever you commit that pom change, also commit the scaffolded `solution/` and `exercise/` (even as placeholders) — otherwise CI fails with a missing module.
 - A module with extra Maven modules (e.g. 02's starter) must be run with `-am`: `./mvnw -pl modules/<id>/lesson -am spring-boot:run`. build-parent's `not-an-application` profile skips `spring-boot:run` in projects without `src/main/java`, so `-am` is always safe.
 - Boot registers its `ConditionEvaluationReport` as a bean named `autoConfigurationReport` — don't reuse that bean name.
+- WireMock in tests: start ONE `WireMockServer` per JVM (static field + static block) and register its URL with `@DynamicPropertySource`. A per-class JUnit extension restarts it on a new port while Spring's cached context keeps the old one → "Connection refused".
+- Boot picks the RestClient HTTP library from the classpath (Apache > Jetty > Reactor Netty > JDK). Adding the WebClient starter silently moves RestClient onto Netty — pin it with `spring.http.clients.imperative.factory: jdk` when that is not wanted.
+- Tests that change shared in-memory state (repositories, caches, counters) must not depend on test order: use `@DirtiesContext` on the mutating test or set up the state inside the test.
 - Elasticsearch needs ≥ 2 GB Docker memory; Kafka runs in KRaft mode (no ZooKeeper).
 - Spring AI tests never call a real LLM: use a mocked `ChatModel` or Testcontainers Ollama with a tiny model, tagged `*IT`.
 - Spring Boot's Docker Compose support starts services on `spring-boot:run`; in tests it is disabled — Testcontainers is used instead.

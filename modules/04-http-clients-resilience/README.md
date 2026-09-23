@@ -5,29 +5,33 @@
 
 ## 🇹🇷 Bu modülde
 
-- ...
+- `RestClient`, hata eşleme (`onStatus`), `RestClientCustomizer`
+- HTTP interface istemcileri ve `@ImportHttpServices` (Spring Framework 7)
+- `WebClient` karşılaştırması
+- `@Retryable`, `@ConcurrencyLimit` (Spring Framework 7, ek kütüphane yok)
+- Zaman aşımları, WireMock ile testler
 
 ## 🇬🇧 In this module
 
-- ...
+- `RestClient`, error mapping (`onStatus`), `RestClientCustomizer`
+- HTTP interface clients and `@ImportHttpServices` (Spring Framework 7)
+- A `WebClient` comparison
+- `@Retryable`, `@ConcurrencyLimit` (Spring Framework 7, no extra library)
+- Timeouts, testing with WireMock
 
 ## Çalıştırma / How to run
 
-Ön koşul / Prerequisite: JDK 27, Docker — `export JAVA_HOME=$(/usr/libexec/java_home -v 27)`
+Ön koşul / Prerequisite: JDK 27 — `export JAVA_HOME=$(/usr/libexec/java_home -v 27)`. Bu modül Docker gerektirmez; "uzak" servis uygulamanın içinde çalışır. / No Docker needed; the "remote" service runs inside the app.
 
 ```bash
-# Ders kodunu çalıştır — gereken altyapı Docker Compose ile otomatik başlar
-# Run the lesson — required infrastructure starts automatically via Docker Compose
-./mvnw -pl modules/04-http-clients-resilience/lesson spring-boot:run
+# Tüm örnekler / Every example (http://localhost:8080)
+./mvnw -pl modules/04-http-clients-resilience/lesson -am spring-boot:run
 
-# Altyapı zaten çalışıyorsa (docker compose --profile ... up -d) / If infrastructure is already running
-./mvnw -pl modules/04-http-clients-resilience/lesson spring-boot:run -Dspring-boot.run.arguments=--spring.docker.compose.enabled=false
-
-# Testler / Tests (Testcontainers)
-./mvnw -pl modules/04-http-clients-resilience/lesson verify
+# Testler / Tests (WireMock)
+./mvnw -pl modules/04-http-clients-resilience/lesson -am verify
 
 # Ödevler / Exercises (kırmızı başlar / start red)
-./mvnw -Pexercises -pl modules/04-http-clients-resilience/exercise test
+./mvnw -Pexercises -pl modules/04-http-clients-resilience/exercise -am test
 ```
 
 HTTP örnekleri / HTTP examples: [requests.http](requests.http)

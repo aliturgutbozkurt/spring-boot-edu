@@ -93,7 +93,7 @@ Ortak doğrulama komutu (aşağıda `VERIFY(<id>)` olarak geçer):
 ### 04-http-clients-resilience · #16
 - [x] **M04.a Kod** — `RestClient` (builder, hata yönetimi, interceptor); HTTP interface (`@HttpExchange`) + `@ImportHttpServices`; `WebClient` karşılaştırması; `@Retryable` + backoff, `@ConcurrencyLimit` (Framework 7 core resilience); timeout ayarları; WireMock ile testler
 - [x] **M04.b Ödevler** — dış "ISBN servisi" client'ı; retry + fallback; eşzamanlılık sınırı ile rate korunması
-- [ ] **M04.c Doküman** — Verify: `VERIFY(04-http-clients-resilience)`
+- [x] **M04.c Doküman** — Verify: `VERIFY(04-http-clients-resilience)`
 
 **🔶 Checkpoint 2 (#17)**
 

@@ -14,6 +14,7 @@ import org.springframework.web.client.ResourceAccessException;
 /**
  * Lesson 3.8 — a read timeout turns a hanging remote call into a fast, clear failure.
  */
+// tag::timeout[]
 @TestPropertySource(properties = "spring.http.clients.read-timeout=300ms")
 class TimeoutTest extends WireMockCatalogTest {
 
@@ -29,3 +30,4 @@ class TimeoutTest extends WireMockCatalogTest {
         org.assertj.core.api.Assertions.assertThat((System.nanoTime() - start) / 1_000_000).isLessThan(1_500);
     }
 }
+// end::timeout[]
