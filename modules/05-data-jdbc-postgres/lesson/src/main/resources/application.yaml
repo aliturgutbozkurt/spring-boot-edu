@@ -4,6 +4,7 @@ spring:
   threads:
     virtual:
       enabled: true
+  # tag::docker-compose[]
   docker:
     compose:
       # Reuse the root compose.yaml; only the listed profiles are started.
@@ -12,6 +13,7 @@ spring:
         active: postgres
       # Keep containers running between restarts (stop them with: docker compose --profile all down)
       lifecycle-management: start-only
+  # end::docker-compose[]
 
 logging:
   level:

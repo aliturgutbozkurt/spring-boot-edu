@@ -146,7 +146,7 @@ class BookController {                       // Lesson 3.1 — minimal REST cont
 - `StructuredTaskScope` is still preview in Java 27; only module 00's `preview` profile may use it.
 - Container base image is `amazoncorretto:27-alpine` (no Temurin 27 yet). Native images use GraalVM 25 — only in module 19.
 - `docker compose up` failing with "No such image" right after a pull means the Docker VM disk is nearly full and images get evicted — free space (`docker builder prune`) before debugging anything else.
-- `new-module.sh` registers lesson/, solution/ and exercise/ in the root pom at once. Whenever you commit that pom change, also commit the scaffolded `solution/` and `exercise/` (even as placeholders) — otherwise CI fails with a missing module.
+- `new-module.sh` registers lesson/, solution/ and exercise/ in the root pom at once. Commit the root `pom.xml` together with the module's first commit, and the scaffolded `solution/` and `exercise/` with it (even as placeholders). Missing pom → CI silently skips the module; missing folders → CI fails. Run `git status` before every commit.
 - A module with extra Maven modules (e.g. 02's starter) must be run with `-am`: `./mvnw -pl modules/<id>/lesson -am spring-boot:run`. build-parent's `not-an-application` profile skips `spring-boot:run` in projects without `src/main/java`, so `-am` is always safe.
 - Boot registers its `ConditionEvaluationReport` as a bean named `autoConfigurationReport` — don't reuse that bean name.
 - WireMock in tests: start ONE `WireMockServer` per JVM (static field + static block) and register its URL with `@DynamicPropertySource`. A per-class JUnit extension restarts it on a new port while Spring's cached context keeps the old one → "Connection refused".
