@@ -298,10 +298,12 @@ private static Config memberConfig() {
     Config config = new Config();
     config.setClusterName("cluster-demo");                                 // only members with this name join
     config.setProperty("hazelcast.phone.home.enabled", "false");
+    config.getNetworkConfig().setPort(5801);                               // own port range, away from 5701
     var join = config.getNetworkConfig().getJoin();
     join.getAutoDetectionConfig().setEnabled(false);
     join.getMulticastConfig().setEnabled(false);
-    join.getTcpIpConfig().setEnabled(true).addMember("127.0.0.1");       // find each other on this machine
+    join.getTcpIpConfig().setEnabled(true)
+            .addMember("127.0.0.1:5801").addMember("127.0.0.1:5802");   // the two members of this demo
     config.getMapConfig("books").setBackupCount(1);                       // one backup copy on another member
     return config;
 }
