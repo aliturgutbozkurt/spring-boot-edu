@@ -116,7 +116,7 @@ Ortak doğrulama komutu (aşağıda `VERIFY(<id>)` olarak geçer):
 - [x] **M07.b Ödevler** — ürün kataloğu (değişken özellikler); kategori bazlı aggregation raporu; tam metin index
 - [x] **M07.c Doküman** — Verify: `VERIFY(07-data-mongodb)`
 
-**🔶 Checkpoint 3 (#21)**
+**🔶 Checkpoint 3 (#21)** — ✅ geçti (2026-09-23).
 
 ---
 
