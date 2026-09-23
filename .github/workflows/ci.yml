@@ -1,0 +1,53 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Build & test (JDK 27)
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+
+      # Temurin 27 is not published yet; Corretto 27 matches the course Docker image (amazoncorretto:27-alpine).
+      - uses: actions/setup-java@v4
+        with:
+          distribution: corretto
+          java-version: '27'
+          cache: maven
+
+      - name: Build, unit tests and integration tests (Testcontainers)
+        run: ./mvnw -B -ntp verify
+
+      - name: Exercises compile (their tests are red on purpose)
+        run: ./mvnw -B -ntp -Pexercises test-compile
+
+      - name: Upload test reports
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-reports
+          path: '**/target/*-reports/'
+          retention-days: 7
+
+  modules:
+    name: Module checks (structure, TR/EN parity, snippets, PDFs)
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - run: ./scripts/check-module.sh --all

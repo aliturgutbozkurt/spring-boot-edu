@@ -48,9 +48,9 @@ Ortak doğrulama komutu (aşağıda `VERIFY(<id>)` olarak geçer):
   - Verify: `./scripts/new-module.sh 99-sandbox && ./mvnw -pl modules/99-sandbox/lesson verify && ./scripts/check-module.sh 99-sandbox` başarılı; bozulan bir kural anlaşılır hata veriyor; sonra 99-sandbox silinir
   - Files: `scripts/new-module.sh`, `scripts/check-module.sh`, `scripts/lib/coursetool.py` (Python stdlib; `--strict` DoD modu, snippet doğrulama, SPEC'te olmayan id'ye izin yok, altyapı kök compose profilleriyle)
 
-- [ ] **#8 T0.8 CI (GitHub Actions)**
+- [x] **#8 T0.8 CI (GitHub Actions)**
   - Acceptance: JDK 27 (temurin), Maven cache, `./mvnw verify` (Testcontainers ile), exercise'ler için `test-compile`, tüm modüllerde `check-module.sh`
-  - Verify: Push sonrası workflow yeşil (remote gerekiyor — **ask first**)
+  - Verify: Push sonrası workflow yeşil (JDK: Corretto 27 — Temurin 27 henüz yok)
   - Files: `.github/workflows/ci.yml`
 
 - [ ] **#9 T0.9 Kök README (TR + EN)**

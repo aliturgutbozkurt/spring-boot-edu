@@ -1,0 +1,36 @@
+name: PDF pipeline
+
+# Self-test of the Markdown → PDF toolchain; runs only when the toolchain changes.
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'docs/templates/**'
+      - 'docs/assets/**'
+      - 'scripts/build-pdfs.sh'
+      - '.github/workflows/docs-pipeline.yml'
+  pull_request:
+    paths:
+      - 'docs/templates/**'
+      - 'docs/assets/**'
+      - 'scripts/build-pdfs.sh'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  samples:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0   # SOURCE_DATE_EPOCH comes from each file's last commit
+      - name: Build TR + EN sample and template PDFs
+        run: ./scripts/build-pdfs.sh --force docs/templates/pandoc/samples docs/templates/tr docs/templates/en
+      - uses: actions/upload-artifact@v4
+        with:
+          name: sample-pdfs
+          path: docs/templates/**/*.pdf
+          retention-days: 7
