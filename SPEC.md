@@ -94,7 +94,7 @@ Modül id'leri sabittir, sonradan yeniden adlandırılmaz.
 ```
 modules/NN-slug/
   README.md                  # TR + EN kısa özet, çalıştırma komutları, doküman linkleri
-  compose.yaml               # gerekiyorsa (Spring Boot Docker Compose desteği otomatik başlatır)
+  (compose.yaml yok)         # lesson/ kök compose.yaml'ı profil ile kullanır (spring.docker.compose.profiles.active); özel ihtiyaç varsa modül compose.yaml'ı eklenir
   requests.http              # IDE'den çalıştırılabilir HTTP örnekleri
   lesson/                    # çalışan örnek kod + testler (her zaman yeşil)
   exercise/                  # TODO'lu başlangıç kodu + testler (çözülene kadar kırmızı)

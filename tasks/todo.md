@@ -6,7 +6,7 @@
 
 Ortak doğrulama komutu (aşağıda `VERIFY(<id>)` olarak geçer):
 ```bash
-./mvnw -pl modules/<id>/lesson,modules/<id>/solution -am verify && ./scripts/check-module.sh <id>
+./mvnw -pl modules/<id>/lesson,modules/<id>/solution -am verify && ./scripts/check-module.sh --strict <id>
 ```
 
 ---
@@ -43,10 +43,10 @@ Ortak doğrulama komutu (aşağıda `VERIFY(<id>)` olarak geçer):
   - Verify: Şablonlardan PDF üretiliyor
   - Files: `docs/templates/tr/ders.md`, `docs/templates/tr/odevler.md`, `docs/templates/en/lesson.md`, `docs/templates/en/exercises.md`, `docs/templates/README.module.md`
 
-- [ ] **#7 T0.7 Modül scaffold + DoD kontrol scriptleri**
+- [x] **#7 T0.7 Modül scaffold + DoD kontrol scriptleri**
   - Acceptance: `new-module.sh <id>` → lesson/exercise/solution Maven modülleri, docs, README, `requests.http` üretir ve root POM'a ekler. `check-module.sh <id>` → zorunlu dosyalar var; exercise ve solution test dizinleri aynı; TR/EN başlık ve kod bloğu sayısı eşit; PDF'ler MD'den yeni; `exercise/` içinde en az bir `TODO`
   - Verify: `./scripts/new-module.sh 99-sandbox && ./mvnw -pl modules/99-sandbox/lesson verify && ./scripts/check-module.sh 99-sandbox` başarılı; bozulan bir kural anlaşılır hata veriyor; sonra 99-sandbox silinir
-  - Files: `scripts/new-module.sh`, `scripts/check-module.sh`, `scripts/lib.sh`
+  - Files: `scripts/new-module.sh`, `scripts/check-module.sh`, `scripts/lib/coursetool.py` (Python stdlib; `--strict` DoD modu, snippet doğrulama, SPEC'te olmayan id'ye izin yok, altyapı kök compose profilleriyle)
 
 - [ ] **#8 T0.8 CI (GitHub Actions)**
   - Acceptance: JDK 27 (temurin), Maven cache, `./mvnw verify` (Testcontainers ile), exercise'ler için `test-compile`, tüm modüllerde `check-module.sh`

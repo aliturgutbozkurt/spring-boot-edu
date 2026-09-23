@@ -47,9 +47,9 @@ Modülü çalıştırmak için:
 
 **Amaç:** Bu örnek neyi gösteriyor?
 
-<!-- snippet: lesson/src/main/java/com/springbootedu/{{PACKAGE}}/Ornek.java#L1-L20 -->
+<!-- snippet: {{APP_SNIPPET}} -->
 ```java
-// derlenen kaynaktan kopyalanmış kod
+{{APP_SNIPPET_CODE}}
 ```
 
 **Çalıştırın:**

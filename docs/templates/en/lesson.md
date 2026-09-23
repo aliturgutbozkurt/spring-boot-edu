@@ -47,9 +47,9 @@ To run the module:
 
 **Goal:** What does this example show?
 
-<!-- snippet: lesson/src/main/java/com/springbootedu/{{PACKAGE}}/Example.java#L1-L20 -->
+<!-- snippet: {{APP_SNIPPET}} -->
 ```java
-// code copied from compiled source
+{{APP_SNIPPET_CODE}}
 ```
 
 **Run it:**

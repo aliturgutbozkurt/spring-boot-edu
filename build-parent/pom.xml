@@ -30,6 +30,9 @@
         <spring-ai.version>2.0.1</spring-ai.version>
         <spring-modulith.version>2.1.1</spring-modulith.version>
 
+        <!-- JDK 21+ warns when Mockito/Byte Buddy attach their agent at runtime; allow it explicitly in tests -->
+        <argLine>-XX:+EnableDynamicAgentLoading</argLine>
+
         <!-- Course artifacts are never published -->
         <maven.deploy.skip>true</maven.deploy.skip>
     </properties>

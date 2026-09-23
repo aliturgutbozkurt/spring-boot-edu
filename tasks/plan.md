@@ -90,5 +90,5 @@ Tüm teknolojileri kullanan çok servisli Kitapçı platformu (Gateway + gRPC + 
 ./mvnw -pl modules/<id>/lesson,modules/<id>/solution -am verify
 ./mvnw -Pexercises -pl modules/<id>/exercise test-compile
 ./scripts/build-pdfs.sh <id>
-./scripts/check-module.sh <id>
+./scripts/check-module.sh --strict <id>
 ```

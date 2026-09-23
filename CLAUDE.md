@@ -44,8 +44,9 @@ docker compose down -v                         # stop + wipe volumes
 
 ./scripts/build-pdfs.sh                        # all MD → PDF (Dockerized Pandoc)
 ./scripts/build-pdfs.sh 06-data-jpa-postgres            # one module
-./scripts/check-module.sh 06-data-jpa-postgres          # Definition-of-Done checks for a module
-./scripts/new-module.sh 25-some-topic          # scaffold a new module from templates (ask first!)
+./scripts/check-module.sh 06-data-jpa-postgres          # structure, TR/EN parity, snippets, fresh PDFs
+./scripts/check-module.sh --strict 06-data-jpa-postgres # + finished content — required for Definition of Done
+./scripts/new-module.sh 06-data-jpa-postgres --title-tr "..." --title-en "..." --infra postgres   # scaffold (id must be in SPEC)
 ./scripts/kind-up.sh / kind-down.sh            # local Kubernetes cluster (modules 22, 23, capstone)
 ```
 
@@ -56,10 +57,10 @@ pom.xml                         # root aggregator + shared plugin config
 build-parent/pom.xml            # parent for all modules (Boot parent, Java 27, enforcer, test config)
 compose.yaml                    # all infra services, grouped by Docker Compose profiles
 docs/templates/                 # lesson/exercise templates (tr + en)
-scripts/                        # build-pdfs.sh, check-module.sh, new-module.sh
+scripts/                        # build-pdfs.sh, check-module.sh, new-module.sh (logic in scripts/lib/coursetool.py)
 modules/NN-slug/
   README.md                     # bilingual index: what, how to run, links to docs
-  compose.yaml                  # only if the module needs infra (uses Spring Boot Docker Compose support)
+  (no compose.yaml by default)   # lesson/ reuses the root compose.yaml via spring.docker.compose.profiles.active
   lesson/                       # Maven module: runnable examples + tests (always green)
   exercise/                     # Maven module: starter code with TODOs + tests (red until solved; only in -Pexercises)
   solution/                     # Maven module: reference solution; same tests as exercise/ (always green)
@@ -114,7 +115,7 @@ class BookController {                       // Lesson 3.1 — minimal REST cont
 
 - TR and EN docs are **parallel**: same sections, same numbering, same code snippets. Changing one requires changing the other in the same commit.
 - Lesson doc structure (from `docs/templates/`): Learning goals → Concepts → Step-by-step examples (linked to real source files) → Common mistakes → Summary → Further reading (official docs).
-- Code snippets in docs must be copied from compiled source (reference file + line range); never write untested code in docs.
+- Code snippets in docs must be copied from compiled source. Put `<!-- snippet: lesson/src/main/java/...#L10-L25 -->` (path relative to the module) directly above the code block; `check-module.sh` fails if the block and the source lines differ. Never write untested code in docs.
 - Every doc starts with YAML front matter: `title`, `subtitle`, `module`, `lang` (`tr-TR` / `en-US`), `date`.
 - Callouts use GitHub alert syntax (`> [!NOTE]`, `[!TIP]`, `[!IMPORTANT]`, `[!WARNING]`, `[!CAUTION]`) — rendered natively on GitHub and as coloured boxes in the PDF. Do not use raw LaTeX in Markdown.
 - Pipeline self-test: `./scripts/build-pdfs.sh --force docs/templates/pandoc/samples` (TR + EN sample exercising every feature).
@@ -127,8 +128,8 @@ class BookController {                       // Lesson 3.1 — minimal REST cont
 - [ ] `solution/` tests pass; `exercise/` compiles and its tests fail only on TODOs
 - [ ] `docs/tr` and `docs/en` lesson + exercises MD written, parallel, PDFs regenerated
 - [ ] `README.md` has run instructions (with and without Docker already running)
-- [ ] Infra, if any, declared in module `compose.yaml` and covered by Testcontainers in tests
-- [ ] `./scripts/check-module.sh NN-slug` passes
+- [ ] Infra, if any, started from the root `compose.yaml` profiles on `spring-boot:run` and covered by Testcontainers in tests
+- [ ] `./scripts/check-module.sh --strict NN-slug` passes
 - [ ] Checkbox ticked in `tasks/todo.md`
 
 ## Boundaries
