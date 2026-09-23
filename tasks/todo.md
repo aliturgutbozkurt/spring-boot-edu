@@ -108,7 +108,7 @@ Ortak doğrulama komutu (aşağıda `VERIFY(<id>)` olarak geçer):
 
 ### 06-data-jpa-postgres · #19
 - [x] **M06.a Kod** — entity eşleme; OneToMany/ManyToMany; N+1 problemini gösterip `@EntityGraph`/fetch join ile çözme; interface/record projection; Specification + dinamik filtre; auditing (`@CreatedDate`); optimistic/pessimistic locking; `@DataJpaTest` + Testcontainers *(Spring Data AOT repositories → modül 19: `process-aot` uygulamayı build sırasında başlatır, native/AOT konusuyla birlikte işlenir)*
-- [ ] **M06.b Ödevler** — sipariş (Order/OrderLine) modeli; N+1'i tespit edip düzeltme (SQL sayısı testiyle); dinamik arama
+- [x] **M06.b Ödevler** — sipariş (Order/OrderLine) modeli; N+1'i tespit edip düzeltme (SQL sayısı testiyle); dinamik arama
 - [ ] **M06.c Doküman** — Verify: `VERIFY(06-data-jpa-postgres)`
 
 ### 07-data-mongodb · #20

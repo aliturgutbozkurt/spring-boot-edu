@@ -4,3 +4,10 @@ spring:
   threads:
     virtual:
       enabled: true
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        generate_statistics: true   # Exercise 2 counts SQL statements
