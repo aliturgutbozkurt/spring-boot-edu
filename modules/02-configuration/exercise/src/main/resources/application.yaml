@@ -4,3 +4,15 @@ spring:
   threads:
     virtual:
       enabled: true
+  # TODO 2c: add a profile group "black-friday" that activates "campaign" and then "express"
+
+bookstore:
+  # Exercise 1 — the application starts only if these values are valid
+  opening-hours:
+    opens: "09:00"
+    closes: "21:00"
+    closed-days: SUNDAY
+  # TODO 2a: default pricing — shipping fee 29.90, discount 0 percent (bookstore.pricing.*)
+
+# TODO 2b: create application-campaign.yaml (free shipping 0.00, 20 percent discount)
+#          and application-express.yaml (shipping fee 49.90) next to this file

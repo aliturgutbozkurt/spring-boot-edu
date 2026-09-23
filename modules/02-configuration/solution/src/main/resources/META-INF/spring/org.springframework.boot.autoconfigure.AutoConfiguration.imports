@@ -1,0 +1,2 @@
+# Exercise 3 — auto-configuration classes of this module, one per line.
+com.springbootedu.configuration.exercise3.ExchangeRateAutoConfiguration

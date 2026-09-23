@@ -4,3 +4,17 @@ spring:
   threads:
     virtual:
       enabled: true
+  profiles:
+    group:
+      black-friday: campaign, express    # Exercise 2 — order matters: express is applied after campaign
+
+bookstore:
+  # Exercise 1 — the application starts only if these values are valid
+  opening-hours:
+    opens: "09:00"
+    closes: "21:00"
+    closed-days: SUNDAY
+  # Exercise 2 — defaults, overridden by application-campaign.yaml and application-express.yaml
+  pricing:
+    shipping-fee: "29.90"
+    discount-percent: 0

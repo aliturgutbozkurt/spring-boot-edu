@@ -1,0 +1,5 @@
+# Exercise 2 — campaign profile
+bookstore:
+  pricing:
+    shipping-fee: "0.00"
+    discount-percent: 20

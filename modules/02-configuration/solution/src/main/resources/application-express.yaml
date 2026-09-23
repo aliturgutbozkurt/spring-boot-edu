@@ -1,0 +1,4 @@
+# Exercise 2 — express delivery profile
+bookstore:
+  pricing:
+    shipping-fee: "49.90"
