@@ -186,7 +186,7 @@ Ortak doğrulama komutu (aşağıda `VERIFY(<id>)` olarak geçer):
 
 ### 18-modulith · #34
 - [x] **M18.a Kod** — modül yapısı ve `ApplicationModules.verify()`; application events + `@ApplicationModuleListener`; event publication registry (JDBC); Kafka'ya event externalization; `@ApplicationModuleTest`; dokümantasyon (C4/PlantUML) üretimi
-- [ ] **M18.b Ödevler** — sınır ihlalini düzeltmek; yeni modül eklemek; event ile modüller arası iletişim
+- [x] **M18.b Ödevler** — sınır ihlalini düzeltmek; yeni modül eklemek; event ile modüller arası iletişim
 - [ ] **M18.c Doküman** — Verify: `VERIFY(18-modulith)`
 
 ### 19-native-performance · #35

@@ -1,6 +1,14 @@
 spring:
   application:
-    name: 18-modulith
+    name: 18-modulith-exercises
   threads:
     virtual:
       enabled: true
+  flyway:
+    schemas: modulith_exercises
+  datasource:
+    hikari:
+      schema: modulith_exercises
+logging:
+  level:
+    root: warn

@@ -178,6 +178,7 @@ class BookController {                       // Lesson 3.1 — minimal REST cont
 - Modulith's Kafka externalization serializes events to JSON itself (`spring.modulith.events.kafka.enable-json`, default true). Do not set a JSON `value-serializer`: the event arrives base64-encoded (type `[B`). Create the target topic with a `NewTopic` bean, or the first consumer waits ~40 s for metadata.
 - Modulith + shared Testcontainers: on shutdown the publication registry queries the DB, but the first closed test context already stopped the shared container → surefire hangs 30 s ("kill self fork JVM"). Module 18's `TestcontainersConfiguration` sets `spring.datasource.hikari.connection-timeout=500` (ms, a plain number) via a `DynamicPropertyRegistrar` bean.
 - `@ApplicationModuleTest` also loads the root package (`LessonTour`): add `@TestPropertySource(properties = "bookstore.tour.enabled=false")`.
+- `ApplicationModules.of(App.class)` is cached per JVM and `verify()` marks it verified *before* throwing: after any `@ApplicationModuleTest` ran, a later `verify()` passes silently. Tests that must fail on violations use `detectViolations().throwIfPresent()`.
 - Elasticsearch needs ≥ 2 GB Docker memory; Kafka runs in KRaft mode (no ZooKeeper).
 - Spring AI tests never call a real LLM: use a mocked `ChatModel` or Testcontainers Ollama with a tiny model, tagged `*IT`.
 - Spring Boot's Docker Compose support starts services on `spring-boot:run`; in tests it is disabled — Testcontainers is used instead.
