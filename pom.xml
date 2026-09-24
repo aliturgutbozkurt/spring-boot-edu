@@ -61,6 +61,8 @@
         <module>modules/15-observability/solution</module>
         <module>modules/16-async-scheduling-batch/lesson</module>
         <module>modules/16-async-scheduling-batch/solution</module>
+        <module>modules/17-graphql-websocket/lesson</module>
+        <module>modules/17-graphql-websocket/solution</module>
         <!-- course-modules:end -->
     </modules>
 
@@ -86,6 +88,7 @@
                 <module>modules/14-testing/exercise</module>
                 <module>modules/15-observability/exercise</module>
                 <module>modules/16-async-scheduling-batch/exercise</module>
+                <module>modules/17-graphql-websocket/exercise</module>
                 <!-- exercise-modules:end -->
             </modules>
         </profile>

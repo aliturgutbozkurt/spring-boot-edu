@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<!-- Lesson 3.6 — a browser client for /topic/prices. Change a price (requests.http) and watch the list grow. -->
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Live prices</title>
+    <script src="https://cdn.jsdelivr.net/npm/@stomp/stompjs@7/bundles/stomp.umd.min.js"></script>
+</head>
+<body>
+<h1>Live prices</h1>
+<p id="status">connecting…</p>
+<ul id="changes"></ul>
+<script>
+    const client = new StompJs.Client({brokerURL: `ws://${location.host}/ws`});
+    client.onConnect = () => {
+        document.getElementById('status').textContent = 'connected, waiting for price changes';
+        client.subscribe('/topic/prices', message => {
+            const change = JSON.parse(message.body);
+            const item = document.createElement('li');
+            item.textContent = `${change.isbn}: ${change.newPrice}`;
+            document.getElementById('changes').prepend(item);
+        });
+    };
+    client.activate();
+</script>
+</body>
+</html>

@@ -1,0 +1,42 @@
+# HTTP examples for module 17-graphql-websocket. Run them from IntelliJ IDEA / VS Code (REST Client).
+# Start the lesson first: ./mvnw -pl modules/17-graphql-websocket/lesson spring-boot:run
+# A browser IDE for the same queries: http://localhost:8080/graphiql
+
+### 3.2 Query — the client chooses the fields
+POST http://localhost:8080/graphql
+Content-Type: application/json
+
+{"query": "{ books { isbn title price } }"}
+
+### 3.3 Nested fields: author (@BatchMapping) and reviews (@SchemaMapping)
+POST http://localhost:8080/graphql
+Content-Type: application/json
+
+{"query": "query($isbn: ID!) { book(isbn: $isbn) { title author { name } reviews { stars text } } }",
+ "variables": {"isbn": "9780134685991"}}
+
+### 3.4 Mutation
+POST http://localhost:8080/graphql
+Content-Type: application/json
+
+{"query": "mutation($input: ReviewInput!) { addReview(input: $input) { id stars text } }",
+ "variables": {"input": {"isbn": "9781449373320", "stars": 5, "text": "Eye-opening."}}}
+
+### 3.4 Mutation with an error (HTTP 200, the error is in the "errors" array)
+POST http://localhost:8080/graphql
+Content-Type: application/json
+
+{"query": "mutation($input: ReviewInput!) { addReview(input: $input) { id } }",
+ "variables": {"input": {"isbn": "9781449373320", "stars": 6, "text": "Too good."}}}
+
+### 3.6 Change a price — open http://localhost:8080/prices.html first to see the push
+PUT http://localhost:8080/api/books/9780321336781/price
+Content-Type: application/json
+
+{"price": 49.90}
+
+### 3.6 Unknown book → 404 ProblemDetail
+PUT http://localhost:8080/api/books/0000000000000/price
+Content-Type: application/json
+
+{"price": 10.00}

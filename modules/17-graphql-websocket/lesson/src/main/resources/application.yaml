@@ -1,0 +1,34 @@
+spring:
+  application:
+    name: 17-graphql-websocket
+  threads:
+    virtual:
+      enabled: true
+  # All modules share the "bookstore" database of compose.yaml; this one uses the schema "graphql".
+  flyway:
+    schemas: graphql
+  datasource:
+    hikari:
+      schema: graphql
+  mvc:
+    problemdetails:
+      enabled: true                     # REST errors as RFC 9457 ProblemDetail
+  # tag::graphql-config[]
+  graphql:
+    graphiql:
+      enabled: true                     # a browser IDE at /graphiql (development only)
+    websocket:
+      path: /graphql                    # subscriptions over WebSocket, same path as HTTP
+  # end::graphql-config[]
+  docker:
+    compose:
+      # Reuse the root compose.yaml; only the listed profiles are started.
+      file: ../../../compose.yaml
+      profiles:
+        active: postgres
+      # Keep containers running between restarts (stop them with: docker compose --profile all down)
+      lifecycle-management: start-only
+      # Run "docker compose up" even if another module already started some services:
+      # it is idempotent and starts only what is missing (default "if-running" would skip it)
+      start:
+        skip: never

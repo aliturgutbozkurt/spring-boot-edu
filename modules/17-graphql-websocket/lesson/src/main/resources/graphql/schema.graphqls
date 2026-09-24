@@ -1,0 +1,41 @@
+# Lesson 3.1 — the schema is the contract: clients may ask for exactly the fields they need.
+# tag::schema[]
+type Query {
+    books: [Book!]!
+    book(isbn: ID!): Book
+}
+
+type Mutation {
+    addReview(input: ReviewInput!): Review!
+}
+
+type Subscription {
+    reviewAdded(isbn: ID!): Review!
+}
+
+type Book {
+    isbn: ID!
+    title: String!
+    price: Float!
+    author: Author!
+    reviews: [Review!]!
+}
+
+type Author {
+    id: ID!
+    name: String!
+}
+
+type Review {
+    id: ID!
+    isbn: ID!
+    stars: Int!
+    text: String!
+}
+
+input ReviewInput {
+    isbn: ID!
+    stars: Int!
+    text: String!
+}
+# end::schema[]

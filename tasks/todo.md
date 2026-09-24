@@ -180,7 +180,7 @@ Ortak doğrulama komutu (aşağıda `VERIFY(<id>)` olarak geçer):
 - [x] **M16.c Doküman** — Verify: `VERIFY(16-async-scheduling-batch)`
 
 ### 17-graphql-websocket · #33
-- [ ] **M17.a Kod** — GraphQL schema-first; `@QueryMapping/@MutationMapping/@SchemaMapping`; `@BatchMapping` ile N+1 çözümü; subscription; `GraphQlTester`; WebSocket/STOMP ile canlı bildirim
+- [x] **M17.a Kod** — GraphQL schema-first; `@QueryMapping/@MutationMapping/@SchemaMapping`; `@BatchMapping` ile N+1 çözümü; subscription; `GraphQlTester`; WebSocket/STOMP ile canlı bildirim
 - [ ] **M17.b Ödevler** — Author→Books sorgusu; sipariş mutation'ı; canlı stok bildirimi
 - [ ] **M17.c Doküman** — Verify: `VERIFY(17-graphql-websocket)`
 
