@@ -190,7 +190,7 @@ Ortak doğrulama komutu (aşağıda `VERIFY(<id>)` olarak geçer):
 - [x] **M18.c Doküman** — Verify: `VERIFY(18-modulith)`
 
 ### 19-native-performance · #35
-- [ ] **M19.a Kod** — AOT işleme (`process-aot`); Spring Data AOT repositories (modül 06'dan taşındı); GraalVM native image (`-Pnative`, GraalVM 25 + `release 25` — SPEC Karar 8); `RuntimeHints`; CDS / JVM AOT cache ile başlangıç iyileştirme; başlangıç süresi + bellek karşılaştırma script'i
+- [x] **M19.a Kod** — AOT işleme (`process-aot`); Spring Data AOT repositories (modül 06'dan taşındı); GraalVM native image (`-Pnative`, GraalVM 25 + `release 25` — SPEC Karar 8); `RuntimeHints`; CDS / JVM AOT cache ile başlangıç iyileştirme; başlangıç süresi + bellek karşılaştırma script'i
 - [ ] **M19.b Ödevler** — reflection kullanan kodu native'e uyarlamak; AOT cache ile ölçüm; sonuç tablosu
 - [ ] **M19.c Doküman** — Verify: `VERIFY(19-native-performance)` (native build CI'da ayrı iş)
 

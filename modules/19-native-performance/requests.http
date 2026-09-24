@@ -1,0 +1,18 @@
+# HTTP examples for module 19-native-performance. Run them from IntelliJ IDEA / VS Code (REST Client).
+# Start the lesson first: ./mvnw -pl modules/19-native-performance/lesson spring-boot:run
+# The native image answers the same requests (docker run ... -p 8080:8080, see README).
+
+### 3.2 A derived query (AOT repository)
+GET http://localhost:8080/api/books?title=java
+
+### 3.2 A declared @Query (AOT repository)
+GET http://localhost:8080/api/books/since/2017
+
+### 3.4 Reflection: the configured price format
+GET http://localhost:8080/api/books/9780134685991/price
+
+### 3.4 A resource: quote of the day
+GET http://localhost:8080/api/quote
+
+### 3.1 Unknown book → 404 ProblemDetail
+GET http://localhost:8080/api/books/0000000000000

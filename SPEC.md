@@ -65,7 +65,7 @@ Modül id'leri sabittir, sonradan yeniden adlandırılmaz.
 | 03 | `03-web-mvc` | REST controller, validation, `ProblemDetail`, content negotiation, **API versioning** (Framework 7), Jackson 3, OpenAPI (springdoc), virtual threads | — | 02 |
 | 04 | `04-http-clients-resilience` | `RestClient`, HTTP interface client'lar (`@ImportHttpServices`), `WebClient`, `@Retryable` / `@ConcurrencyLimit` (Framework 7 core resilience) | WireMock (test) | 03 |
 | 05 | `05-data-jdbc-postgres` | `JdbcClient`, Flyway migration, Spring Data JDBC, transaction yönetimi | PostgreSQL | 02 |
-| 06 | `06-data-jpa-postgres` | JPA/Hibernate 7, ilişkiler, N+1 ve fetch stratejileri, projection, Specification/Query by Example, auditing, locking, Spring Data AOT repositories | PostgreSQL | 05 |
+| 06 | `06-data-jpa-postgres` | JPA/Hibernate 7, ilişkiler, N+1 ve fetch stratejileri, projection, Specification/Query by Example, auditing, locking | PostgreSQL | 05 |
 | 07 | `07-data-mongodb` | Spring Data MongoDB, document modelleme, aggregation, index, transaction | MongoDB | 02 |
 | 08 | `08-redis-caching` | Spring Cache abstraction, Redis cache, TTL, `RedisTemplate`, Redis veri yapıları, pub/sub, Spring Session | Redis (yavaş kaynak bilerek bellek içi simüle edilir; cache etkisi ölçülebilir) | 06 |
 | 09 | `09-hazelcast` | Embedded vs client-server, `IMap`, near cache, `IMap` kilidi + `EntryProcessor` (bkz. karar 10), Hazelcast ile cache | Hazelcast, PostgreSQL | 08 |
@@ -78,7 +78,7 @@ Modül id'leri sabittir, sonradan yeniden adlandırılmaz.
 | 16 | `16-async-scheduling-batch` | `@Async`, virtual threads ile executor, `@Scheduled`, Spring Batch 6 (chunk, reader/writer, restart) | PostgreSQL | 06 |
 | 17 | `17-graphql-websocket` | Spring for GraphQL (schema-first, DataLoader, subscription), WebSocket/STOMP | PostgreSQL | 06 |
 | 18 | `18-modulith` | Spring Modulith: modül sınırları, application event'ler, event publication registry, modül testleri, dokümantasyon üretimi | PostgreSQL | 06, 11 |
-| 19 | `19-native-performance` | AOT işleme, GraalVM native image, CDS / JVM AOT cache (Project Leyden), başlangıç süresi karşılaştırması | — | 03 |
+| 19 | `19-native-performance` | AOT işleme, Spring Data AOT repositories (JDBC, modül 06'dan taşındı), `RuntimeHints`, GraalVM native image, CDS / JVM AOT cache (Project Leyden), başlangıç süresi + bellek karşılaştırması | PostgreSQL | 03, 05 |
 | 20 | `20-docker-deployment` | Dockerfile (multi-stage, layered jar), Buildpacks (`spring-boot:build-image`), Docker Compose, health probe'lar, graceful shutdown, 12-factor | Tümü | 15 |
 | 21 | `21-grpc` | Spring gRPC: protobuf ile sözleşme, unary + streaming servisler, client stub'ları, interceptor, hata eşleme (status), güvenlik, test | — | 03 |
 | 22 | `22-kubernetes` | kind ile lokal cluster, Deployment/Service/ConfigMap/Secret, probe'lar, kaynak limitleri, Kustomize overlay'leri, HPA, rolling update | kind | 20 |

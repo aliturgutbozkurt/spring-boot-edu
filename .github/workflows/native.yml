@@ -1,0 +1,58 @@
+name: Native image (module 19)
+
+# Started by hand (Actions → "Native image (module 19)" → Run workflow): a native build takes several minutes.
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  native:
+    name: GraalVM 25 native image + smoke test
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    services:
+      postgres:
+        image: pgvector/pgvector:0.8.6-pg18
+        env:
+          POSTGRES_DB: bookstore
+          POSTGRES_USER: bookstore
+          POSTGRES_PASSWORD: bookstore
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U bookstore"
+          --health-interval 5s --health-timeout 5s --health-retries 10
+    steps:
+      - uses: actions/checkout@v4
+
+      # SPEC decision 8: there is no GraalVM for JDK 27 yet. Maven runs on JDK 27 (the course rules),
+      # module 19 is compiled for Java 25, and native-image comes from GraalVM 25 via GRAALVM_HOME.
+      - uses: graalvm/setup-graalvm@v1
+        with:
+          java-version: '25'
+          distribution: graalvm-community
+          set-java-home: false
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: corretto
+          java-version: '27'
+          cache: maven
+
+      - name: Native image
+        run: ./mvnw -B -ntp -Pnative -pl modules/19-native-performance/lesson -DskipTests native:compile
+
+      - name: Smoke test the executable
+        run: |
+          modules/19-native-performance/lesson/target/19-native-performance-lesson \
+            --spring.docker.compose.enabled=false \
+            --spring.datasource.url=jdbc:postgresql://localhost:5432/bookstore \
+            --spring.datasource.username=bookstore --spring.datasource.password=bookstore > native.log 2>&1 &
+          for i in $(seq 1 100); do grep -q "process running for" native.log && break; sleep 0.2; done
+          cat native.log
+          curl -sf 'localhost:8080/api/books?title=java'
+          curl -sf localhost:8080/api/books/9780134685991/price | grep '₺89,90'   # reflection hint + Turkish locale
+          curl -sf localhost:8080/api/quote

@@ -1,0 +1,5 @@
+Premature optimization is the root of all evil. — Donald Knuth
+Make it work, make it right, make it fast. — Kent Beck
+Measure, don't guess. — Kirk Pepperdine
+The fastest code is the code that never runs. — Robert Galanter
+Startup time is a feature. — Anonymous
