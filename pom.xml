@@ -55,6 +55,8 @@
         <module>modules/12-security/solution</module>
         <module>modules/13-reactive/lesson</module>
         <module>modules/13-reactive/solution</module>
+        <module>modules/14-testing/lesson</module>
+        <module>modules/14-testing/solution</module>
         <!-- course-modules:end -->
     </modules>
 
@@ -77,6 +79,7 @@
                 <module>modules/11-messaging-kafka/exercise</module>
                 <module>modules/12-security/exercise</module>
                 <module>modules/13-reactive/exercise</module>
+                <module>modules/14-testing/exercise</module>
                 <!-- exercise-modules:end -->
             </modules>
         </profile>

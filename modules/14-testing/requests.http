@@ -1,0 +1,22 @@
+# HTTP examples for module 14-testing. Run them from IntelliJ IDEA / VS Code (REST Client).
+# The lesson of this module is its test suite: ./mvnw -pl modules/14-testing/lesson verify
+# The application itself calls a payment service at PAYMENT_URL (default http://localhost:9090), which does not
+# exist locally — so a valid order answers 500 here. That is exactly why the tests mock PaymentClient.
+
+### 400 — validation fails before the service is called
+POST http://localhost:8080/api/orders
+Content-Type: application/json
+
+{"isbn": "", "quantity": 0}
+
+### 404 — unknown book (answered before the payment service is needed)
+POST http://localhost:8080/api/orders
+Content-Type: application/json
+
+{"isbn": "0000000000000", "quantity": 1}
+
+### 409 — not enough stock (Java Puzzlers is sold out)
+POST http://localhost:8080/api/orders
+Content-Type: application/json
+
+{"isbn": "9780321336781", "quantity": 1}

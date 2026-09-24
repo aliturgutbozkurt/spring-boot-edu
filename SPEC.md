@@ -36,7 +36,7 @@ Spring Boot'un güncel (4.1) özelliklerini **bol çalışan örnekle**, modül 
 | Spring Boot | 4.1.1 → Spring Framework 7.0.9, Spring Security 7.1.1, Spring Data 2026.0.1, Spring Kafka 4.1.1 |
 | Hibernate / Validator | 7.4.5 / 9.1.3 (BOM) |
 | Flyway | 12.4.0 (BOM) |
-| Test | JUnit 6.0.3, AssertJ, Mockito, Testcontainers 2.0.5 |
+| Test | JUnit 6.0.3, AssertJ, Mockito, Testcontainers 2.0.5, ArchUnit 1.5.0 (14-testing; BOM dışı, build-parent yönetir) |
 | PostgreSQL | Docker `postgres:18` (JDBC driver 42.7.13) |
 | MongoDB | Docker `mongo:8` (driver 5.8.1) |
 | Elasticsearch | Docker `elasticsearch:9.4.x` (client 9.4.5 ile uyumlu) |

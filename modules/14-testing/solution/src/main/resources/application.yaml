@@ -1,0 +1,6 @@
+spring:
+  application:
+    name: 14-testing
+  threads:
+    virtual:
+      enabled: true

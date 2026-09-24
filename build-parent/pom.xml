@@ -33,6 +33,8 @@
         <springdoc.version>3.1.1</springdoc.version>
         <!-- Not in the Boot BOM; the standalone jar shades its own Jetty -->
         <wiremock.version>3.13.2</wiremock.version>
+        <!-- Not in the Boot BOM; 1.5.0 reads Java 27 class files (checked 2026-09-24) -->
+        <archunit.version>1.5.0</archunit.version>
 
         <!-- JDK 21+ warns when Mockito/Byte Buddy attach their agent at runtime; allow it explicitly in tests -->
         <argLine>-XX:+EnableDynamicAgentLoading</argLine>
@@ -66,6 +68,11 @@
                 <groupId>org.wiremock</groupId>
                 <artifactId>wiremock-standalone</artifactId>
                 <version>${wiremock.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.tngtech.archunit</groupId>
+                <artifactId>archunit-junit5</artifactId>
+                <version>${archunit.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.springframework.modulith</groupId>
