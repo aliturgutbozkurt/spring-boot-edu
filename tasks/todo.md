@@ -187,7 +187,7 @@ Ortak doğrulama komutu (aşağıda `VERIFY(<id>)` olarak geçer):
 ### 18-modulith · #34
 - [x] **M18.a Kod** — modül yapısı ve `ApplicationModules.verify()`; application events + `@ApplicationModuleListener`; event publication registry (JDBC); Kafka'ya event externalization; `@ApplicationModuleTest`; dokümantasyon (C4/PlantUML) üretimi
 - [x] **M18.b Ödevler** — sınır ihlalini düzeltmek; yeni modül eklemek; event ile modüller arası iletişim
-- [ ] **M18.c Doküman** — Verify: `VERIFY(18-modulith)`
+- [x] **M18.c Doküman** — Verify: `VERIFY(18-modulith)`
 
 ### 19-native-performance · #35
 - [ ] **M19.a Kod** — AOT işleme (`process-aot`); Spring Data AOT repositories (modül 06'dan taşındı); GraalVM native image (`-Pnative`, GraalVM 25 + `release 25` — SPEC Karar 8); `RuntimeHints`; CDS / JVM AOT cache ile başlangıç iyileştirme; başlangıç süresi + bellek karşılaştırma script'i
