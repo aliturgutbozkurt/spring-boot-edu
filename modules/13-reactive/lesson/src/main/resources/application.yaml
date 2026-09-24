@@ -1,0 +1,24 @@
+spring:
+  application:
+    name: 13-reactive
+  # No spring.threads.virtual here: WebFlux runs on a few event-loop threads. Lesson 3.7 compares both models.
+  # tag::data-config[]
+  # All modules share the "bookstore" database of compose.yaml; this one uses the schema "reactive"
+  # (R2DBC side: see book/R2dbcSchemaConfiguration).
+  flyway:
+    schemas: reactive                   # Flyway (JDBC) creates the tables before the app starts
+  mongodb:
+    database: bookstore_reactive
+  # end::data-config[]
+  docker:
+    compose:
+      # Reuse the root compose.yaml; only the listed profiles are started.
+      file: ../../../compose.yaml
+      profiles:
+        active: postgres,mongo
+      # Keep containers running between restarts (stop them with: docker compose --profile all down)
+      lifecycle-management: start-only
+      # Run "docker compose up" even if another module already started some services:
+      # it is idempotent and starts only what is missing (default "if-running" would skip it)
+      start:
+        skip: never

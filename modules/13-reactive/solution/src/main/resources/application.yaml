@@ -1,0 +1,6 @@
+spring:
+  application:
+    name: 13-reactive
+  threads:
+    virtual:
+      enabled: true

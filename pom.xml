@@ -53,6 +53,8 @@
         <module>modules/11-messaging-kafka/solution</module>
         <module>modules/12-security/lesson</module>
         <module>modules/12-security/solution</module>
+        <module>modules/13-reactive/lesson</module>
+        <module>modules/13-reactive/solution</module>
         <!-- course-modules:end -->
     </modules>
 
@@ -74,6 +76,7 @@
                 <module>modules/10-elasticsearch/exercise</module>
                 <module>modules/11-messaging-kafka/exercise</module>
                 <module>modules/12-security/exercise</module>
+                <module>modules/13-reactive/exercise</module>
                 <!-- exercise-modules:end -->
             </modules>
         </profile>

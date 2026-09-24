@@ -1,0 +1,33 @@
+# HTTP examples for module 13-reactive. Run them from IntelliJ IDEA / VS Code (REST Client).
+# Start the lesson first: ./mvnw -pl modules/13-reactive/lesson spring-boot:run
+
+### Functional endpoint + R2DBC
+GET http://localhost:8080/api/books
+
+### One book (404 if unknown)
+GET http://localhost:8080/api/books/9780134685991
+
+### Create a book
+POST http://localhost:8080/api/books
+Content-Type: application/json
+
+{"isbn": "9780000000017", "title": "Reactive Spring", "price": 42.00}
+
+### Add a review (reactive MongoDB)
+POST http://localhost:8080/api/books/9780134685991/reviews
+Content-Type: application/json
+
+{"author": "ada", "stars": 5, "text": "A classic."}
+
+### Book + reviews from two databases (Mono.zip)
+GET http://localhost:8080/api/books/9780134685991/details
+
+### Live order feed (Server-Sent Events) — or: curl -N localhost:8080/api/orders/stream
+GET http://localhost:8080/api/orders/stream
+Accept: text/event-stream
+
+### Place an order: every connected stream receives it
+POST http://localhost:8080/api/orders
+Content-Type: application/json
+
+{"isbn": "9780134685991", "quantity": 2}
