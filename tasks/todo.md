@@ -142,7 +142,7 @@ Ortak doğrulama komutu (aşağıda `VERIFY(<id>)` olarak geçer):
 - [x] **M11.b Ödevler** — `OrderPlaced` event'i ve stok güncelleyici consumer; zehirli mesajı DLT'ye yönlendirme; outbox relay
 - [x] **M11.c Doküman** — Verify: `VERIFY(11-messaging-kafka)`
 
-**🔶 Checkpoint 4 (#26)**
+**🔶 Checkpoint 4 (#26)** — ✅ geçti (2026-09-24). Not: 08'in `spring-boot:run` yolu bu makinede Homebrew Redis tarafından gölgelendi; compose Redis sağlıklı, Testcontainers yolu CI'da yeşil.
 
 ---
 
