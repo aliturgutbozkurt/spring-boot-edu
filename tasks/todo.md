@@ -168,7 +168,7 @@ Ortak doğrulama komutu (aşağıda `VERIFY(<id>)` olarak geçer):
 - [x] **M15.b Ödevler** — iş metriği (sipariş sayısı); yavaş endpoint'i trace ile bulmak; özel health check
 - [x] **M15.c Doküman** — Verify: `VERIFY(15-observability)`
 
-**🔶 Checkpoint 5 (#31)**
+**🔶 Checkpoint 5 (#31)** — ✅ geçti (2026-09-24): `security-auditor` incelemesi M12.c'de yapıldı, bulgular düzeltildi.
 
 ---
 
