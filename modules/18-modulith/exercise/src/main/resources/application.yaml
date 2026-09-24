@@ -1,0 +1,6 @@
+spring:
+  application:
+    name: 18-modulith
+  threads:
+    virtual:
+      enabled: true

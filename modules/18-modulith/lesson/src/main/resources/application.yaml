@@ -1,0 +1,42 @@
+spring:
+  application:
+    name: 18-modulith
+  threads:
+    virtual:
+      enabled: true
+  # All modules share the "bookstore" database of compose.yaml; this one uses the schema "modulith".
+  flyway:
+    schemas: modulith
+  datasource:
+    hikari:
+      schema: modulith
+  # tag::modulith-config[]
+  modulith:
+    events:
+      # the registry table is created by Flyway (V2); Modulith could also create it:
+      # jdbc.schema-initialization.enabled: true
+      externalization:
+        enabled: true                   # send @Externalized events to Kafka (the default)
+      completion-mode: update           # completed publications stay in the table with a completion date
+  kafka:
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      # no JSON value serializer: Modulith turns the event into JSON itself
+      # (spring.modulith.events.kafka.enable-json, default true) — a JsonSerializer would encode it twice
+  # end::modulith-config[]
+  docker:
+    compose:
+      # Reuse the root compose.yaml; only the listed profiles are started.
+      file: ../../../compose.yaml
+      profiles:
+        active: postgres,kafka
+      # Keep containers running between restarts (stop them with: docker compose --profile all down)
+      lifecycle-management: start-only
+      # Run "docker compose up" even if another module already started some services:
+      # it is idempotent and starts only what is missing (default "if-running" would skip it)
+      start:
+        skip: never
+logging:
+  level:
+    root: warn
+    com.springbootedu: info
