@@ -151,7 +151,7 @@ Ortak doğrulama komutu (aşağıda `VERIFY(<id>)` olarak geçer):
 ### 12-security · #27
 - [x] **M12.a Kod** — `SecurityFilterChain` anatomisi; in-memory → JDBC kullanıcılar, `PasswordEncoder`; form + HTTP basic; method security (`@PreAuthorize`); JWT resource server; Spring Authorization Server ile token alma; CORS/CSRF; `spring-security-test` ile testler
 - [x] **M12.b Ödevler** — rol bazlı erişim (ADMIN/CUSTOMER); "sadece kendi siparişini gör" kuralı; JWT claim'den yetki eşleme
-- [ ] **M12.c Doküman** — Verify: `VERIFY(12-security)` + `security-auditor` ajan incelemesi
+- [x] **M12.c Doküman** — Verify: `VERIFY(12-security)` + `security-auditor` ajan incelemesi (2026-09-24: 0 Critical, 1 High, 2 Medium, 4 Low — hepsi düzeltildi veya dokümante edildi)
 
 ### 13-reactive · #28
 - [ ] **M13.a Kod** — Mono/Flux temelleri + `StepVerifier`; WebFlux annotated + functional endpoints; R2DBC PostgreSQL; reactive MongoDB; SSE stream; backpressure; virtual threads vs reactive karşılaştırması

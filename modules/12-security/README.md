@@ -40,6 +40,9 @@
 ./mvnw -Pexercises -pl modules/12-security/exercise test
 ```
 
+`spring-boot:run` **dev** profilini açar: demo kullanıcılar (`ada`/`ada-password`, `bob`/`bob-password`, `admin`/`admin-password`) ve demo client secret yalnızca bu profilde vardır.
+`spring-boot:run` activates the **dev** profile: the demo users and the demo client secret exist only there.
+
 HTTP örnekleri / HTTP examples: [requests.http](requests.http)
 
 ## Yapı / Layout
