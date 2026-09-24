@@ -1,0 +1,6 @@
+spring:
+  application:
+    name: 16-async-scheduling-batch
+  threads:
+    virtual:
+      enabled: true

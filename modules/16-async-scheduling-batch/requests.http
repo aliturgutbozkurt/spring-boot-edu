@@ -1,0 +1,13 @@
+# Module 16-async-scheduling-batch has no HTTP API. Look at the results in PostgreSQL instead.
+# Start the lesson first: ./mvnw -pl modules/16-async-scheduling-batch/lesson spring-boot:run
+
+# The imported books (schema "batching")
+#   docker compose exec postgres psql -U bookstore -c "SELECT isbn, title, price FROM batching.imported_book"
+
+# Every job run, with its status and parameters (the Spring Batch job repository)
+#   docker compose exec postgres psql -U bookstore -c \
+#     "SELECT job_execution_id, status, start_time, end_time FROM batching.batch_job_execution ORDER BY 1"
+
+# Read, write and skip counts per step run
+#   docker compose exec postgres psql -U bookstore -c \
+#     "SELECT step_name, read_count, write_count, process_skip_count, commit_count, status FROM batching.batch_step_execution"

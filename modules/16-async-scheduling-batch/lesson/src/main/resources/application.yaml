@@ -1,0 +1,42 @@
+spring:
+  application:
+    name: 16-async-scheduling-batch
+  threads:
+    virtual:
+      enabled: true                             # @Async and @Scheduled run on virtual threads (lessons 3.1–3.2)
+  # All modules share the "bookstore" database of compose.yaml; this one uses the schema "batching".
+  flyway:
+    schemas: batching
+  datasource:
+    hikari:
+      schema: batching
+  # tag::batch-config[]
+  batch:
+    jdbc:
+      initialize-schema: always                 # create BATCH_JOB_INSTANCE, BATCH_STEP_EXECUTION, … in PostgreSQL
+    job:
+      enabled: false                            # do not run jobs at startup; LessonTour starts them with parameters
+  # end::batch-config[]
+  docker:
+    compose:
+      # Reuse the root compose.yaml; only the listed profiles are started.
+      file: ../../../compose.yaml
+      profiles:
+        active: postgres
+      # Keep containers running between restarts (stop them with: docker compose --profile all down)
+      lifecycle-management: start-only
+      # Run "docker compose up" even if another module already started some services:
+      # it is idempotent and starts only what is missing (default "if-running" would skip it)
+      start:
+        skip: never
+# tag::schedule-config[]
+bookstore:
+  snapshot:
+    interval: 30s                               # @Scheduled(fixedDelayString = …)
+  report:
+    cron: "0 0 2 * * *"                         # every night at 02:00 (second minute hour day month weekday)
+# end::schedule-config[]
+logging:
+  level:
+    root: warn
+    com.springbootedu: info

@@ -59,6 +59,8 @@
         <module>modules/14-testing/solution</module>
         <module>modules/15-observability/lesson</module>
         <module>modules/15-observability/solution</module>
+        <module>modules/16-async-scheduling-batch/lesson</module>
+        <module>modules/16-async-scheduling-batch/solution</module>
         <!-- course-modules:end -->
     </modules>
 
@@ -83,6 +85,7 @@
                 <module>modules/13-reactive/exercise</module>
                 <module>modules/14-testing/exercise</module>
                 <module>modules/15-observability/exercise</module>
+                <module>modules/16-async-scheduling-batch/exercise</module>
                 <!-- exercise-modules:end -->
             </modules>
         </profile>
