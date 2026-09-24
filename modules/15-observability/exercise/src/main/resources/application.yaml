@@ -1,0 +1,6 @@
+spring:
+  application:
+    name: 15-observability
+  threads:
+    virtual:
+      enabled: true

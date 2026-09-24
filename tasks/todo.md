@@ -164,7 +164,7 @@ Ortak doğrulama komutu (aşağıda `VERIFY(<id>)` olarak geçer):
 - [x] **M14.c Doküman** — Verify: `VERIFY(14-testing)`
 
 ### 15-observability · #30
-- [ ] **M15.a Kod** — Actuator endpoint'leri ve güvenliği; özel `HealthIndicator`; Micrometer counter/timer/gauge; `@Observed`; OpenTelemetry tracing + log korelasyonu; structured logging (ECS); Grafana LGTM (compose) dashboard'u
+- [x] **M15.a Kod** — Actuator endpoint'leri ve güvenliği; özel `HealthIndicator`; Micrometer counter/timer/gauge; `@Observed`; OpenTelemetry tracing + log korelasyonu; structured logging (ECS); Grafana LGTM (compose) dashboard'u
 - [ ] **M15.b Ödevler** — iş metriği (sipariş sayısı); yavaş endpoint'i trace ile bulmak; özel health check
 - [ ] **M15.c Doküman** — Verify: `VERIFY(15-observability)`
 

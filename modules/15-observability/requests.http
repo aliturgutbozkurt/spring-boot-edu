@@ -1,0 +1,27 @@
+# HTTP examples for module 15-observability. Run them from IntelliJ IDEA / VS Code (REST Client).
+# Start the lesson first: ./mvnw -pl modules/15-observability/lesson spring-boot:run   (starts Grafana LGTM)
+# Grafana: http://localhost:3000 (Explore → Tempo for traces, Prometheus for metrics)
+
+### Place an order: creates metrics, a trace over two HTTP hops and JSON log lines with the trace id
+POST http://localhost:8080/api/orders?isbn=9780134685991&channel=web
+
+### The same via another channel (a counter tag)
+POST http://localhost:8080/api/orders?isbn=9780321336781&channel=app
+
+### Health with the custom warehouse indicator
+GET http://localhost:8080/actuator/health
+
+### Kubernetes probes
+GET http://localhost:8080/actuator/health/readiness
+
+### All metric names
+GET http://localhost:8080/actuator/metrics
+
+### One metric, filtered by a tag
+GET http://localhost:8080/actuator/metrics/bookstore.orders.placed?tag=channel:web
+
+### The @Observed timer
+GET http://localhost:8080/actuator/metrics/bookstore.pricing
+
+### Not exposed on purpose (404)
+GET http://localhost:8080/actuator/env

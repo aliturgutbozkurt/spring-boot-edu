@@ -1,0 +1,54 @@
+spring:
+  application:
+    name: 15-observability
+  threads:
+    virtual:
+      enabled: true
+  docker:
+    compose:
+      # Reuse the root compose.yaml; only the listed profiles are started.
+      # Boot recognises grafana/otel-lgtm and sends metrics, traces and logs to it.
+      file: ../../../compose.yaml
+      profiles:
+        active: observability
+      # Keep containers running between restarts (stop them with: docker compose --profile all down)
+      lifecycle-management: start-only
+      # Run "docker compose up" even if another module already started some services:
+      # it is idempotent and starts only what is missing (default "if-running" would skip it)
+      start:
+        skip: never
+# tag::observability-config[]
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, info, metrics            # never "*": heapdump, env, … leak internals
+  endpoint:
+    health:
+      show-details: always                        # fine locally; in production: when-authorized
+      probes:
+        enabled: true                             # /actuator/health/liveness and /readiness
+  info:
+    java:
+      enabled: true
+  observations:
+    annotations:
+      enabled: true                               # @Observed
+  tracing:
+    sampling:
+      probability: 1.0                            # every request is traced (production: e.g. 0.1)
+  metrics:
+    tags:
+      application: ${spring.application.name}     # a common tag on every metric
+  otlp:
+    metrics:
+      export:
+        step: 10s                                 # push metrics every 10 s (default: 1 minute)
+logging:
+  structured:
+    format:
+      console: ecs                                # one JSON object per line (Elastic Common Schema)
+# end::observability-config[]
+  level:
+    root: warn
+    com.springbootedu: info

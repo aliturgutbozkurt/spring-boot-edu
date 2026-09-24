@@ -57,6 +57,8 @@
         <module>modules/13-reactive/solution</module>
         <module>modules/14-testing/lesson</module>
         <module>modules/14-testing/solution</module>
+        <module>modules/15-observability/lesson</module>
+        <module>modules/15-observability/solution</module>
         <!-- course-modules:end -->
     </modules>
 
@@ -80,6 +82,7 @@
                 <module>modules/12-security/exercise</module>
                 <module>modules/13-reactive/exercise</module>
                 <module>modules/14-testing/exercise</module>
+                <module>modules/15-observability/exercise</module>
                 <!-- exercise-modules:end -->
             </modules>
         </profile>
