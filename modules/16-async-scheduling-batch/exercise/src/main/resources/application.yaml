@@ -1,6 +1,12 @@
 spring:
   application:
-    name: 16-async-scheduling-batch
+    name: 16-async-scheduling-batch-exercises
   threads:
     virtual:
       enabled: true
+  batch:
+    job:
+      enabled: false                    # the tests start the jobs
+logging:
+  level:
+    root: warn
