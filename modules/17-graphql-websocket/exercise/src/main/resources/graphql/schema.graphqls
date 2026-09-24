@@ -1,0 +1,45 @@
+# The schema of all three exercises (schema-first: the controllers follow this contract).
+
+type Query {
+    authors: [Author!]!
+    author(id: ID!): Author
+}
+
+type Author {
+    id: ID!
+    name: String!
+    # TODO 1a: an author has a non-null list of non-null books
+}
+
+type Book {
+    isbn: ID!
+    title: String!
+    price: Float!
+}
+
+# Exercise 2
+type Mutation {
+    placeOrder(input: OrderInput!): Order!
+}
+
+input OrderInput {
+    customerId: ID!
+    lines: [OrderLineInput!]!
+}
+
+input OrderLineInput {
+    isbn: ID!
+    quantity: Int!
+}
+
+type Order {
+    id: ID!
+    customerId: ID!
+    lines: [OrderLine!]!
+    total: Float!
+}
+
+type OrderLine {
+    book: Book!
+    quantity: Int!
+}

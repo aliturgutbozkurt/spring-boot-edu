@@ -1,6 +1,9 @@
 spring:
   application:
-    name: 17-graphql-websocket
+    name: 17-graphql-websocket-exercises
   threads:
     virtual:
       enabled: true
+logging:
+  level:
+    root: warn

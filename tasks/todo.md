@@ -181,7 +181,7 @@ Ortak doğrulama komutu (aşağıda `VERIFY(<id>)` olarak geçer):
 
 ### 17-graphql-websocket · #33
 - [x] **M17.a Kod** — GraphQL schema-first; `@QueryMapping/@MutationMapping/@SchemaMapping`; `@BatchMapping` ile N+1 çözümü; subscription; `GraphQlTester`; WebSocket/STOMP ile canlı bildirim
-- [ ] **M17.b Ödevler** — Author→Books sorgusu; sipariş mutation'ı; canlı stok bildirimi
+- [x] **M17.b Ödevler** — Author→Books sorgusu; sipariş mutation'ı; canlı stok bildirimi
 - [ ] **M17.c Doküman** — Verify: `VERIFY(17-graphql-websocket)`
 
 ### 18-modulith · #34
