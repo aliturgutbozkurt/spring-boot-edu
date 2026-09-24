@@ -191,6 +191,7 @@ Kurallar CLAUDE.md'de. Özet: constructor injection, Lombok yok, DTO'lar `record
 9. Java 27 dil/API durumu (T0.2 probe): record/sealed/pattern matching, `ScopedValue`, stream gatherers, virtual threads, compact source files (`void main` + `IO`) **final**; `StructuredTaskScope` hâlâ **preview** → `00-setup-modern-java` içinde ayrı `preview` profilinde gösterilir.
 
 10. **Hazelcast CP Subsystem Enterprise'a özel** (2026-09-23 spike): Hazelcast 5.5.0 Community'de `getCPSubsystem().getLock()` / `getAtomicLong()` → `UnsupportedOperationException: CP subsystem is a licensed feature`. Dağıtık kilit **`IMap.lock/tryLock`** (anahtar başına kilit) ile, atomik güncellemeler **`EntryProcessor`** ile öğretilir. `FencedLock`/CP yalnızca kavram olarak, "Enterprise özelliği" notuyla anlatılır. Modül 09 ve capstone bu karara göre yazılır.
+11. **Modül 14'te ödevler test yazmaktır** (2026-09-24, kullanıcı kararı): `14-testing` için karar 8'in istisnası. `exercise/src/test` TODO'lu test iskeletlerini, `solution/src/test` tam testleri içerir; test edilen kod (`src/main`) iki modülde aynıdır. `check-module` bu modülde "testler aynı" kuralı yerine şunları doğrular: TODO'lar `exercise/src/test`'te, `src/main` iki tarafta aynı, çözümde TODO yok. Çözüm testlerinin yeterliliği bir mini mutasyon testiyle kanıtlanır: kasıtlı hatalı varyantlar çözüm testleri tarafından yakalanmalıdır.
 
 ## Open Questions
 

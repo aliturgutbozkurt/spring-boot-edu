@@ -26,6 +26,9 @@ SPEC = ROOT / "SPEC.md"
 
 ID_PATTERN = re.compile(r"^\d{2}-[a-z0-9]+(-[a-z0-9]+)*$")
 INFRA_PROFILES = {"postgres", "mongo", "elastic", "redis", "kafka", "hazelcast", "observability", "ai"}
+# SPEC decision 11: in these modules the exercises are about writing tests
+STUDENT_WRITES_TESTS = {"14-testing"}
+
 DOC_PAIRS = [("tr/ders.md", "en/lesson.md"), ("tr/odevler.md", "en/exercises.md")]
 PDFS = ["tr/ders.pdf", "tr/odevler.pdf", "en/lesson.pdf", "en/exercises.pdf"]
 # <!-- snippet: lesson/src/main/java/.../File.java#tag-name -->   (region between // tag::tag-name[] and // end::tag-name[])
@@ -442,20 +445,30 @@ def check_module(module_id: str, strict: bool) -> Report:
     for kind in ("lesson", "solution", "exercise"):
         r.check(f"<module>modules/{module_id}/{kind}</module>" in pom, f"{kind}/ is not registered in the root pom.xml")
 
-    # 3. exercise tests == solution tests
     ex_tests, sol_tests = module_dir / "exercise/src/test", module_dir / "solution/src/test"
-    if ex_tests.is_dir() and sol_tests.is_dir():
-        r.check(same_tree(ex_tests, sol_tests), "exercise/src/test and solution/src/test differ — they must be identical")
-    else:
-        r.check(False, "exercise/src/test and solution/src/test must both exist")
-
-    # 4. the exercise has TODOs, the solution has none
     ex_main, sol_main = module_dir / "exercise/src/main", module_dir / "solution/src/main"
-    r.check(any("TODO" in f.read_text() for f in ex_main.rglob("*.java")) if ex_main.is_dir() else False,
-            "exercise/src/main has no TODO — students need to know what to implement")
-    if sol_main.is_dir():
-        leftovers = [f.relative_to(module_dir).as_posix() for f in sol_main.rglob("*.java") if "TODO" in f.read_text()]
-        r.check(not leftovers, f"solution/ still contains TODOs: {', '.join(leftovers)}")
+    if module_id in STUDENT_WRITES_TESTS:
+        # SPEC decision 11: students write the tests; the code under test is given and identical
+        if ex_main.is_dir() and sol_main.is_dir():
+            r.check(same_tree(ex_main, sol_main), "exercise/src/main and solution/src/main differ — the code under test must be identical")
+        r.check(any("TODO" in f.read_text() for f in ex_tests.rglob("*.java")) if ex_tests.is_dir() else False,
+                "exercise/src/test has no TODO — students need to know which tests to write")
+        todo_dirs = [sol_tests]
+    else:
+        # 3. exercise tests == solution tests
+        if ex_tests.is_dir() and sol_tests.is_dir():
+            r.check(same_tree(ex_tests, sol_tests), "exercise/src/test and solution/src/test differ — they must be identical")
+        else:
+            r.check(False, "exercise/src/test and solution/src/test must both exist")
+        # 4. the exercise has TODOs
+        r.check(any("TODO" in f.read_text() for f in ex_main.rglob("*.java")) if ex_main.is_dir() else False,
+                "exercise/src/main has no TODO — students need to know what to implement")
+        todo_dirs = [sol_main]
+    # the solution has no TODOs
+    for todo_dir in todo_dirs:
+        if todo_dir.is_dir():
+            leftovers = [f.relative_to(module_dir).as_posix() for f in todo_dir.rglob("*.java") if "TODO" in f.read_text()]
+            r.check(not leftovers, f"solution/ still contains TODOs: {', '.join(leftovers)}")
 
     # 5. TR/EN parity, 6. snippets, 7. fresh PDFs
     manifest = parse_manifest(module_dir / "docs/.pdf-manifest")
