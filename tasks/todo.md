@@ -177,7 +177,7 @@ Ortak doğrulama komutu (aşağıda `VERIFY(<id>)` olarak geçer):
 ### 16-async-scheduling-batch · #32
 - [x] **M16.a Kod** — `@Async` + `CompletableFuture`; virtual thread executor; `@Scheduled` (cron, fixedDelay) + ShedLock tartışması; Spring Batch 6: CSV → PostgreSQL chunk job, skip/retry, restart, job parametreleri
 - [x] **M16.b Ödevler** — gece çalışan rapor job'ı; hatalı satırları atlayan import; paralel async çağrı
-- [ ] **M16.c Doküman** — Verify: `VERIFY(16-async-scheduling-batch)`
+- [x] **M16.c Doküman** — Verify: `VERIFY(16-async-scheduling-batch)`
 
 ### 17-graphql-websocket · #33
 - [ ] **M17.a Kod** — GraphQL schema-first; `@QueryMapping/@MutationMapping/@SchemaMapping`; `@BatchMapping` ile N+1 çözümü; subscription; `GraphQlTester`; WebSocket/STOMP ile canlı bildirim
