@@ -36,6 +36,8 @@ class SigningKeys {
 
     @Bean
     JwtDecoder jwtDecoder() throws Exception {
+        // Checks signature and expiry only — fine for this in-memory test key. With a real identity provider use
+        // spring.security.oauth2.resourceserver.jwt.issuer-uri (+ .audiences) so issuer and audience are checked too.
         return NimbusJwtDecoder.withPublicKey(key.toRSAPublicKey()).build();
     }
 

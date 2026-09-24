@@ -39,11 +39,14 @@ public class SecurityConfiguration {
                         .requestMatchers(HttpMethod.GET, "/api/books/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/books/**")
                             .hasAnyAuthority("ROLE_ADMIN", "SCOPE_books.write")   // a person or a token
-                        .anyRequest().authenticated())
-                .httpBasic(withDefaults())                                        // username + password …
+                        .requestMatchers("/api/me", "/api/orders/**").authenticated()
+                        .anyRequest().denyAll())                          // deny what no rule allows
+                .httpBasic(withDefaults())                                        // username + password (curl, scripts) …
                 .oauth2ResourceServer(resourceServer -> resourceServer.jwt(withDefaults()))   // … or a JWT
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .csrf(csrf -> csrf.disable())                  // no session cookie → nothing to forge
+                // No session cookie. Careful: browsers cache Basic credentials and send them on their own —
+                // for a browser front end use bearer tokens only, or keep CSRF on (lesson 3.3)
+                .csrf(csrf -> csrf.disable())
                 .cors(withDefaults());                         // uses the CorsConfigurationSource bean
         return http.build();
     }

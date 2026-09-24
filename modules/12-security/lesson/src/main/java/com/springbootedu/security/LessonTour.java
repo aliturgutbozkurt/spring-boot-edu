@@ -14,10 +14,10 @@ import org.springframework.web.client.RestClient;
 
 /**
  * Runs the lesson's examples once against the running server, as an HTTP client would.
- * Start it with: ./mvnw -pl modules/12-security/lesson spring-boot:run   (Docker must be running)
+ * Start it with: ./mvnw -pl modules/12-security/lesson spring-boot:run   (Docker must be running; profile "dev")
  */
 @Component
-@ConditionalOnBooleanProperty(name = "bookstore.tour.enabled", matchIfMissing = true)
+@ConditionalOnBooleanProperty(name = "bookstore.tour.enabled")                // only in the dev profile
 class LessonTour implements ApplicationRunner {
 
     private final Environment environment;

@@ -1,6 +1,10 @@
 package com.springbootedu.security.order;
 
 import java.util.List;
+import java.util.NoSuchElementException;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ProblemDetail;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,5 +31,10 @@ class OrderController {
     @GetMapping("/{id}")
     Order one(@PathVariable long id) {
         return orders.find(id);
+    }
+
+    @ExceptionHandler(NoSuchElementException.class)
+    ProblemDetail notFound(NoSuchElementException e) {
+        return ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, e.getMessage());   // 404, not 500
     }
 }

@@ -14,6 +14,11 @@
     <artifactId>12-security-lesson</artifactId>
     <name>12 · Security with Spring Security :: lesson</name>
 
+    <properties>
+        <!-- spring-boot:run uses the dev profile (demo users and secrets); override with -Dspring-boot.run.profiles=… -->
+        <spring-boot.run.profiles>dev</spring-boot.run.profiles>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>

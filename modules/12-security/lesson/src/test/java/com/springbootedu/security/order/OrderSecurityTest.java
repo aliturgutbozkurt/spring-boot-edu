@@ -51,6 +51,11 @@ class OrderSecurityTest {
     }
 
     @Test
+    void anUnknownOrderIsNotFound() {
+        assertThat(mvc.get().uri("/api/orders/99").with(user("admin").roles("ADMIN"))).hasStatus(404);
+    }
+
+    @Test
     @WithMockUser(username = "ada", roles = "CUSTOMER")
     void theRuleIsEnforcedOnTheServiceItselfNotOnlyOnTheUrl() {
         assertThatThrownBy(() -> orders.findAll()).isInstanceOf(AuthorizationDeniedException.class);

@@ -56,6 +56,12 @@ class BooksApiTest {
     }
 
     @Test
+    void whatNoRuleAllowsIsDenied() {
+        assertThat(mvc.delete().uri("/api/books/9780134685991").with(httpBasic("admin", "admin-password")))
+                .hasStatus(403);                                        // denyAll(), even for an admin
+    }
+
+    @Test
     void theApiNeedsNoCsrfTokenBecauseItHasNoSession() {
         assertThat(post().with(httpBasic("admin", "admin-password")))
                 .hasStatus(201).headers().doesNotContainHeader(HttpHeaders.SET_COOKIE);

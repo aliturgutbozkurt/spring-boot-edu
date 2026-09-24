@@ -3,6 +3,7 @@ package com.springbootedu.security.authserver;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
+import org.springframework.core.env.Environment;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.oauth2.server.authorization.OAuth2AuthorizationServerConfigurer;
@@ -15,6 +16,12 @@ import org.springframework.security.web.SecurityFilterChain;
 // tag::authorization-server-chain[]
 @Configuration(proxyBeanMethods = false)
 public class AuthorizationServerConfiguration {
+
+    static final String CLIENT_SECRET = "spring.security.oauth2.authorizationserver.client.bookstore-cli.registration.client-secret";
+
+    AuthorizationServerConfiguration(Environment environment) {
+        environment.getRequiredProperty(CLIENT_SECRET);        // fail fast if BOOKSTORE_CLI_SECRET is missing
+    }
 
     @Bean
     @Order(1)

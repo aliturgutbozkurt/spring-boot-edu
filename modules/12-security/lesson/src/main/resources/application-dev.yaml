@@ -1,0 +1,16 @@
+# Local development only — activated by spring-boot:run (see pom.xml). Never use this profile in a deployment.
+# tag::dev-profile[]
+spring:
+  flyway:
+    locations: classpath:db/migration,classpath:db/demo      # + demo users with known passwords
+  security:
+    oauth2:
+      authorizationserver:
+        client:
+          bookstore-cli:
+            registration:
+              client-secret: "{noop}dev-only-secret"          # plain text: acceptable only on your machine
+bookstore:
+  tour:
+    enabled: true                                            # the tour uses the demo credentials
+# end::dev-profile[]

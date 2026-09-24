@@ -19,9 +19,9 @@ spring:
           bookstore-cli:                           # a machine client (e.g. a script or another service)
             registration:
               client-id: bookstore-cli
-              # {noop}: stored as plain text — acceptable only for this local demo; override it with the
-              # environment variable BOOKSTORE_CLI_SECRET
-              client-secret: "${BOOKSTORE_CLI_SECRET:{noop}dev-only-secret}"
+              # No default: without BOOKSTORE_CLI_SECRET the application does not start (fail fast).
+              # Store it hashed, e.g. BOOKSTORE_CLI_SECRET={bcrypt}$2a$10$… — the dev profile sets a demo value.
+              client-secret: ${BOOKSTORE_CLI_SECRET}
               client-authentication-methods: client_secret_basic
               authorization-grant-types: client_credentials
               scopes: books.read,books.write
