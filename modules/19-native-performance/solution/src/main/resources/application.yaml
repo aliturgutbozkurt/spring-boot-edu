@@ -1,0 +1,9 @@
+spring:
+  application:
+    name: 19-native-performance-exercises
+bookstore:
+  export:
+    format: com.springbootedu.nativeperformance.exercise1.CsvExport
+logging:
+  level:
+    root: warn
