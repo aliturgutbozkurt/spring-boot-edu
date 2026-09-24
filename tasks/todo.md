@@ -161,7 +161,7 @@ Ortak doğrulama komutu (aşağıda `VERIFY(<id>)` olarak geçer):
 ### 14-testing · #29
 - [x] **M14.a Kod** — test piramidi; slice testler karşılaştırması; `MockMvcTester`, `RestTestClient`, `WebTestClient`; `@MockitoBean`/`@MockitoSpyBean`; Testcontainers + `@ServiceConnection` + reuse; `@TestConfiguration`; test verisi (fixture/builder); ArchUnit ile mimari kuralları
 - [x] **M14.b Ödevler** — test edilmemiş bir servisi test etmek; flaky testi düzeltmek; mimari kural yazmak
-- [ ] **M14.c Doküman** — Verify: `VERIFY(14-testing)`
+- [x] **M14.c Doküman** — Verify: `VERIFY(14-testing)`
 
 ### 15-observability · #30
 - [ ] **M15.a Kod** — Actuator endpoint'leri ve güvenliği; özel `HealthIndicator`; Micrometer counter/timer/gauge; `@Observed`; OpenTelemetry tracing + log korelasyonu; structured logging (ECS); Grafana LGTM (compose) dashboard'u

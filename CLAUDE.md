@@ -109,7 +109,7 @@ class BookController {                       // Lesson 3.1 — minimal REST cont
 - Unit tests: `*Test`. Integration (Testcontainers, full context): `*IT`, run by Failsafe in `verify`.
 - Prefer slice tests (`@WebMvcTest`, `@DataJpaTest`, `@DataMongoTest`, `@DataRedisTest`, `@DataElasticsearchTest`, …) before `@SpringBootTest`.
 - Infra in tests always via Testcontainers + `@ServiceConnection` — never depend on a manually started container.
-- Exercise tests are identical to solution tests (`scripts/check-module.sh` diffs them).
+- Exercise tests are identical to solution tests (`scripts/check-module.sh` diffs them). Exception (SPEC decision 11): in `14-testing` students write the tests — there `src/main` is identical, TODOs are in `exercise/src/test`, and mutation/meta tests prove the solution tests catch bugs.
 - Never delete, `@Disabled` or weaken a failing test to get green. Fix the code or ask.
 
 ## Documentation Rules
