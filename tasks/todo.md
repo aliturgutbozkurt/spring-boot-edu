@@ -149,7 +149,7 @@ Ortak doğrulama komutu (aşağıda `VERIFY(<id>)` olarak geçer):
 ## Faz 5 — Platform
 
 ### 12-security · #27
-- [ ] **M12.a Kod** — `SecurityFilterChain` anatomisi; in-memory → JDBC kullanıcılar, `PasswordEncoder`; form + HTTP basic; method security (`@PreAuthorize`); JWT resource server; Spring Authorization Server ile token alma; CORS/CSRF; `spring-security-test` ile testler
+- [x] **M12.a Kod** — `SecurityFilterChain` anatomisi; in-memory → JDBC kullanıcılar, `PasswordEncoder`; form + HTTP basic; method security (`@PreAuthorize`); JWT resource server; Spring Authorization Server ile token alma; CORS/CSRF; `spring-security-test` ile testler
 - [ ] **M12.b Ödevler** — rol bazlı erişim (ADMIN/CUSTOMER); "sadece kendi siparişini gör" kuralı; JWT claim'den yetki eşleme
 - [ ] **M12.c Doküman** — Verify: `VERIFY(12-security)` + `security-auditor` ajan incelemesi
 

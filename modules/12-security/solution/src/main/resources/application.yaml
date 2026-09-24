@@ -1,0 +1,6 @@
+spring:
+  application:
+    name: 12-security
+  threads:
+    virtual:
+      enabled: true

@@ -1,0 +1,49 @@
+# HTTP examples for module 12-security. Run them from IntelliJ IDEA / VS Code (REST Client).
+# Start the lesson first: ./mvnw -pl modules/12-security/lesson spring-boot:run
+# Demo users (local development only): ada / ada-password (CUSTOMER), bob / bob-password, admin / admin-password (ADMIN)
+
+### Public
+GET http://localhost:8080/api/books
+
+### 401 — no credentials
+POST http://localhost:8080/api/books
+Content-Type: application/json
+
+{"isbn": "9780000000017", "title": "Secure by Design"}
+
+### 403 — authenticated, but a CUSTOMER may not write
+POST http://localhost:8080/api/books
+Authorization: Basic ada ada-password
+Content-Type: application/json
+
+{"isbn": "9780000000017", "title": "Secure by Design"}
+
+### 201 — an ADMIN may write
+POST http://localhost:8080/api/books
+Authorization: Basic admin admin-password
+Content-Type: application/json
+
+{"isbn": "9780000000017", "title": "Secure by Design"}
+
+### Method security: ada sees her own order …
+GET http://localhost:8080/api/orders/1
+Authorization: Basic ada ada-password
+
+### … but not bob's (403)
+GET http://localhost:8080/api/orders/2
+Authorization: Basic ada ada-password
+
+### Get a token from our Authorization Server (client credentials)
+# @name token
+POST http://localhost:8080/oauth2/token
+Authorization: Basic bookstore-cli dev-only-secret
+Content-Type: application/x-www-form-urlencoded
+
+grant_type=client_credentials&scope=books.read+books.write
+
+### Call the API with the token
+GET http://localhost:8080/api/me
+Authorization: Bearer {{token.response.body.access_token}}
+
+### The server's public keys (to verify token signatures)
+GET http://localhost:8080/oauth2/jwks

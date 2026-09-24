@@ -51,6 +51,8 @@
         <module>modules/10-elasticsearch/solution</module>
         <module>modules/11-messaging-kafka/lesson</module>
         <module>modules/11-messaging-kafka/solution</module>
+        <module>modules/12-security/lesson</module>
+        <module>modules/12-security/solution</module>
         <!-- course-modules:end -->
     </modules>
 
@@ -71,6 +73,7 @@
                 <module>modules/09-hazelcast/exercise</module>
                 <module>modules/10-elasticsearch/exercise</module>
                 <module>modules/11-messaging-kafka/exercise</module>
+                <module>modules/12-security/exercise</module>
                 <!-- exercise-modules:end -->
             </modules>
         </profile>
