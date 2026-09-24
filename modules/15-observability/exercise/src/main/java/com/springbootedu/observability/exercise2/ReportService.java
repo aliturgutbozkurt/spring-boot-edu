@@ -18,7 +18,7 @@ public class ReportService {
         // TODO 2b: observe each step as a child: "report.load-orders", "report.load-customers", "report.render"
         int orders = loadOrders();
         int customers = loadCustomers();
-        return render(orders, customers) + registry.getClass().getSimpleName().substring(0, 0);
+        return render(orders, customers);
     }
 
     private int loadOrders() {
