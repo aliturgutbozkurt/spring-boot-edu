@@ -156,7 +156,7 @@ Ortak doğrulama komutu (aşağıda `VERIFY(<id>)` olarak geçer):
 ### 13-reactive · #28
 - [x] **M13.a Kod** — Mono/Flux temelleri + `StepVerifier`; WebFlux annotated + functional endpoints; R2DBC PostgreSQL; reactive MongoDB; SSE stream; backpressure; virtual threads vs reactive karşılaştırması
 - [x] **M13.b Ödevler** — reactive kitap API'si; SSE ile canlı sipariş akışı; iki kaynağı `zip` ile birleştirme
-- [ ] **M13.c Doküman** — Verify: `VERIFY(13-reactive)`
+- [x] **M13.c Doküman** — Verify: `VERIFY(13-reactive)`
 
 ### 14-testing · #29
 - [ ] **M14.a Kod** — test piramidi; slice testler karşılaştırması; `MockMvcTester`, `RestTestClient`, `WebTestClient`; `@MockitoBean`/`@MockitoSpyBean`; Testcontainers + `@ServiceConnection` + reuse; `@TestConfiguration`; test verisi (fixture/builder); ArchUnit ile mimari kuralları

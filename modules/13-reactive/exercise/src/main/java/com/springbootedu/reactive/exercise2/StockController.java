@@ -18,8 +18,4 @@ public class StockController {
     // TODO 2b: GET /api/stock/stream as text/event-stream: every change as a Server-Sent Event
     // TODO 2c: with ?isbn=… only the changes of that book
     // TODO 2d: send a comment event first, so that the client gets the response headers at once
-
-    StockFeed feed() {
-        return feed;
-    }
 }
