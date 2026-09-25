@@ -460,14 +460,14 @@ def check_module(module_id: str, strict: bool) -> Report:
             r.check(same_tree(ex_tests, sol_tests), "exercise/src/test and solution/src/test differ — they must be identical")
         else:
             r.check(False, "exercise/src/test and solution/src/test must both exist")
-        # 4. the exercise has TODOs
-        r.check(any("TODO" in f.read_text() for f in ex_main.rglob("*.java")) if ex_main.is_dir() else False,
-                "exercise/src/main has no TODO — students need to know what to implement")
-        todo_dirs = [sol_main]
+        # 4. the exercise has TODOs — in the code, or in other student files (Dockerfile, compose.yaml, k8s/, .proto)
+        r.check(any("TODO" in f.read_text() for f in student_files(module_dir / "exercise")),
+                "exercise/ has no TODO — students need to know what to implement")
+        todo_dirs = [module_dir / "solution"]
     # the solution has no TODOs
     for todo_dir in todo_dirs:
         if todo_dir.is_dir():
-            leftovers = [f.relative_to(module_dir).as_posix() for f in todo_dir.rglob("*.java") if "TODO" in f.read_text()]
+            leftovers = [f.relative_to(module_dir).as_posix() for f in student_files(todo_dir, include_tests=True) if "TODO" in f.read_text()]
             r.check(not leftovers, f"solution/ still contains TODOs: {', '.join(leftovers)}")
 
     # 5. TR/EN parity, 6. snippets, 7. fresh PDFs
@@ -505,6 +505,19 @@ def strict_doc_checks(r: Report, rel: str, text: str) -> None:
     else:
         exercises = len(re.findall(r"^# (Ödev|Exercise) \d+", text, flags=re.M))
         r.check(exercises >= 3, f"docs/{rel}: {exercises} exercises — SPEC requires at least 3")
+
+
+STUDENT_FILE_SUFFIXES = {".java", ".proto", ".yaml", ".yml", ".sql", ".properties", ".sh"}
+
+
+def student_files(directory: Path, include_tests: bool = False) -> list[Path]:
+    """Files a student edits: sources and config, not build output; tests only when asked for."""
+    if not directory.is_dir():
+        return []
+    return [f for f in directory.rglob("*")
+            if f.is_file() and "target" not in f.relative_to(directory).parts
+            and (include_tests or "test" not in f.relative_to(directory).parts[:2])
+            and (f.suffix in STUDENT_FILE_SUFFIXES or f.name.startswith("Dockerfile"))]
 
 
 def same_tree(a: Path, b: Path) -> bool:

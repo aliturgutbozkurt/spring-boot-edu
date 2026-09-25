@@ -1,0 +1,7 @@
+# Exercise 1 — change the shop name here and apply: the running pods keep the old value. Why?
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: bookstore-config
+data:
+  BOOKSTORE_SHOP_NAME: Exercise shop

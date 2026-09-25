@@ -1,0 +1,16 @@
+# The exercises: the lesson's image in its own namespace.
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: bookstore-exercise
+resources:
+  - namespace.yaml
+  - postgres.yaml
+  - configmap.yaml                         # TODO 1: generate the ConfigMap instead (configMapGenerator)
+  - deployment.yaml
+  - service.yaml
+  # TODO 3b: an autoscaler in hpa.yaml
+secretGenerator:
+  - name: bookstore-db
+    literals:
+      - SPRING_DATASOURCE_USERNAME=bookstore
+      - SPRING_DATASOURCE_PASSWORD=bookstore
