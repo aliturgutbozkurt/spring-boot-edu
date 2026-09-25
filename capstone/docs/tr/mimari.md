@@ -95,7 +95,7 @@ Katalog servisi bir kitap oluşturulduğunda veya değiştirildiğinde (başlang
 - **Bağlam:** Bir sipariş yalnızca kitap stoktayken kabul edilebilir.
 - **Karar:** `order-service`, 2 saniyelik bir deadline ile gRPC üzerinden `catalog-service`'in `ReserveStock`'unu çağırır.
 - **Alternatifler:** Asenkron bir saga (event ile ayır, sonra onayla veya iptal et) daha iyi ölçeklenir ve katalog kesintilerinden sağ çıkar, ama müşteriyi ikinci bir cevap için bekletir.
-- **Sonuçlar:** Sipariş servisi sipariş anında kataloğa bağımlıdır. Bir circuit breaker bir katalog kesintisini asılı kalan istekler yerine net bir `503`'e çevirir.
+- **Sonuçlar:** Sipariş servisi sipariş anında kataloğa bağımlıdır. Deadline, bir katalog kesintisini asılı kalan istekler yerine net bir `503`'e çevirir; kısa bir yeniden başlatma, idempotent rezervasyonu yeniden deneyerek atlatılır (ödev 3). Bir circuit breaker (modül 23) ayrıca kapalı kalan bir kataloğu çağırmayı bırakırdı.
 
 ## ADR-3: OrderPlaced için Transactional Outbox
 
@@ -137,13 +137,16 @@ Tüm servisler metrikleri ve trace'leri OTLP ile Grafana LGTM'ye aktarır (modü
 ```text
 capstone/
   pom.xml                 aggregator
-  contracts/              .proto files and event records (a library)
+  contracts/              .proto dosyaları ve event record'ları (kütüphane)
   gateway/                Spring Cloud Gateway
   order-service/
   catalog-service/
   search-service/
-  e2e-tests/              the end-to-end test (Testcontainers)
-  compose.yaml            the whole system
-  k8s/helm/bookstore/     the Helm chart
-  docs/                   this document, the capstone guide and exercises (TR + EN, PDF)
+  e2e-tests/              uçtan uca test (Testcontainers)
+  Dockerfile              dört servis için tek imaj tarifi (jar kaynak koddan ya da makineden)
+  compose.yaml, up.sh     tüm sistem
+  k8s/helm/bookstore/     Helm chart; k8s/deploy-kind.sh onu kind'a kurar
+  exercise/, solution/    bitirme projesi ödevleri (her biri bir order-service kopyası)
+  requests.http           gateway üzerinden HTTP örnekleri
+  docs/                   bu doküman, rehber ve ödevler (TR + EN, PDF)
 ```

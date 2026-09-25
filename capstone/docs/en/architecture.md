@@ -95,7 +95,7 @@ The catalog service publishes `BookChanged` to `bookstore.catalog` whenever a bo
 - **Context:** an order may only be accepted when the book is in stock.
 - **Decision:** `order-service` calls `ReserveStock` on `catalog-service` over gRPC, with a deadline of 2 seconds.
 - **Alternatives:** an asynchronous saga (reserve by event, confirm or cancel later) scales better and survives catalog outages, but makes the customer wait for a second answer.
-- **Consequences:** the order service depends on the catalog at order time. A circuit breaker turns a catalog outage into a clear `503` instead of hanging requests.
+- **Consequences:** the order service depends on the catalog at order time. The deadline turns a catalog outage into a clear `503` instead of hanging requests; a short restart is bridged by retrying the idempotent reservation (exercise 3). A circuit breaker (module 23) would additionally stop calling a catalog that stays down.
 
 ## ADR-3: Transactional Outbox for OrderPlaced
 
@@ -143,7 +143,10 @@ capstone/
   catalog-service/
   search-service/
   e2e-tests/              the end-to-end test (Testcontainers)
-  compose.yaml            the whole system
-  k8s/helm/bookstore/     the Helm chart
+  Dockerfile              one image recipe for the four services (jar from source or from the host)
+  compose.yaml, up.sh     the whole system
+  k8s/helm/bookstore/     the Helm chart; k8s/deploy-kind.sh installs it on kind
+  exercise/, solution/    the capstone exercises (a copy of order-service each)
+  requests.http           HTTP examples through the gateway
   docs/                   this document, the capstone guide and exercises (TR + EN, PDF)
 ```

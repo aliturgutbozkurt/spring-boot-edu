@@ -20,6 +20,7 @@ public class BookSearch {
         this.elasticsearch = elasticsearch;
     }
 
+    // tag::search[]
     @Cacheable(cacheNames = "search", key = "#query.strip().toLowerCase()")    // "Java" and " java" share an entry
     public SearchResult search(String query) {
         NativeQuery search = NativeQuery.builder()
@@ -34,3 +35,4 @@ public class BookSearch {
         return new SearchResult(query, hits);
     }
 }
+    // end::search[]

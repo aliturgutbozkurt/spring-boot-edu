@@ -128,7 +128,7 @@ docker compose --profile all up -d                       # tüm altyapı
 ./scripts/check-module.sh <modül-id>
 ./scripts/new-module.sh <modül-id>
 cd capstone && docker compose up --build                  # bitirme projesi
-./scripts/kind-up.sh && helm install bookstore capstone/k8s/helm   # capstone Kubernetes'te
+capstone/k8s/deploy-kind.sh                                # capstone Kubernetes'te (kind + Helm chart capstone/k8s/helm/bookstore)
 ```
 
 ## Project Structure

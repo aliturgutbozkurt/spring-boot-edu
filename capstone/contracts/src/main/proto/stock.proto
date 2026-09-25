@@ -6,6 +6,7 @@ package bookstore.catalog.v1;
 option java_package = "com.springbootedu.capstone.contracts.stock.v1";
 option java_multiple_files = true;
 
+// tag::stock-service[]
 service StockService {
   // Reserves all lines or none. Idempotent per order_ref: a retry returns the first result.
   // NOT_FOUND: unknown ISBN · FAILED_PRECONDITION: not enough stock
@@ -13,6 +14,7 @@ service StockService {
   // Gives the stock of a reservation back (when the order could not be saved).
   rpc ReleaseStock (ReleaseStockRequest) returns (ReleaseStockResponse);
 }
+// end::stock-service[]
 
 message ReserveStockRequest {
   string order_ref = 1;

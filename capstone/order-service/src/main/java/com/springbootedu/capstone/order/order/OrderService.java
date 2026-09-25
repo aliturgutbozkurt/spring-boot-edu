@@ -35,6 +35,7 @@ class OrderService {
         this.clock = clock;
     }
 
+    // tag::place-order[]
     OrderResponse place(String customerId, PlaceOrderRequest request) {
         UUID id = UUID.randomUUID();                            // also the idempotency key of the reservation
         Map<String, Integer> quantities = request.lines().stream().collect(Collectors.toMap(
@@ -49,6 +50,7 @@ class OrderService {
             throw e;
         }
     }
+    // end::place-order[]
 
     List<OrderResponse> ordersOf(String customerId) {
         return orders.findByCustomerIdOrderByPlacedAtDesc(customerId).stream().map(OrderResponse::from).toList();

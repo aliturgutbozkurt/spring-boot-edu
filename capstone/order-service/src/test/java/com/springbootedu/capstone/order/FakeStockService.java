@@ -7,6 +7,7 @@ import com.springbootedu.capstone.contracts.stock.v1.ReserveStockResponse;
 import com.springbootedu.capstone.contracts.stock.v1.ReservedLine;
 import com.springbootedu.capstone.contracts.stock.v1.StockLine;
 import com.springbootedu.capstone.contracts.stock.v1.StockServiceGrpc;
+import io.grpc.Context;
 import io.grpc.Metadata;
 import io.grpc.ServerCall;
 import io.grpc.ServerCallHandler;
@@ -54,6 +55,9 @@ public class FakeStockService extends StockServiceGrpc.StockServiceImplBase {
                         .withDescription("only 5 left of " + line.getIsbn()).asRuntimeException());
                 return;
             }
+        }
+        if (Context.current().isCancelled()) {
+            return;                                     // the client gave up (deadline): a late answer changes nothing
         }
         reserved.put(request.getOrderRef(), request.getLinesList());
         responses.onNext(response.build());

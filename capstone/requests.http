@@ -1,0 +1,56 @@
+# HTTP examples for the capstone. Start the platform first: capstone/up.sh (or: cd capstone && docker compose up --build)
+# Everything goes through the gateway on port 8080.
+
+### 3.1 A token for the demo customer (dev profile of the gateway)
+POST http://localhost:8080/api/auth/token
+Content-Type: application/json
+
+{"username": "ayse", "password": "ayse-demo"}
+
+> {% client.global.set("token", response.body.accessToken); %}
+
+### 3.1 The catalog is public
+GET http://localhost:8080/api/catalog/books
+
+### 3.6 Search (run it twice: the second answer comes from the Redis cache)
+GET http://localhost:8080/api/search?q=kafka
+
+### 3.3 Place an order (the stock is reserved over gRPC)
+POST http://localhost:8080/api/orders
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{"lines": [{"isbn": "9781492078005", "quantity": 2}]}
+
+### 3.3 My orders
+GET http://localhost:8080/api/orders
+Authorization: Bearer {{token}}
+
+### 3.3 Not enough stock → 409 ProblemDetail
+POST http://localhost:8080/api/orders
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{"lines": [{"isbn": "9781492078005", "quantity": 50}]}
+
+### 3.7 Without a token → 401 from the gateway
+POST http://localhost:8080/api/orders
+Content-Type: application/json
+
+{"lines": [{"isbn": "9781492078005", "quantity": 1}]}
+
+### 3.7 A token for the admin, then change a book (only ADMIN may)
+POST http://localhost:8080/api/auth/token
+Content-Type: application/json
+
+{"username": "admin", "password": "admin-demo"}
+
+> {% client.global.set("adminToken", response.body.accessToken); %}
+
+###
+PUT http://localhost:8080/api/catalog/books/9780132350884
+Authorization: Bearer {{adminToken}}
+Content-Type: application/json
+
+{"title": "Clean Code", "authors": ["Robert C. Martin"], "description": "A handbook of agile software craftsmanship.",
+ "price": 70.00, "stock": 12}

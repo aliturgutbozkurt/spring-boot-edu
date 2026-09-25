@@ -28,6 +28,7 @@ public class StockReservations {
         this.locks = hazelcast.getMap("stock-locks");
     }
 
+    // tag::reserve[]
     public Reservation reserve(String orderRef, Map<String, Integer> quantities) {
         var existing = reservations.findById(orderRef);
         if (existing.isPresent()) {
@@ -49,6 +50,7 @@ public class StockReservations {
             locked.forEach(locks::unlock);
         }
     }
+    // end::reserve[]
 
     public boolean release(String orderRef) {
         var reservation = reservations.findById(orderRef).filter(r -> r.status() == Reservation.Status.RESERVED);

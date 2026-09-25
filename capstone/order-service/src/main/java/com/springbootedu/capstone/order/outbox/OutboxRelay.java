@@ -28,6 +28,7 @@ class OutboxRelay {
         this.clock = clock;
     }
 
+    // tag::relay[]
     @Scheduled(fixedDelayString = "${bookstore.outbox.relay-interval}")
     @Transactional
     public void publishPending() throws ExecutionException, InterruptedException, TimeoutException {
@@ -39,3 +40,4 @@ class OutboxRelay {
         }
     }
 }
+    // end::relay[]

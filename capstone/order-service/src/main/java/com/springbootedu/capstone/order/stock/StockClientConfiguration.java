@@ -20,8 +20,10 @@ class StockClientConfiguration {
      * gRPC keeps one long-lived HTTP/2 connection. With a DNS name that returns every catalog pod (a headless
      * Kubernetes Service), round robin spreads the calls over all of them; the default (pick first) would not.
      */
+    // tag::round-robin[]
     @Bean
     <T extends ManagedChannelBuilder<T>> GrpcChannelBuilderCustomizer<T> catalogRoundRobin() {
         return GrpcChannelBuilderCustomizer.matching("catalog", builder -> builder.defaultLoadBalancingPolicy("round_robin"));
     }
 }
+    // end::round-robin[]

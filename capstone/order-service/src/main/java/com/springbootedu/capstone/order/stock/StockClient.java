@@ -27,12 +27,14 @@ public class StockClient {
     private final StockServiceGrpc.StockServiceBlockingStub stock;
     private final Duration deadline;
 
+    // tag::stock-client[]
     StockClient(StockServiceGrpc.StockServiceBlockingStub stock, CatalogProperties catalog) {
         // the interceptor asks for the token on every call: it is the token of the current request
         this.stock = stock.withInterceptors(new BearerTokenAuthenticationInterceptor(
                 (Supplier<String>) StockClient::currentToken));
         this.deadline = catalog.deadline();
     }
+    // end::stock-client[]
 
     /** Reserves the quantities (ISBN → quantity) under the order's ID; a retry with the same ID reserves nothing new. */
     public List<ReservedBook> reserve(String orderId, Map<String, Integer> quantities) {

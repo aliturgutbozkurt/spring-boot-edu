@@ -1,0 +1,75 @@
+spring:
+  application:
+    name: order-service
+  threads:
+    virtual:
+      enabled: true
+  datasource:
+    url: ${DATABASE_URL:jdbc:postgresql://localhost:5432/orders}
+    username: ${DATABASE_USER:bookstore}
+    password: ${DATABASE_PASSWORD:bookstore}      # dev default for the local Docker database only
+  mvc:
+    problemdetails:
+      enabled: true                             # validation errors as RFC 9457 ProblemDetail too
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: validate                        # Flyway owns the schema
+  kafka:
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
+    template:
+      observation-enabled: true                 # the trace context travels in the record headers …
+    listener:
+      observation-enabled: true                 # … and consumers continue the trace
+    producer:
+      acks: all                                 # the relay marks a row only after the broker has it
+      # key and value are strings: the outbox already holds the event as JSON
+    consumer:
+      auto-offset-reset: earliest
+      value-deserializer: org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
+      properties:
+        spring.deserializer.value.delegate.class: org.springframework.kafka.support.serializer.JacksonJsonDeserializer
+        spring.json.use.type.headers: false     # plain JSON; each listener names its type
+        spring.json.trusted.packages: com.springbootedu.capstone.contracts.events
+  grpc:
+    client:
+      channel:
+        catalog:
+          target: ${CATALOG_GRPC_TARGET:static://localhost:9090}
+server:
+  port: ${PORT:8081}                          # behind the gateway (8080)
+bookstore:
+  jwt:
+    secret: ${BOOKSTORE_JWT_SECRET}             # no default: compose.yaml / the Helm chart set it
+  catalog:
+    deadline: 2s                                # ADR-2: a reservation gives up after 2 seconds
+  outbox:
+    relay-interval: 500ms
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      probes:
+        enabled: true                           # /actuator/health/liveness and /readiness (Docker, Kubernetes)
+  tracing:
+    sampling:
+      probability: 1.0                          # every request is traced (production: e.g. 0.1)
+  observations:
+    enable:
+      tasks.scheduled: false                    # no trace for every relay run (twice a second)
+  metrics:
+    tags:
+      application: ${spring.application.name}
+  opentelemetry:
+    tracing:
+      export:
+        otlp:
+          endpoint: ${OTLP_ENDPOINT:http://localhost:4318}/v1/traces
+  otlp:
+    metrics:
+      export:
+        url: ${OTLP_ENDPOINT:http://localhost:4318}/v1/metrics
+        step: 10s

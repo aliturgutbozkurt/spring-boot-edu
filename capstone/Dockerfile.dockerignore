@@ -1,0 +1,10 @@
+# The build context is the repository root: send only what the capstone images need.
+*
+!mvnw
+!.mvn/wrapper/maven-wrapper.properties
+!build-parent/pom.xml
+!capstone/
+capstone/**/target/
+!capstone/*/target/*-SNAPSHOT.jar
+capstone/docs/
+capstone/k8s/

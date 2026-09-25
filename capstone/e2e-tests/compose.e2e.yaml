@@ -1,14 +1,23 @@
 # C.6 — overrides capstone/compose.yaml for the end-to-end test: no fixed host port (Testcontainers maps
-# the gateway itself) and no metrics/trace export (Grafana LGTM is not started).
+# the gateway itself), images from the jars of this Maven build, and no metrics/trace export (Grafana LGTM
+# is not started).
+x-from-host: &from-host
+  args:
+    JAR_SOURCE: host
+
 services:
   gateway:
+    build: *from-host
     ports: !reset []
     environment: &no-export
       MANAGEMENT_OTLP_METRICS_EXPORT_ENABLED: "false"
       MANAGEMENT_TRACING_EXPORT_OTLP_ENABLED: "false"
   order-service:
+    build: *from-host
     environment: *no-export
   catalog-service:
+    build: *from-host
     environment: *no-export
   search-service:
+    build: *from-host
     environment: *no-export

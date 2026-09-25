@@ -25,6 +25,7 @@ import org.springframework.grpc.server.service.GrpcService;
 @Import({TestcontainersConfiguration.class, OrderTest.FakeCatalog.class})
 public @interface OrderTest {
 
+    // tag::fake-catalog[]
     @TestConfiguration(proxyBeanMethods = false)
     class FakeCatalog {
 
@@ -43,3 +44,4 @@ public @interface OrderTest {
         }
     }
 }
+    // end::fake-catalog[]

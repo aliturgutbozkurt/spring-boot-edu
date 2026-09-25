@@ -15,6 +15,7 @@ import reactor.core.publisher.Mono;
 @Configuration(proxyBeanMethods = false)
 class RateLimitConfiguration {
 
+    // tag::key-resolver[]
     @Bean
     KeyResolver customerOrIpKeyResolver() {
         return exchange -> exchange.getPrincipal()
@@ -24,3 +25,4 @@ class RateLimitConfiguration {
                         .map(InetSocketAddress::getHostString).orElse("unknown")));
     }
 }
+    // end::key-resolver[]

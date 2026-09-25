@@ -33,6 +33,7 @@ services:
       CATALOG_GRPC_TARGET: dns:///catalog-service-grpc:9090   # headless service: gRPC balances over all pods
     databasePassword: true                     # DATABASE_PASSWORD from the Secret
     waitFor: [postgres:5432, kafka:9092, catalog-service-grpc:9090]
+  # tag::catalog-values[]
   catalog-service:
     image: springbootedu/capstone-catalog-service:latest
     replicas: 2                                # two instances share the stock locks in Hazelcast (ADR-6)
@@ -41,6 +42,7 @@ services:
       MONGODB_URI: mongodb://mongo:27017/catalog
       HAZELCAST_ADDRESS: hazelcast:5701
     waitFor: [mongo:27017, hazelcast:5701, kafka:9092]
+  # end::catalog-values[]
   search-service:
     image: springbootedu/capstone-search-service:latest
     replicas: 1

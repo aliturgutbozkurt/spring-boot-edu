@@ -26,12 +26,14 @@ class PlatformIT {
 
     static final String KAFKA_BOOK = "9781492078005";            // seeded by the catalog with stock 5
 
+    // tag::platform[]
     static final ComposeContainer PLATFORM = new ComposeContainer(
             new File("../compose.yaml"), new File("compose.e2e.yaml"))
             .withBuild(true)                                     // images from the jars of this build
             .withServices("gateway")                             // and everything it depends on (not LGTM)
             .withExposedService("gateway", 8080, Wait.forHttp("/actuator/health/readiness")
                     .forStatusCode(200).withStartupTimeout(Duration.ofMinutes(10)));
+    // end::platform[]
 
     static final HttpClient HTTP = HttpClient.newHttpClient();
     static final JsonMapper JSON = JsonMapper.builder().build();

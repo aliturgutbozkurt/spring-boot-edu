@@ -13,7 +13,7 @@ scripts/kind-up.sh
 # 1. the four service images (same Dockerfile as compose.yaml)
 ./mvnw -q -pl capstone/catalog-service,capstone/order-service,capstone/search-service,capstone/gateway -am \
     package -DskipTests
-docker compose -f capstone/compose.yaml build
+JAR_SOURCE=host docker compose -f capstone/compose.yaml build
 
 # 2. kind nodes cannot see the local Docker images: load them (imagePullPolicy IfNotPresent → never pulled)
 IMAGES=$(helm template bookstore capstone/k8s/helm/bookstore "$@" | grep -E '^\s+image:' | awk '{print $2}' | sort -u)

@@ -31,6 +31,22 @@ STUDENT_WRITES_TESTS = {"14-testing"}
 
 DOC_PAIRS = [("tr/ders.md", "en/lesson.md"), ("tr/odevler.md", "en/exercises.md")]
 PDFS = ["tr/ders.pdf", "tr/odevler.pdf", "en/lesson.pdf", "en/exercises.pdf"]
+# The capstone is checked like a module. It lives in capstone/, has an architecture document too, and its
+# exercises are copies of single services: capstone/exercise/<service> and capstone/solution/<service>.
+CAPSTONE = "capstone"
+CAPSTONE_DOC_PAIRS = DOC_PAIRS + [("tr/mimari.md", "en/architecture.md")]
+
+
+def module_path(module_id: str) -> Path:
+    return ROOT / CAPSTONE if module_id == CAPSTONE else MODULES / module_id
+
+
+def exercise_pairs(module_id: str, module_dir: Path) -> list[tuple[Path, Path]]:
+    """(exercise project, solution project) pairs whose tests must be identical."""
+    if module_id != CAPSTONE:
+        return [(module_dir / "exercise", module_dir / "solution")]
+    solutions = sorted(p for p in (module_dir / "solution").glob("*") if (p / "pom.xml").is_file())
+    return [(module_dir / "exercise" / p.name, p) for p in solutions]
 # <!-- snippet: lesson/src/main/java/.../File.java#tag-name -->   (region between // tag::tag-name[] and // end::tag-name[])
 # <!-- snippet: lesson/src/main/java/.../File.java#L10-L25 -->    (fixed line range)
 SNIPPET = re.compile(r"^<!-- snippet: (\S+?)#(?:L(\d+)-L(\d+)|([a-z0-9][a-z0-9-]*)) -->\s*$")
@@ -404,7 +420,7 @@ def check_snippets(r: Report, module_dir: Path, doc: Path) -> None:
 def cmd_sync(args: argparse.Namespace) -> int:
     status = 0
     for module_id in args.module_ids:
-        module_dir = MODULES / module_id
+        module_dir = module_path(module_id)
         for doc in sorted((module_dir / "docs").rglob("*.md")):
             lines = doc.read_text().split("\n")
             changed = 0
@@ -427,52 +443,73 @@ def cmd_sync(args: argparse.Namespace) -> int:
 
 def check_module(module_id: str, strict: bool) -> Report:
     r = Report(module_id)
-    module_dir = MODULES / module_id
-    if not r.check(module_dir.is_dir(), f"modules/{module_id} does not exist"):
+    module_dir = module_path(module_id)
+    capstone = module_id == CAPSTONE
+    if not r.check(module_dir.is_dir(), f"{module_dir.relative_to(ROOT)} does not exist"):
         return r
+    pairs = exercise_pairs(module_id, module_dir)
+    doc_pairs = CAPSTONE_DOC_PAIRS if capstone else DOC_PAIRS
 
     # 1. required files
-    required = ["README.md", "lesson/pom.xml", "exercise/pom.xml", "solution/pom.xml"]
-    lesson_pom = module_dir / "lesson/pom.xml"
-    if lesson_pom.is_file() and re.search(r"spring-boot-starter-web(mvc|flux)?<|spring-boot-starter-graphql<", lesson_pom.read_text()):
-        required.append("requests.http")      # HTTP examples are only expected from modules that serve HTTP
-    required += [f"docs/{d}" for pair in DOC_PAIRS for d in pair] + [f"docs/{p}" for p in PDFS]
+    if capstone:
+        required = ["README.md", "requests.http", "compose.yaml"]
+        r.check(bool(pairs), "capstone/solution/ has no service project")
+        for exercise, solution in pairs:
+            required += [f"{exercise.relative_to(module_dir)}/pom.xml", f"{solution.relative_to(module_dir)}/pom.xml"]
+    else:
+        required = ["README.md", "lesson/pom.xml", "exercise/pom.xml", "solution/pom.xml"]
+        lesson_pom = module_dir / "lesson/pom.xml"
+        if lesson_pom.is_file() and re.search(r"spring-boot-starter-web(mvc|flux)?<|spring-boot-starter-graphql<", lesson_pom.read_text()):
+            required.append("requests.http")  # HTTP examples are only expected from modules that serve HTTP
+    required += [f"docs/{d}" for pair in doc_pairs for d in pair] + [f"docs/{p}" for p in PDFS]
     for rel in required:
         r.check((module_dir / rel).is_file(), f"missing {rel}")
 
-    # 2. registered in the root pom
+    # 2. registered in the root pom (the capstone's solutions in capstone/pom.xml)
     pom = ROOT_POM.read_text()
-    for kind in ("lesson", "solution", "exercise"):
-        r.check(f"<module>modules/{module_id}/{kind}</module>" in pom, f"{kind}/ is not registered in the root pom.xml")
-
-    ex_tests, sol_tests = module_dir / "exercise/src/test", module_dir / "solution/src/test"
-    ex_main, sol_main = module_dir / "exercise/src/main", module_dir / "solution/src/main"
-    if module_id in STUDENT_WRITES_TESTS:
-        # SPEC decision 11: students write the tests; the code under test is given and identical
-        if ex_main.is_dir() and sol_main.is_dir():
-            r.check(same_tree(ex_main, sol_main), "exercise/src/main and solution/src/main differ — the code under test must be identical")
-        r.check(any("TODO" in f.read_text() for f in ex_tests.rglob("*.java")) if ex_tests.is_dir() else False,
-                "exercise/src/test has no TODO — students need to know which tests to write")
-        todo_dirs = [sol_tests]
+    if capstone:
+        capstone_pom = (module_dir / "pom.xml").read_text() if (module_dir / "pom.xml").is_file() else ""
+        r.check("<module>capstone</module>" in pom, "capstone/ is not registered in the root pom.xml")
+        for exercise, solution in pairs:
+            r.check(f"<module>solution/{solution.name}</module>" in capstone_pom,
+                    f"solution/{solution.name} is not registered in capstone/pom.xml")
+            r.check(f"<module>capstone/exercise/{exercise.name}</module>" in pom,
+                    f"exercise/{exercise.name} is not registered in the exercises profile of the root pom.xml")
     else:
-        # 3. exercise tests == solution tests
-        if ex_tests.is_dir() and sol_tests.is_dir():
-            r.check(same_tree(ex_tests, sol_tests), "exercise/src/test and solution/src/test differ — they must be identical")
+        for kind in ("lesson", "solution", "exercise"):
+            r.check(f"<module>modules/{module_id}/{kind}</module>" in pom, f"{kind}/ is not registered in the root pom.xml")
+
+    todo_dirs = []
+    for exercise, solution in pairs:
+        ex_name, sol_name = exercise.relative_to(module_dir).as_posix(), solution.relative_to(module_dir).as_posix()
+        ex_tests, sol_tests = exercise / "src/test", solution / "src/test"
+        ex_main, sol_main = exercise / "src/main", solution / "src/main"
+        if module_id in STUDENT_WRITES_TESTS:
+            # SPEC decision 11: students write the tests; the code under test is given and identical
+            if ex_main.is_dir() and sol_main.is_dir():
+                r.check(same_tree(ex_main, sol_main), f"{ex_name}/src/main and {sol_name}/src/main differ — the code under test must be identical")
+            r.check(any("TODO" in f.read_text() for f in ex_tests.rglob("*.java")) if ex_tests.is_dir() else False,
+                    f"{ex_name}/src/test has no TODO — students need to know which tests to write")
+            todo_dirs.append(sol_tests)
         else:
-            r.check(False, "exercise/src/test and solution/src/test must both exist")
-        # 4. the exercise has TODOs — in the code, or in other student files (Dockerfile, compose.yaml, k8s/, .proto)
-        r.check(any("TODO" in f.read_text() for f in student_files(module_dir / "exercise")),
-                "exercise/ has no TODO — students need to know what to implement")
-        todo_dirs = [module_dir / "solution"]
+            # 3. exercise tests == solution tests
+            if ex_tests.is_dir() and sol_tests.is_dir():
+                r.check(same_tree(ex_tests, sol_tests), f"{ex_name}/src/test and {sol_name}/src/test differ — they must be identical")
+            else:
+                r.check(False, f"{ex_name}/src/test and {sol_name}/src/test must both exist")
+            # 4. the exercise has TODOs — in the code, or in other student files (Dockerfile, compose.yaml, k8s/, .proto)
+            r.check(any("TODO" in f.read_text() for f in student_files(exercise)),
+                    f"{ex_name}/ has no TODO — students need to know what to implement")
+            todo_dirs.append(solution)
     # the solution has no TODOs
     for todo_dir in todo_dirs:
         if todo_dir.is_dir():
             leftovers = [f.relative_to(module_dir).as_posix() for f in student_files(todo_dir, include_tests=True) if "TODO" in f.read_text()]
-            r.check(not leftovers, f"solution/ still contains TODOs: {', '.join(leftovers)}")
+            r.check(not leftovers, f"solution still contains TODOs: {', '.join(leftovers)}")
 
     # 5. TR/EN parity, 6. snippets, 7. fresh PDFs
     manifest = parse_manifest(module_dir / "docs/.pdf-manifest")
-    for tr_rel, en_rel in DOC_PAIRS:
+    for tr_rel, en_rel in doc_pairs:
         tr, en = module_dir / "docs" / tr_rel, module_dir / "docs" / en_rel
         if not (tr.is_file() and en.is_file()):
             continue
@@ -502,7 +539,7 @@ def strict_doc_checks(r: Report, rel: str, text: str) -> None:
     if rel in ("tr/ders.md", "en/lesson.md"):
         examples = len(re.findall(r"^## 3\.\d+ ", text, flags=re.M))
         r.check(examples >= 5, f"docs/{rel}: {examples} examples in section 3 — SPEC requires at least 5")
-    else:
+    elif rel in ("tr/odevler.md", "en/exercises.md"):
         exercises = len(re.findall(r"^# (Ödev|Exercise) \d+", text, flags=re.M))
         r.check(exercises >= 3, f"docs/{rel}: {exercises} exercises — SPEC requires at least 3")
 
@@ -541,7 +578,7 @@ def parse_manifest(path: Path) -> dict[str, str]:
 
 
 def cmd_check(args: argparse.Namespace) -> int:
-    ids = sorted(p.name for p in MODULES.iterdir() if p.is_dir()) if args.all and MODULES.is_dir() else args.module_ids
+    ids = (sorted(p.name for p in MODULES.iterdir() if p.is_dir()) + [CAPSTONE]) if args.all and MODULES.is_dir() else args.module_ids
     if not ids:
         print("No modules to check.")
         return 0

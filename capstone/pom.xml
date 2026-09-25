@@ -18,5 +18,7 @@
         <module>search-service</module>
         <module>gateway</module>
         <module>e2e-tests</module>
+        <!-- capstone exercises: the solution is built always, the exercise only with -Pexercises (root pom) -->
+        <module>solution/order-service</module>
     </modules>
 </project>

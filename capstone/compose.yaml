@@ -1,9 +1,14 @@
 # ADR-8 — the whole bookstore platform on one machine: 4 services, 6 data/messaging systems, Grafana LGTM.
-#   capstone/up.sh                                  build the jars, then "docker compose up --build --wait"
+#   cd capstone && docker compose up --build        everything from source (Maven runs inside Docker)
+#   capstone/up.sh                                  faster: builds the jars on the host (JAR_SOURCE=host)
 #   docker compose -f capstone/compose.yaml down -v stop and wipe the data
 # Published ports: 8080 (gateway, the only way in) and 3000 (Grafana). Needs about 6 GB of Docker memory.
 # Credentials and the JWT key are development defaults for this local system only.
 name: bookstore-capstone
+
+x-image-build: &image-build
+  context: ..                                   # the repository root (see Dockerfile)
+  dockerfile: capstone/Dockerfile
 
 x-app: &app
   restart: on-failure
@@ -110,7 +115,9 @@ services:
   # ---------------------------------------------------------------- the services
   catalog-service:
     <<: *app
-    build: { context: catalog-service, dockerfile: ../Dockerfile }
+    build:
+      <<: *image-build
+      args: { SERVICE: catalog-service, JAR_SOURCE: "${JAR_SOURCE:-source}" }
     image: springbootedu/capstone-catalog-service:latest
     environment:
       <<: *app-env
@@ -123,7 +130,9 @@ services:
 
   order-service:
     <<: *app
-    build: { context: order-service, dockerfile: ../Dockerfile }
+    build:
+      <<: *image-build
+      args: { SERVICE: order-service, JAR_SOURCE: "${JAR_SOURCE:-source}" }
     image: springbootedu/capstone-order-service:latest
     environment:
       <<: *app-env
@@ -138,7 +147,9 @@ services:
 
   search-service:
     <<: *app
-    build: { context: search-service, dockerfile: ../Dockerfile }
+    build:
+      <<: *image-build
+      args: { SERVICE: search-service, JAR_SOURCE: "${JAR_SOURCE:-source}" }
     image: springbootedu/capstone-search-service:latest
     environment:
       <<: *app-env
@@ -151,7 +162,9 @@ services:
 
   gateway:
     <<: *app
-    build: { context: gateway, dockerfile: ../Dockerfile }
+    build:
+      <<: *image-build
+      args: { SERVICE: gateway, JAR_SOURCE: "${JAR_SOURCE:-source}" }
     image: springbootedu/capstone-gateway:latest
     ports:
       - "8080:8080"                             # the only way into the system

@@ -59,6 +59,7 @@ public class BookIndex {
      * Adds the quantities of an order to the books' sales. Redis remembers which orders were counted
      * (SET NX), so a redelivered event changes nothing.
      */
+    // tag::record-sale[]
     @CacheEvict(cacheNames = "search", allEntries = true)
     public void recordSale(OrderPlaced order) {
         String mark = "search:sale-counted:" + order.orderId();
@@ -77,3 +78,4 @@ public class BookIndex {
         }
     }
 }
+    // end::record-sale[]

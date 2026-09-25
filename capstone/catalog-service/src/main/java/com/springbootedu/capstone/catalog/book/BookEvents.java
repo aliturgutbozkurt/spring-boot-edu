@@ -31,6 +31,7 @@ class BookEvents extends AbstractMongoEventListener<Book> {
         this.kafka = kafka;
     }
 
+    // tag::book-events[]
     @Override
     public void onAfterSave(AfterSaveEvent<Book> event) {
         Book book = event.getSource();
@@ -43,6 +44,7 @@ class BookEvents extends AbstractMongoEventListener<Book> {
                     }
                 });
     }
+    // end::book-events[]
 
     @Configuration(proxyBeanMethods = false)
     static class Topics {

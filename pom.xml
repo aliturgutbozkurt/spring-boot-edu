@@ -115,6 +115,7 @@
                 <module>modules/23-spring-cloud/exercise</module>
                 <module>modules/24-spring-ai/exercise</module>
                 <!-- exercise-modules:end -->
+                <module>capstone/exercise/order-service</module>
             </modules>
         </profile>
     </profiles>

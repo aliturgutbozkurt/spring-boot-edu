@@ -5,6 +5,7 @@ spring:
     gateway:
       server:
         webflux:
+          # tag::routes[]
           routes:
             - id: orders
               uri: ${bookstore.services.orders}
@@ -29,6 +30,7 @@ spring:
                 - Path=/api/search/**
               filters:
                 - *rate-limit
+          # end::routes[]
   data:
     redis:
       host: ${REDIS_HOST:localhost}
