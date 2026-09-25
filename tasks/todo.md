@@ -234,7 +234,7 @@ Ortak doğrulama komutu (aşağıda `VERIFY(<id>)` olarak geçer):
 
 ## Faz 8 — Capstone ve Kapanış
 
-- [ ] **#44 C.1 Capstone mimari dokümanı (TR/EN)** — servisler, veri akışı, hangi teknoloji neden; ADR'ler. *Ask first:* servis sınırları (öneri: gateway + order + catalog + search, aralarında gRPC ve Kafka)
+- [x] **#44 C.1 Capstone mimari dokümanı (TR/EN)** — servisler, veri akışı, hangi teknoloji neden; ADR'ler. *Ask first:* servis sınırları (öneri: gateway + order + catalog + search, aralarında gRPC ve Kafka)
 - [ ] **#45 C.2 Sipariş + katalog** — PostgreSQL/JPA siparişler, MongoDB katalog, JWT güvenlik
 - [ ] **#46 C.3 Arama + cache** — Elasticsearch arama, Redis cache, Hazelcast stok kilidi/rate limit
 - [ ] **#47 C.4 Event akışı** — Kafka ile `OrderPlaced` → stok, arama indeksi, bildirim; outbox
