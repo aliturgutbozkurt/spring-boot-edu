@@ -199,7 +199,7 @@ Ortak doğrulama komutu (aşağıda `VERIFY(<id>)` olarak geçer):
 - [x] **M20.b Ödevler** — kendi Dockerfile'ını optimize etmek; compose ile çok servisli sistem; readiness'e bağımlılık eklemek
 - [x] **M20.c Doküman** — Verify: `VERIFY(20-docker-deployment)` + `docker build` başarılı
 
-**🔶 Checkpoint 6 (#37)**
+**🔶 Checkpoint 6 (#37)** — ✅ geçti (2026-09-25): manuel native CI işi (`native.yml`) başarılı, Faz 6 modülleri strict + CI yeşil.
 
 ---
 
