@@ -205,7 +205,7 @@ Ortak doğrulama komutu (aşağıda `VERIFY(<id>)` olarak geçer):
 
 ## Faz 7 — Dağıtık Sistemler ve AI
 
-- [ ] **#38 T7.0 kind altyapısı** — `scripts/kind-up.sh` / `kind-down.sh` (önkoşul kontrolü: kind, kubectl, helm; lokal registry; ingress-nginx), `kind-config.yaml`
+- [x] **#38 T7.0 kind altyapısı** — `scripts/kind-up.sh` / `kind-down.sh` (önkoşul kontrolü: docker, kind, kubectl; helm uyarısı), `scripts/kind-config.yaml` (sabit node imajı). Lokal registry ve ingress-nginx kapsamdan çıkarıldı (2026-09-25, kullanıcı kararı): imajlar `kind load`, erişim `kubectl port-forward` ile.
   - Verify: `./scripts/kind-up.sh && kubectl get nodes` → Ready; `kind-down.sh` temizliyor
 
 ### 21-grpc · #39
