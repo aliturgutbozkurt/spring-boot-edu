@@ -214,7 +214,7 @@ Ortak doğrulama komutu (aşağıda `VERIFY(<id>)` olarak geçer):
 - [x] **M21.c Doküman** — REST vs gRPC karşılaştırması dahil. Verify: `VERIFY(21-grpc)`
 
 ### 22-kubernetes · #40
-- [ ] **M22.a Kod/Manifest** — uygulama image'ını kind'a yükleme; Deployment, Service, ConfigMap, Secret; liveness/readiness/startup probe (Actuator); requests/limits; Kustomize base + dev/prod overlay; HPA; rolling update + rollback; PostgreSQL StatefulSet (eğitim amaçlı)
+- [x] **M22.a Kod/Manifest** — uygulama image'ını kind'a yükleme; Deployment, Service, ConfigMap, Secret; liveness/readiness/startup probe (Actuator); requests/limits; Kustomize base + dev/prod overlay; HPA; rolling update + rollback; PostgreSQL StatefulSet (eğitim amaçlı)
 - [ ] **M22.b Ödevler** — ConfigMap değişikliğini uygulamaya yansıtmak; bozuk sürümü rollback etmek; HPA ile yük altında ölçekleme
 - [ ] **M22.c Doküman** — Verify: `VERIFY(22-kubernetes)` + `kubectl apply -k` ile pod'lar Ready, `kubectl rollout status` başarılı
 

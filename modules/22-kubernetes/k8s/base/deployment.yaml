@@ -1,0 +1,68 @@
+# Lesson 3.3 — the application: replicas, probes, resources, configuration.
+# tag::deployment[]
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bookstore
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: bookstore
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 0                    # never fewer ready pods than wanted during an update
+      maxSurge: 1                          # start one new pod at a time
+  template:
+    metadata:
+      labels:
+        app: bookstore
+    spec:
+      terminationGracePeriodSeconds: 30    # longer than spring.lifecycle.timeout-per-shutdown-phase (20 s)
+      initContainers:                      # runs to completion before the application starts
+        - name: wait-for-postgres
+          image: pgvector/pgvector:0.8.6-pg18
+          command: ["sh", "-c", "until pg_isready -h postgres -U bookstore -d bookstore; do sleep 2; done"]
+      containers:
+        - name: bookstore
+          image: springbootedu/kubernetes:1.0.0
+          imagePullPolicy: IfNotPresent    # the image is loaded into kind, not pulled from a registry
+          ports:
+            - name: http
+              containerPort: 8080
+          envFrom:
+            - configMapRef:
+                name: bookstore-config
+            - secretRef:
+                name: bookstore-db
+          env:
+            - name: SPRING_DATASOURCE_URL
+              value: jdbc:postgresql://postgres:5432/bookstore
+          resources:
+            requests:                      # what the scheduler reserves (and what the HPA percentages refer to)
+              cpu: 250m
+              memory: 384Mi
+            limits:
+              memory: 512Mi                # above this the container is killed (OOMKilled); no CPU limit: no throttling
+          # tag::probes[]
+          startupProbe:                    # until it succeeds, the other probes wait (slow first start)
+            httpGet:
+              path: /actuator/health/liveness
+              port: http
+            periodSeconds: 2
+            failureThreshold: 60           # up to 2 minutes to start
+          livenessProbe:                   # fails → the container is restarted
+            httpGet:
+              path: /actuator/health/liveness
+              port: http
+            periodSeconds: 10
+            failureThreshold: 3
+          readinessProbe:                  # fails → the pod gets no traffic from the Service
+            httpGet:
+              path: /actuator/health/readiness
+              port: http
+            periodSeconds: 5
+            failureThreshold: 2
+          # end::probes[]
+# end::deployment[]

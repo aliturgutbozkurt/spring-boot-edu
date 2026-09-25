@@ -1,0 +1,15 @@
+# HTTP examples for module 22-kubernetes. First: modules/22-kubernetes/deploy.sh, then
+#   kubectl -n bookstore port-forward service/bookstore 8080:80
+# (with spring-boot:run the same requests work without Kubernetes)
+
+### 3.3 The probes Kubernetes calls
+GET http://localhost:8080/actuator/health/readiness
+
+### 3.3 Configuration from the ConfigMap; "host" is the pod name
+GET http://localhost:8080/api/shop
+
+### 3.1 The API
+GET http://localhost:8080/api/books
+
+### 3.6 CPU load for the autoscaler
+GET http://localhost:8080/api/work?millis=200

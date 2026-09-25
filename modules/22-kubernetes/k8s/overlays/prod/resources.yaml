@@ -1,0 +1,16 @@
+# a strategic merge patch: only the fields written here change
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bookstore
+spec:
+  template:
+    spec:
+      containers:
+        - name: bookstore
+          resources:
+            requests:
+              cpu: 500m
+              memory: 512Mi
+            limits:
+              memory: 768Mi

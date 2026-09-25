@@ -71,6 +71,8 @@
         <module>modules/20-docker-deployment/solution</module>
         <module>modules/21-grpc/lesson</module>
         <module>modules/21-grpc/solution</module>
+        <module>modules/22-kubernetes/lesson</module>
+        <module>modules/22-kubernetes/solution</module>
         <!-- course-modules:end -->
     </modules>
 
@@ -101,6 +103,7 @@
                 <module>modules/19-native-performance/exercise</module>
                 <module>modules/20-docker-deployment/exercise</module>
                 <module>modules/21-grpc/exercise</module>
+                <module>modules/22-kubernetes/exercise</module>
                 <!-- exercise-modules:end -->
             </modules>
         </profile>

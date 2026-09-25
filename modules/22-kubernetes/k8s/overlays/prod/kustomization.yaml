@@ -1,0 +1,16 @@
+# Lesson 3.4 — prod: an autoscaler from 2 to 5 replicas and more memory.
+# tag::prod[]
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: bookstore                       # also for the resources this overlay adds (hpa.yaml)
+resources:
+  - ../../base
+  - hpa.yaml
+patches:
+  - path: resources.yaml
+configMapGenerator:
+  - name: bookstore-config
+    behavior: merge
+    literals:
+      - BOOKSTORE_SHOP_NAME=Bookstore
+# end::prod[]

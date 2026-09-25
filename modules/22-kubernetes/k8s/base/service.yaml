@@ -1,0 +1,12 @@
+# Lesson 3.3 — one stable name and address for all ready pods of the Deployment.
+apiVersion: v1
+kind: Service
+metadata:
+  name: bookstore
+spec:
+  selector:
+    app: bookstore
+  ports:
+    - name: http
+      port: 80
+      targetPort: http

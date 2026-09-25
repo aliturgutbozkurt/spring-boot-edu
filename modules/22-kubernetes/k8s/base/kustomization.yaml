@@ -1,0 +1,24 @@
+# Lesson 3.2 — the base: what every environment has in common.
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: bookstore
+resources:
+  - namespace.yaml
+  - postgres.yaml
+  - deployment.yaml
+  - service.yaml
+labels:
+  - pairs:
+      app.kubernetes.io/part-of: bookstore
+# tag::generators[]
+configMapGenerator:
+  - name: bookstore-config                 # the real name gets a hash suffix, e.g. bookstore-config-7k2m9f4b8c
+    literals:
+      - BOOKSTORE_SHOP_NAME=Bookstore on Kubernetes
+      - BOOKSTORE_SHOP_CURRENCY=TRY
+secretGenerator:
+  - name: bookstore-db
+    literals:
+      - SPRING_DATASOURCE_USERNAME=bookstore
+      - SPRING_DATASOURCE_PASSWORD=bookstore   # a dev value only — a real secret comes from outside the repository
+# end::generators[]

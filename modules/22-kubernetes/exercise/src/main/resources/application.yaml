@@ -1,0 +1,6 @@
+spring:
+  application:
+    name: 22-kubernetes
+  threads:
+    virtual:
+      enabled: true

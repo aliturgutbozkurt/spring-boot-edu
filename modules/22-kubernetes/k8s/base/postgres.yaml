@@ -1,0 +1,64 @@
+# Lesson 3.5 — PostgreSQL as a StatefulSet, for learning only: in production use a managed database or an operator.
+# tag::statefulset[]
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: postgres
+spec:
+  serviceName: postgres
+  replicas: 1
+  selector:
+    matchLabels:
+      app: postgres
+  template:
+    metadata:
+      labels:
+        app: postgres
+    spec:
+      containers:
+        - name: postgres
+          image: pgvector/pgvector:0.8.6-pg18
+          env:
+            - name: POSTGRES_DB
+              value: bookstore
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: bookstore-db
+                  key: SPRING_DATASOURCE_USERNAME
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: bookstore-db
+                  key: SPRING_DATASOURCE_PASSWORD
+            - name: PGDATA
+              value: /var/lib/postgresql/data/pgdata
+          ports:
+            - containerPort: 5432
+          readinessProbe:
+            exec:
+              command: ["pg_isready", "-U", "bookstore", "-d", "bookstore"]
+            periodSeconds: 5
+          volumeMounts:
+            - name: data
+              mountPath: /var/lib/postgresql/data
+  volumeClaimTemplates:                    # every pod of the StatefulSet gets its own persistent volume
+    - metadata:
+        name: data
+      spec:
+        accessModes: ["ReadWriteOnce"]
+        resources:
+          requests:
+            storage: 1Gi
+# end::statefulset[]
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres
+spec:
+  clusterIP: None                          # headless: the stable DNS name postgres-0.postgres for the pod
+  selector:
+    app: postgres
+  ports:
+    - port: 5432

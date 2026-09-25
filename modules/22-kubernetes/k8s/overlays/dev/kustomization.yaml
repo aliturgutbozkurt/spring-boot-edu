@@ -1,0 +1,19 @@
+# Lesson 3.4 — dev: one replica, a different shop name.
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: bookstore                       # also for the resources this overlay adds (hpa.yaml)
+resources:
+  - ../../base
+patches:
+  - target:
+      kind: Deployment
+      name: bookstore
+    patch: |-
+      - op: replace
+        path: /spec/replicas
+        value: 1
+configMapGenerator:
+  - name: bookstore-config
+    behavior: merge
+    literals:
+      - BOOKSTORE_SHOP_NAME=Bookstore (dev)
