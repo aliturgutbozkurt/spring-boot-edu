@@ -1,6 +1,25 @@
 spring:
   application:
-    name: 20-docker-deployment
+    name: 20-docker-deployment-exercises
   threads:
     virtual:
       enabled: true
+  flyway:
+    schemas: deployment_exercises
+  datasource:
+    hikari:
+      schema: deployment_exercises
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health
+  endpoint:
+    health:
+      probes:
+        enabled: true
+      group:
+        readiness:
+          include: readinessState,db    # TODO 3b: no traffic without the warehouse (but keep liveness as it is)
+        liveness:
+          include: livenessState

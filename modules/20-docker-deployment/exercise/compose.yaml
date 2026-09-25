@@ -1,0 +1,21 @@
+# Exercise 2 — the bookstore, its database and the warehouse as one system.
+name: bookstore-exercise
+
+services:
+  postgres:
+    image: pgvector/pgvector:0.8.6-pg18
+    environment:
+      POSTGRES_DB: bookstore
+      POSTGRES_USER: bookstore
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-bookstore}
+    # TODO 2a: a healthcheck, so that other services can wait until the database answers (pg_isready)
+
+  # TODO 2b: a service "warehouse" from the image nginx:1.29-alpine (the app only checks that port 80 answers)
+
+  app:
+    build: .
+    ports:
+      - "8080"
+    # TODO 2c: configure the app with environment variables: the datasource (URL, user, password)
+    #          and the warehouse (BOOKSTORE_WAREHOUSE_HOST, BOOKSTORE_WAREHOUSE_PORT)
+    # TODO 2d: start the app only after the database is healthy and the warehouse has started

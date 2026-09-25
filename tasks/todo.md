@@ -196,7 +196,7 @@ Ortak doğrulama komutu (aşağıda `VERIFY(<id>)` olarak geçer):
 
 ### 20-docker-deployment · #36
 - [x] **M20.a Kod** — multi-stage Dockerfile (layered jar, non-root, JRE 27); `spring-boot:build-image` (Buildpacks); uygulama + altyapı compose; liveness/readiness probe'ları; graceful shutdown; 12-factor config; image boyut karşılaştırması
-- [ ] **M20.b Ödevler** — kendi Dockerfile'ını optimize etmek; compose ile çok servisli sistem; readiness'e bağımlılık eklemek
+- [x] **M20.b Ödevler** — kendi Dockerfile'ını optimize etmek; compose ile çok servisli sistem; readiness'e bağımlılık eklemek
 - [ ] **M20.c Doküman** — Verify: `VERIFY(20-docker-deployment)` + `docker build` başarılı
 
 **🔶 Checkpoint 6 (#37)**
