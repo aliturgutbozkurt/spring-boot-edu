@@ -1,0 +1,18 @@
+spring:
+  application:
+    name: 24-spring-ai-exercises
+  ai:
+    ollama:
+      chat:
+        options:
+          model: qwen3:1.7b
+      embedding:
+        options:
+          model: nomic-embed-text
+    vectorstore:
+      pgvector:
+        initialize-schema: true
+        dimensions: 768
+logging:
+  level:
+    root: warn
