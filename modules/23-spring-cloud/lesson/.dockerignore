@@ -1,0 +1,3 @@
+# Only the jar is needed in the build context
+*
+!target/*-SNAPSHOT.jar

@@ -73,6 +73,11 @@
         <module>modules/21-grpc/solution</module>
         <module>modules/22-kubernetes/lesson</module>
         <module>modules/22-kubernetes/solution</module>
+        <module>modules/23-spring-cloud/lesson</module>
+        <module>modules/23-spring-cloud/solution</module>
+        <module>modules/23-spring-cloud/services/catalog-service</module>
+        <module>modules/23-spring-cloud/services/config-server</module>
+        <module>modules/23-spring-cloud/services/gateway</module>
         <!-- course-modules:end -->
     </modules>
 
@@ -104,6 +109,7 @@
                 <module>modules/20-docker-deployment/exercise</module>
                 <module>modules/21-grpc/exercise</module>
                 <module>modules/22-kubernetes/exercise</module>
+                <module>modules/23-spring-cloud/exercise</module>
                 <!-- exercise-modules:end -->
             </modules>
         </profile>

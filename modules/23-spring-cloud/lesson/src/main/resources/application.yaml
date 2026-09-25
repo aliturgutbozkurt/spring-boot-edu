@@ -1,0 +1,69 @@
+spring:
+  application:
+    name: order-service                  # also the file name in the Config Server repository and the service ID
+  threads:
+    virtual:
+      enabled: true
+  # tag::config-import[]
+  config:
+    import: optional:configserver:${CONFIG_SERVER_URL:http://localhost:8888}   # optional: starts without it
+  # end::config-import[]
+server:
+  port: ${PORT:8080}
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,refresh,circuitbreakers
+# tag::resilience4j[]
+resilience4j:
+  circuitbreaker:
+    instances:
+      catalog:
+        sliding-window-size: 4             # look at the last 4 calls …
+        minimum-number-of-calls: 4
+        failure-rate-threshold: 50         # … and open when half of them failed
+        wait-duration-in-open-state: 10s   # then try again after 10 s (HALF_OPEN)
+  timelimiter:
+    instances:
+      catalog:
+        timeout-duration: 1s               # a slower answer counts as a failure
+# end::resilience4j[]
+bookstore:
+  order:
+    max-quantity: 10
+---
+# tag::simple-discovery[]
+# Lesson 3.3 — outside Kubernetes: a fixed list of instances (spring-boot:run, compose.yaml)
+spring:
+  config:
+    activate:
+      on-profile: "!kubernetes"
+  cloud:
+    discovery:
+      client:
+        simple:
+          instances:
+            catalog-service:
+              - uri: ${CATALOG_1_URL:http://localhost:8081}
+              - uri: ${CATALOG_2_URL:http://localhost:8082}
+# end::simple-discovery[]
+---
+# tag::kubernetes-profile[]
+# Lesson 3.7 — on Kubernetes: the ConfigMap "order-service" is a property source, the pods of the Service
+# "catalog-service" are the instances, and a changed ConfigMap refreshes the application without a restart
+spring:
+  config:
+    activate:
+      on-profile: kubernetes
+    import: "kubernetes:"
+  cloud:
+    config:
+      enabled: false                     # no Config Server on Kubernetes
+    kubernetes:
+      reload:
+        enabled: true
+        mode: event                      # watch the ConfigMap (needs the "watch" permission)
+      loadbalancer:
+        mode: POD                        # the pods behind the Service are the instances: Spring Cloud balances
+# end::kubernetes-profile[]

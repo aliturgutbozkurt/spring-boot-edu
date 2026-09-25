@@ -219,7 +219,7 @@ Ortak doğrulama komutu (aşağıda `VERIFY(<id>)` olarak geçer):
 - [x] **M22.c Doküman** — Verify: `VERIFY(22-kubernetes)` + `kubectl apply -k` ile pod'lar Ready, `kubectl rollout status` başarılı
 
 ### 23-spring-cloud · #41
-- [ ] **M23.a Kod** — Spring Cloud Gateway (route, filter, rate limit — Redis); Config Server (Git backend) + client refresh; OpenFeign vs HTTP interface karşılaştırması; Spring Cloud LoadBalancer; Circuit Breaker (Resilience4j) + fallback; Spring Cloud Kubernetes ile ConfigMap okuma ve discovery; compose ile lokal, kind ile k8s çalıştırma
+- [x] **M23.a Kod** — Spring Cloud Gateway (route, filter, rate limit — Redis); Config Server (Git backend) + client refresh; OpenFeign vs HTTP interface karşılaştırması; Spring Cloud LoadBalancer; Circuit Breaker (Resilience4j) + fallback; Spring Cloud Kubernetes ile ConfigMap okuma ve discovery; compose ile lokal, kind ile k8s çalıştırma
 - [ ] **M23.b Ödevler** — gateway'e yeni route + auth filtresi; circuit breaker açılma testi; konfigürasyonu yeniden başlatmadan güncellemek
 - [ ] **M23.c Doküman** — "Spring Cloud mu, Kubernetes native mi?" karar rehberi dahil. Verify: `VERIFY(23-spring-cloud)`
 

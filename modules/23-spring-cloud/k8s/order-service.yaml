@@ -1,0 +1,56 @@
+# tag::configmap[]
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: order-service                        # = spring.application.name: read as a property source
+data:
+  application.yaml: |
+    bookstore:
+      order:
+        max-quantity: 4
+# end::configmap[]
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: order-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: order-service
+  template:
+    metadata:
+      labels:
+        app: order-service
+    spec:
+      serviceAccountName: order-service
+      containers:
+        - name: order-service
+          image: springbootedu/cloud-order-service:1.0.0
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: SPRING_PROFILES_ACTIVE
+              value: kubernetes                        # see the "kubernetes" document of application.yaml
+            - name: SPRING_CLOUD_CONFIG_ENABLED        # from the very start: the base import is "optional:configserver:"
+              value: "false"
+          ports:
+            - name: http
+              containerPort: 8080
+          resources:
+            requests: { cpu: 100m, memory: 384Mi }
+            limits: { memory: 512Mi }
+          readinessProbe:
+            httpGet: { path: /actuator/health/readiness, port: http }
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: order-service
+spec:
+  selector:
+    app: order-service
+  ports:
+    - name: http
+      port: 8080
+      targetPort: http

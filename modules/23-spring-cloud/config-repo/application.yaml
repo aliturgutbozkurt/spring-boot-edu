@@ -1,0 +1,5 @@
+# Lesson 3.5 — shared by all services that use the Config Server.
+management:
+  endpoint:
+    health:
+      show-details: always

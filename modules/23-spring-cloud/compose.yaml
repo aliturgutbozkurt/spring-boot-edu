@@ -1,0 +1,79 @@
+# Lesson 3.6 — the whole system on one machine: gateway → order service → catalog (2 instances), Config Server, Redis.
+# Start it with: modules/23-spring-cloud/up.sh      Stop it with: docker compose -f modules/23-spring-cloud/compose.yaml down
+name: bookstore-cloud
+
+x-service: &service
+  healthcheck:
+    test: ["CMD", "wget", "-qO-", "http://localhost:8080/actuator/health/liveness"]
+    interval: 5s
+    timeout: 3s
+    retries: 30
+
+services:
+  redis:
+    image: redis:8.8.3-alpine
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+
+  config-server:
+    <<: *service
+    build: { context: services/config-server, dockerfile: ../../Dockerfile }
+    image: springbootedu/cloud-config-server:latest
+    environment:
+      SPRING_PROFILES_ACTIVE: native             # the files of the mounted folder instead of Git
+      SERVER_PORT: "8080"
+    volumes:
+      - ./config-repo:/config-repo:ro
+
+  catalog-1:
+    <<: *service
+    build: { context: services/catalog-service, dockerfile: ../../Dockerfile }
+    image: springbootedu/cloud-catalog-service:latest
+    environment:
+      PORT: "8080"
+      BOOKSTORE_INSTANCE_NAME: catalog-1
+
+  catalog-2:
+    <<: *service
+    image: springbootedu/cloud-catalog-service:latest   # the same image, a second instance
+    depends_on:
+      catalog-1:
+        condition: service_started               # catalog-1 builds the image
+    environment:
+      PORT: "8080"
+      BOOKSTORE_INSTANCE_NAME: catalog-2
+
+  order-service:
+    <<: *service
+    build: { context: lesson, dockerfile: ../Dockerfile }
+    image: springbootedu/cloud-order-service:latest
+    environment:
+      CONFIG_SERVER_URL: http://config-server:8080
+      CATALOG_1_URL: http://catalog-1:8080
+      CATALOG_2_URL: http://catalog-2:8080
+    depends_on:
+      config-server:
+        condition: service_healthy               # read the configuration at startup
+
+  gateway:
+    <<: *service
+    build: { context: services/gateway, dockerfile: ../../Dockerfile }
+    image: springbootedu/cloud-gateway:latest
+    ports:
+      - "9000:8080"                              # the only published port: everything goes through the gateway
+    environment:
+      SERVER_PORT: "8080"
+      REDIS_HOST: redis
+      CATALOG_1_URL: http://catalog-1:8080
+      CATALOG_2_URL: http://catalog-2:8080
+      ORDER_URL: http://order-service:8080
+    depends_on:
+      redis:
+        condition: service_healthy
+      order-service:
+        condition: service_healthy
+      catalog-1:
+        condition: service_healthy
+      catalog-2:
+        condition: service_healthy

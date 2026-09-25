@@ -1,0 +1,6 @@
+spring:
+  application:
+    name: 23-spring-cloud
+  threads:
+    virtual:
+      enabled: true

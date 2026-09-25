@@ -1,0 +1,46 @@
+spring:
+  application:
+    name: gateway
+  # tag::routes[]
+  cloud:
+    gateway:
+      server:
+        webflux:
+          default-filters:
+            - AddResponseHeader=X-Served-Through, bookstore-gateway
+          routes:
+            - id: catalog
+              uri: lb://catalog-service              # lb:// → Spring Cloud LoadBalancer picks an instance
+              predicates:
+                - Path=/api/books/**
+              filters:
+                - name: RequestRateLimiter           # token bucket in Redis, shared by all gateway instances
+                  args:
+                    redis-rate-limiter.replenishRate: 5      # tokens per second
+                    redis-rate-limiter.burstCapacity: 10     # at most 10 requests at once
+                    key-resolver: "#{@clientIpKeyResolver}"
+            - id: orders
+              uri: lb://order-service
+              predicates:
+                - Path=/api/orders/**
+                - Method=POST
+  # end::routes[]
+    discovery:
+      client:
+        simple:
+          instances:
+            catalog-service:
+              - uri: ${CATALOG_1_URL:http://localhost:8081}
+              - uri: ${CATALOG_2_URL:http://localhost:8082}
+            order-service:
+              - uri: ${ORDER_URL:http://localhost:8080}
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+server:
+  port: 9000
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,gateway

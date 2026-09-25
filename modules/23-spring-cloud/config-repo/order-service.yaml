@@ -1,0 +1,5 @@
+# Lesson 3.5 — configuration of the order service, served by the Config Server.
+# Change a value, commit, then: POST http://localhost:8080/actuator/refresh
+bookstore:
+  order:
+    max-quantity: 5

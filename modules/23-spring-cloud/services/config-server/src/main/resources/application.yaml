@@ -1,0 +1,32 @@
+spring:
+  application:
+    name: config-server
+  # tag::git-backend[]
+  cloud:
+    config:
+      server:
+        git:
+          # the course repository itself (run from this folder); in production: the URL of a config repository
+          uri: ${CONFIG_GIT_URI:file://${user.dir}/../../../..}
+          search-paths: modules/23-spring-cloud/config-repo
+          default-label: main              # the branch — only committed changes are visible
+          clone-on-start: true
+  # end::git-backend[]
+server:
+  port: 8888
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+---
+# Lesson 3.6 — in the containers of compose.yaml: the files of a mounted folder, no Git needed
+spring:
+  config:
+    activate:
+      on-profile: native
+  cloud:
+    config:
+      server:
+        native:
+          search-locations: file:/config-repo

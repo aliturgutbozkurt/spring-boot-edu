@@ -1,0 +1,29 @@
+# HTTP examples for module 23-spring-cloud. Start the system first: modules/23-spring-cloud/up.sh
+# Everything goes through the gateway on port 9000.
+
+### 3.1 Through the gateway to the catalog (run it several times: servedBy alternates; X-RateLimit-* headers)
+GET http://localhost:9000/api/books/9780134685991
+
+### 3.2 An order with the HTTP interface client
+POST http://localhost:9000/api/orders
+Content-Type: application/json
+
+{"isbn": "9780134685991", "quantity": 2}
+
+### 3.2 The same order with OpenFeign
+POST http://localhost:9000/api/orders?client=feign
+Content-Type: application/json
+
+{"isbn": "9780134685991", "quantity": 2}
+
+### 3.5 Too many copies: the limit comes from config-repo/order-service.yaml
+POST http://localhost:9000/api/orders
+Content-Type: application/json
+
+{"isbn": "9780134685991", "quantity": 7}
+
+### 3.4 An outage of both catalog instances (then send orders: PENDING, the breaker opens):
+#   docker exec bookstore-cloud-catalog-1-1 wget -qO- --post-data='' "http://localhost:8080/admin/outage?failing=true"
+#   docker exec bookstore-cloud-catalog-2-1 wget -qO- --post-data='' "http://localhost:8080/admin/outage?failing=true"
+# the state of the breaker:
+#   docker exec bookstore-cloud-order-service-1 wget -qO- http://localhost:8080/actuator/circuitbreakers

@@ -1,0 +1,31 @@
+# Lesson 3.7 — Spring Cloud Kubernetes reads the Kubernetes API: the pod needs permission for it.
+# tag::rbac[]
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: order-service
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: spring-cloud-kubernetes
+rules:
+  - apiGroups: [""]
+    resources: ["configmaps", "services", "endpoints", "pods"]
+    verbs: ["get", "list", "watch"]               # watch: for the reload of changed ConfigMaps
+  - apiGroups: ["discovery.k8s.io"]
+    resources: ["endpointslices"]
+    verbs: ["get", "list", "watch"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: order-service-reads-the-api
+subjects:
+  - kind: ServiceAccount
+    name: order-service
+roleRef:
+  kind: Role
+  name: spring-cloud-kubernetes
+  apiGroup: rbac.authorization.k8s.io
+# end::rbac[]

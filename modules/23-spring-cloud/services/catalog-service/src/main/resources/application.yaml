@@ -1,0 +1,13 @@
+spring:
+  application:
+    name: catalog-service
+  threads:
+    virtual:
+      enabled: true
+server:
+  port: ${PORT:8081}
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
