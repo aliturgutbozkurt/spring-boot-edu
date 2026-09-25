@@ -1,0 +1,6 @@
+spring:
+  application:
+    name: 20-docker-deployment
+  threads:
+    virtual:
+      enabled: true

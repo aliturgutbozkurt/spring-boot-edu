@@ -1,0 +1,4 @@
+# Lesson 3.2 — the naive image, for the size comparison: full JDK, one fat layer, runs as root.
+FROM amazoncorretto:27-alpine
+COPY target/*-SNAPSHOT.jar app.jar
+ENTRYPOINT ["java", "-jar", "/app.jar"]

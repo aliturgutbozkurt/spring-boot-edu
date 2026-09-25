@@ -1,0 +1,17 @@
+# HTTP examples for module 20-docker-deployment. Run them from IntelliJ IDEA / VS Code (REST Client).
+# Start the lesson first (spring-boot:run) or the container system (docker compose, see README).
+
+### 3.3 Liveness: is the process healthy? (a restart would help if not)
+GET http://localhost:8080/actuator/health/liveness
+
+### 3.3 Readiness: may it receive traffic? (includes the database)
+GET http://localhost:8080/actuator/health/readiness
+
+### 3.1 The API
+GET http://localhost:8080/api/books
+
+### 3.5 Configuration from the environment (host = container ID in Docker)
+GET http://localhost:8080/api/shop
+
+### 3.4 A slow request: run "docker compose stop app" while it runs — it still finishes
+GET http://localhost:8080/api/slow?millis=5000

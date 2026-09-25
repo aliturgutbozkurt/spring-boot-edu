@@ -67,6 +67,8 @@
         <module>modules/18-modulith/solution</module>
         <module>modules/19-native-performance/lesson</module>
         <module>modules/19-native-performance/solution</module>
+        <module>modules/20-docker-deployment/lesson</module>
+        <module>modules/20-docker-deployment/solution</module>
         <!-- course-modules:end -->
     </modules>
 
@@ -95,6 +97,7 @@
                 <module>modules/17-graphql-websocket/exercise</module>
                 <module>modules/18-modulith/exercise</module>
                 <module>modules/19-native-performance/exercise</module>
+                <module>modules/20-docker-deployment/exercise</module>
                 <!-- exercise-modules:end -->
             </modules>
         </profile>
