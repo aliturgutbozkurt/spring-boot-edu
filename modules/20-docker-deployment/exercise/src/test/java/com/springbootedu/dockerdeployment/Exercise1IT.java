@@ -27,7 +27,9 @@ class Exercise1IT {
             .withNetwork(NETWORK).withNetworkAliases("postgres");
 
     static final ImageFromDockerfile IMAGE = new ImageFromDockerfile("springbootedu/exercise1", false)
-            .withFileFromPath(".", Path.of("."));                // Dockerfile + .dockerignore + target/*.jar
+            .withFileFromPath(".", Path.of("."))                 // Dockerfile + .dockerignore + target/*.jar
+            // a fresh build: cached layers of other builds of this Dockerfile may be removed while we build
+            .withBuildImageCmdModifier(command -> command.withNoCache(true));
 
     static final GenericContainer<?> APP = new GenericContainer<>(IMAGE)
             .withNetwork(NETWORK)
