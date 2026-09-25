@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.springbootedu</groupId>
+        <artifactId>build-parent</artifactId>
+        <version>1.0.0-SNAPSHOT</version>
+        <relativePath>../../build-parent/pom.xml</relativePath>
+    </parent>
+
+    <!--
+      C.6 — the end-to-end test: builds the four images from their jars (capstone/compose.yaml) and drives the
+      whole platform through the gateway. Runs in "verify" (Failsafe) after the services were packaged.
+    -->
+    <artifactId>capstone-e2e-tests</artifactId>
+    <name>Capstone :: end-to-end tests</name>
+
+    <dependencies>
+        <!-- only for the build order: the services' jars must exist before the images are built -->
+        <dependency>
+            <groupId>com.springbootedu</groupId>
+            <artifactId>capstone-catalog-service</artifactId>
+            <version>${project.version}</version>
+            <type>pom</type>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.springbootedu</groupId>
+            <artifactId>capstone-order-service</artifactId>
+            <version>${project.version}</version>
+            <type>pom</type>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.springbootedu</groupId>
+            <artifactId>capstone-search-service</artifactId>
+            <version>${project.version}</version>
+            <type>pom</type>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.springbootedu</groupId>
+            <artifactId>capstone-gateway</artifactId>
+            <version>${project.version}</version>
+            <type>pom</type>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-jackson</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.testcontainers</groupId>
+            <artifactId>testcontainers</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+</project>

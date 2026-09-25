@@ -17,5 +17,6 @@
         <module>order-service</module>
         <module>search-service</module>
         <module>gateway</module>
+        <module>e2e-tests</module>
     </modules>
 </project>

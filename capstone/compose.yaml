@@ -120,7 +120,6 @@ services:
       mongo: { condition: service_healthy }
       hazelcast: { condition: service_healthy }
       kafka: { condition: service_healthy }
-      lgtm: { condition: service_healthy }
 
   order-service:
     <<: *app
@@ -149,7 +148,6 @@ services:
       elasticsearch: { condition: service_healthy }
       redis: { condition: service_healthy }
       kafka: { condition: service_healthy }
-      lgtm: { condition: service_healthy }
 
   gateway:
     <<: *app

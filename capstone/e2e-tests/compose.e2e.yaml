@@ -1,0 +1,14 @@
+# C.6 — overrides capstone/compose.yaml for the end-to-end test: no fixed host port (Testcontainers maps
+# the gateway itself) and no metrics/trace export (Grafana LGTM is not started).
+services:
+  gateway:
+    ports: !reset []
+    environment: &no-export
+      MANAGEMENT_OTLP_METRICS_EXPORT_ENABLED: "false"
+      MANAGEMENT_TRACING_EXPORT_OTLP_ENABLED: "false"
+  order-service:
+    environment: *no-export
+  catalog-service:
+    environment: *no-export
+  search-service:
+    environment: *no-export
