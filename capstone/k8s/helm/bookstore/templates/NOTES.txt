@@ -1,0 +1,8 @@
+The bookstore platform is installed in namespace {{ .Release.Namespace }}.
+
+  kubectl -n {{ .Release.Namespace }} port-forward svc/gateway 8080:8080   # the API: http://localhost:8080
+  kubectl -n {{ .Release.Namespace }} port-forward svc/lgtm 3000:3000      # Grafana:  http://localhost:3000
+
+Demo token (dev profile):
+  curl -X POST localhost:8080/api/auth/token -H 'Content-Type: application/json' \
+       -d '{"username":"ayse","password":"ayse-demo"}'

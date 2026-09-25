@@ -1,0 +1,176 @@
+# ADR-8 — the whole bookstore platform on one machine: 4 services, 6 data/messaging systems, Grafana LGTM.
+#   capstone/up.sh                                  build the jars, then "docker compose up --build --wait"
+#   docker compose -f capstone/compose.yaml down -v stop and wipe the data
+# Published ports: 8080 (gateway, the only way in) and 3000 (Grafana). Needs about 6 GB of Docker memory.
+# Credentials and the JWT key are development defaults for this local system only.
+name: bookstore-capstone
+
+x-app: &app
+  restart: on-failure
+  deploy:
+    resources:
+      limits:
+        memory: 640m                            # the JVM takes 75 % of it as heap (Dockerfile)
+  environment: &app-env
+    BOOKSTORE_JWT_SECRET: ${BOOKSTORE_JWT_SECRET:-local-dev-only-secret-change-me-0123456789}
+    OTLP_ENDPOINT: http://lgtm:4318
+    KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+
+services:
+
+  # ---------------------------------------------------------------- data and messaging
+  postgres:
+    image: postgres:18-alpine
+    environment:
+      POSTGRES_DB: orders
+      POSTGRES_USER: ${POSTGRES_USER:-bookstore}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-bookstore}
+    volumes:
+      - postgres-data:/var/lib/postgresql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d orders"]
+      interval: 5s
+      retries: 20
+
+  mongo:
+    image: mongo:8.0.32
+    volumes:
+      - mongo-data:/data/db
+    healthcheck:
+      test: ["CMD", "mongosh", "--quiet", "--eval", "db.adminCommand('ping').ok"]
+      interval: 5s
+      retries: 20
+
+  elasticsearch:
+    image: elasticsearch:9.4.5
+    environment:
+      discovery.type: single-node
+      xpack.security.enabled: "false"
+      cluster.routing.allocation.disk.threshold_enabled: "false"   # dev: a full laptop disk must not block the index
+      ES_JAVA_OPTS: "-Xms512m -Xmx512m"
+    volumes:
+      - elastic-data:/usr/share/elasticsearch/data
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fs 'http://localhost:9200/_cluster/health?wait_for_status=yellow&timeout=5s'"]
+      interval: 10s
+      retries: 30
+      start_period: 20s
+
+  redis:
+    image: redis:8.8.3-alpine
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      retries: 20
+
+  kafka:
+    image: apache/kafka:4.2.1
+    environment:
+      KAFKA_NODE_ID: 1
+      KAFKA_PROCESS_ROLES: broker,controller
+      KAFKA_CONTROLLER_QUORUM_VOTERS: 1@localhost:9093
+      KAFKA_LISTENERS: DOCKER://:9092,CONTROLLER://:9093
+      KAFKA_ADVERTISED_LISTENERS: DOCKER://kafka:9092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: DOCKER:PLAINTEXT,CONTROLLER:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: DOCKER
+      KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+      KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
+    healthcheck:
+      test: ["CMD-SHELL", "/opt/kafka/bin/kafka-broker-api-versions.sh --bootstrap-server localhost:9092 > /dev/null 2>&1"]
+      interval: 10s
+      retries: 20
+      start_period: 15s
+
+  hazelcast:
+    image: hazelcast/hazelcast:5.5.0
+    environment:
+      HZ_CLUSTERNAME: bookstore
+      HZ_NETWORK_RESTAPI_ENABLED: "true"
+      HZ_NETWORK_RESTAPI_ENDPOINTGROUPS_HEALTHCHECK_ENABLED: "true"
+      JAVA_OPTS: "-Xms256m -Xmx384m"
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fs http://localhost:5701/hazelcast/health/ready"]
+      interval: 10s
+      retries: 20
+      start_period: 15s
+
+  lgtm:
+    image: grafana/otel-lgtm:0.33.1
+    ports:
+      - "3000:3000"                             # Grafana: traces (Tempo), metrics (Prometheus)
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fs http://localhost:3000/api/health"]
+      interval: 10s
+      retries: 30
+      start_period: 20s
+
+  # ---------------------------------------------------------------- the services
+  catalog-service:
+    <<: *app
+    build: { context: catalog-service, dockerfile: ../Dockerfile }
+    image: springbootedu/capstone-catalog-service:latest
+    environment:
+      <<: *app-env
+      MONGODB_URI: mongodb://mongo:27017/catalog
+      HAZELCAST_ADDRESS: hazelcast:5701
+    depends_on:
+      mongo: { condition: service_healthy }
+      hazelcast: { condition: service_healthy }
+      kafka: { condition: service_healthy }
+      lgtm: { condition: service_healthy }
+
+  order-service:
+    <<: *app
+    build: { context: order-service, dockerfile: ../Dockerfile }
+    image: springbootedu/capstone-order-service:latest
+    environment:
+      <<: *app-env
+      DATABASE_URL: jdbc:postgresql://postgres:5432/orders
+      DATABASE_USER: ${POSTGRES_USER:-bookstore}
+      DATABASE_PASSWORD: ${POSTGRES_PASSWORD:-bookstore}
+      CATALOG_GRPC_TARGET: static://catalog-service:9090
+    depends_on:
+      postgres: { condition: service_healthy }
+      kafka: { condition: service_healthy }
+      catalog-service: { condition: service_healthy }
+
+  search-service:
+    <<: *app
+    build: { context: search-service, dockerfile: ../Dockerfile }
+    image: springbootedu/capstone-search-service:latest
+    environment:
+      <<: *app-env
+      ELASTICSEARCH_URIS: http://elasticsearch:9200
+      REDIS_HOST: redis
+    depends_on:
+      elasticsearch: { condition: service_healthy }
+      redis: { condition: service_healthy }
+      kafka: { condition: service_healthy }
+      lgtm: { condition: service_healthy }
+
+  gateway:
+    <<: *app
+    build: { context: gateway, dockerfile: ../Dockerfile }
+    image: springbootedu/capstone-gateway:latest
+    ports:
+      - "8080:8080"                             # the only way into the system
+    environment:
+      <<: *app-env
+      SPRING_PROFILES_ACTIVE: dev               # the demo token endpoint (ADR-5)
+      REDIS_HOST: redis
+      ORDER_SERVICE_URL: http://order-service:8080
+      CATALOG_SERVICE_URL: http://catalog-service:8080
+      SEARCH_SERVICE_URL: http://search-service:8080
+    depends_on:
+      redis: { condition: service_healthy }
+      order-service: { condition: service_healthy }
+      catalog-service: { condition: service_healthy }
+      search-service: { condition: service_healthy }
+
+volumes:
+  postgres-data:
+  mongo-data:
+  elastic-data:

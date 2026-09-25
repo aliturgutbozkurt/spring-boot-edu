@@ -1,0 +1,81 @@
+{{- /* Single-pod infrastructure for development clusters (infra.enabled). Data in emptyDir: lost on restart. */}}
+{{- if .Values.infra.enabled }}
+{{- range $name, $infra := omit .Values.infra "enabled" }}
+{{- if ne $infra.enabled false }}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ $name }}
+  labels:
+    app: {{ $name }}
+    {{- include "bookstore.labels" $ | nindent 4 }}
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate                             # never two pods on the same data
+  selector:
+    matchLabels:
+      app: {{ $name }}
+  template:
+    metadata:
+      labels:
+        app: {{ $name }}
+        {{- include "bookstore.labels" $ | nindent 8 }}
+    spec:
+      enableServiceLinks: false                # the Kafka image reads every KAFKA_* variable as configuration
+      containers:
+        - name: {{ $name }}
+          image: {{ $infra.image }}
+          imagePullPolicy: {{ $.Values.imagePullPolicy }}
+          ports:
+            - containerPort: {{ $infra.port }}
+            {{- range $infra.extraPorts }}
+            - containerPort: {{ . }}
+            {{- end }}
+          env:
+            {{- if $infra.postgresPassword }}
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef: { name: bookstore, key: postgres-password }
+            {{- end }}
+            {{- range $key, $value := $infra.env }}
+            - name: {{ $key }}
+              value: {{ $value | quote }}
+            {{- end }}
+          readinessProbe:
+            tcpSocket: { port: {{ $infra.port }} }
+            periodSeconds: 5
+          resources:
+            requests: { memory: {{ $infra.memory }} }
+            limits: { memory: {{ $infra.memory }} }
+          {{- if $infra.dataPath }}
+          volumeMounts:
+            - name: data
+              mountPath: {{ $infra.dataPath }}
+          {{- end }}
+      {{- if $infra.dataPath }}
+      volumes:
+        - name: data
+          emptyDir: {}
+      {{- end }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ $name }}
+  labels:
+    {{- include "bookstore.labels" $ | nindent 4 }}
+spec:
+  selector:
+    app: {{ $name }}
+  ports:
+    - name: main
+      port: {{ $infra.port }}
+    {{- range $infra.extraPorts }}
+    - name: port-{{ . }}
+      port: {{ . }}
+    {{- end }}
+{{- end }}
+{{- end }}
+{{- end }}

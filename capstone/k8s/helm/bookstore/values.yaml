@@ -1,0 +1,117 @@
+# ADR-8 — the capstone on Kubernetes. The defaults fit a local kind cluster (capstone/k8s/deploy-kind.sh):
+# images are loaded into the node, so they are never pulled; the data lives in emptyDir volumes (lost on restart).
+
+# HS256 key shared by all services (ADR-5). Empty: generated once at install and kept on upgrades.
+jwtSecret: ""
+# Password of the orders database. Empty: generated like the JWT key.
+postgresPassword: ""
+
+imagePullPolicy: IfNotPresent
+
+# Environment of every service
+commonEnv:
+  OTLP_ENDPOINT: http://lgtm:4318
+  KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+
+services:
+  gateway:
+    image: springbootedu/capstone-gateway:latest
+    replicas: 1
+    env:
+      SPRING_PROFILES_ACTIVE: dev              # demo token endpoint; a real cluster uses an authorization server
+      REDIS_HOST: redis
+      ORDER_SERVICE_URL: http://order-service:8080
+      CATALOG_SERVICE_URL: http://catalog-service:8080
+      SEARCH_SERVICE_URL: http://search-service:8080
+    waitFor: [redis:6379]
+  order-service:
+    image: springbootedu/capstone-order-service:latest
+    replicas: 1
+    env:
+      DATABASE_URL: jdbc:postgresql://postgres:5432/orders
+      DATABASE_USER: bookstore
+      CATALOG_GRPC_TARGET: dns:///catalog-service-grpc:9090   # headless service: gRPC balances over all pods
+    databasePassword: true                     # DATABASE_PASSWORD from the Secret
+    waitFor: [postgres:5432, kafka:9092, catalog-service-grpc:9090]
+  catalog-service:
+    image: springbootedu/capstone-catalog-service:latest
+    replicas: 2                                # two instances share the stock locks in Hazelcast (ADR-6)
+    grpcPort: 9090
+    env:
+      MONGODB_URI: mongodb://mongo:27017/catalog
+      HAZELCAST_ADDRESS: hazelcast:5701
+    waitFor: [mongo:27017, hazelcast:5701, kafka:9092]
+  search-service:
+    image: springbootedu/capstone-search-service:latest
+    replicas: 1
+    env:
+      ELASTICSEARCH_URIS: http://elasticsearch:9200
+      REDIS_HOST: redis
+    waitFor: [elasticsearch:9200, redis:6379, kafka:9092]
+
+serviceResources:
+  requests: { cpu: 100m, memory: 384Mi }
+  limits: { memory: 640Mi }                    # the JVM takes 75 % as heap (Dockerfile)
+
+# Single-pod infrastructure for a development cluster. In production: managed services or operators.
+# Each entry can be switched off with enabled: false.
+infra:
+  enabled: true
+  postgres:
+    image: postgres:18-alpine
+    port: 5432
+    env:
+      POSTGRES_DB: orders
+      POSTGRES_USER: bookstore
+    postgresPassword: true
+    dataPath: /var/lib/postgresql
+    memory: 256Mi
+  mongo:
+    image: mongo:8.0.32
+    port: 27017
+    dataPath: /data/db
+    memory: 512Mi
+  elasticsearch:
+    image: elasticsearch:9.4.5
+    port: 9200
+    env:
+      discovery.type: single-node
+      xpack.security.enabled: "false"
+      cluster.routing.allocation.disk.threshold_enabled: "false"   # dev: a full node disk must not block the index
+      ES_JAVA_OPTS: "-Xms512m -Xmx512m"
+    dataPath: /usr/share/elasticsearch/data
+    memory: 1536Mi
+  redis:
+    image: redis:8.8.3-alpine
+    port: 6379
+    memory: 128Mi
+  kafka:
+    image: apache/kafka:4.2.1
+    port: 9092
+    env:
+      KAFKA_NODE_ID: "1"
+      KAFKA_PROCESS_ROLES: broker,controller
+      KAFKA_CONTROLLER_QUORUM_VOTERS: 1@localhost:9093
+      KAFKA_LISTENERS: DOCKER://:9092,CONTROLLER://:9093
+      KAFKA_ADVERTISED_LISTENERS: DOCKER://kafka:9092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: DOCKER:PLAINTEXT,CONTROLLER:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: DOCKER
+      KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: "1"
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: "1"
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: "1"
+      KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: "0"
+    memory: 768Mi
+  hazelcast:
+    image: hazelcast/hazelcast:5.5.0
+    port: 5701
+    env:
+      HZ_CLUSTERNAME: bookstore
+      JAVA_OPTS: "-Xms256m -Xmx384m"
+    memory: 512Mi
+  lgtm:
+    enabled: true                              # 2.5 GB image: --set infra.lgtm.enabled=false on a small Docker disk
+    image: grafana/otel-lgtm:0.33.1
+    port: 4318
+    extraPorts: [3000]                         # Grafana
+    memory: 1Gi

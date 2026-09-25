@@ -1,0 +1,108 @@
+{{- /* The four Spring Boot services: one Deployment and one Service each (plus a headless gRPC Service). */}}
+{{- range $name, $svc := .Values.services }}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ $name }}
+  labels:
+    app: {{ $name }}
+    {{- include "bookstore.labels" $ | nindent 4 }}
+spec:
+  replicas: {{ $svc.replicas }}
+  selector:
+    matchLabels:
+      app: {{ $name }}
+  template:
+    metadata:
+      labels:
+        app: {{ $name }}
+        {{- include "bookstore.labels" $ | nindent 8 }}
+    spec:
+      enableServiceLinks: false                # no KAFKA_PORT=tcp://… variables: they clash with our settings
+      {{- with $svc.waitFor }}
+      initContainers:
+        {{- range $i, $target := . }}
+        {{- $hostPort := splitList ":" $target }}
+        - name: wait-for-{{ first $hostPort }}
+          image: busybox:1.37
+          imagePullPolicy: {{ $.Values.imagePullPolicy }}
+          command: ["sh", "-c", "until nc -z {{ first $hostPort }} {{ last $hostPort }}; do echo waiting for {{ $target }}; sleep 2; done"]
+        {{- end }}
+      {{- end }}
+      containers:
+        - name: {{ $name }}
+          image: {{ $svc.image }}
+          imagePullPolicy: {{ $.Values.imagePullPolicy }}
+          ports:
+            - name: http
+              containerPort: 8080
+            {{- if $svc.grpcPort }}
+            - name: grpc
+              containerPort: {{ $svc.grpcPort }}
+            {{- end }}
+          env:
+            - name: BOOKSTORE_JWT_SECRET
+              valueFrom:
+                secretKeyRef: { name: bookstore, key: jwt-secret }
+            {{- if $svc.databasePassword }}
+            - name: DATABASE_PASSWORD
+              valueFrom:
+                secretKeyRef: { name: bookstore, key: postgres-password }
+            {{- end }}
+            {{- if eq $.Values.infra.lgtm.enabled false }}
+            - name: MANAGEMENT_OTLP_METRICS_EXPORT_ENABLED     # no LGTM in this cluster: do not export
+              value: "false"
+            - name: MANAGEMENT_TRACING_EXPORT_OTLP_ENABLED
+              value: "false"
+            {{- end }}
+            {{- range $key, $value := merge (dict) $svc.env $.Values.commonEnv }}
+            - name: {{ $key }}
+              value: {{ $value | quote }}
+            {{- end }}
+          # Boot's probe endpoints (module 22): started → live → ready
+          startupProbe:
+            httpGet: { path: /actuator/health/liveness, port: http }
+            periodSeconds: 5
+            failureThreshold: 36                 # up to 3 minutes for the first start
+          livenessProbe:
+            httpGet: { path: /actuator/health/liveness, port: http }
+            periodSeconds: 10
+          readinessProbe:
+            httpGet: { path: /actuator/health/readiness, port: http }
+            periodSeconds: 5
+          resources:
+            {{- toYaml $.Values.serviceResources | nindent 12 }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ $name }}
+  labels:
+    {{- include "bookstore.labels" $ | nindent 4 }}
+spec:
+  selector:
+    app: {{ $name }}
+  ports:
+    - name: http
+      port: 8080
+      targetPort: http
+{{- if $svc.grpcPort }}
+---
+# Headless: DNS returns every pod, so the gRPC client balances its long-lived connections over all of them
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ $name }}-grpc
+  labels:
+    {{- include "bookstore.labels" $ | nindent 4 }}
+spec:
+  clusterIP: None
+  selector:
+    app: {{ $name }}
+  ports:
+    - name: grpc
+      port: {{ $svc.grpcPort }}
+      targetPort: grpc
+{{- end }}
+{{- end }}

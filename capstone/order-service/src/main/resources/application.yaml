@@ -17,6 +17,10 @@ spring:
       ddl-auto: validate                        # Flyway owns the schema
   kafka:
     bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
+    template:
+      observation-enabled: true                 # the trace context travels in the record headers …
+    listener:
+      observation-enabled: true                 # … and consumers continue the trace
     producer:
       acks: all                                 # the relay marks a row only after the broker has it
       # key and value are strings: the outbox already holds the event as JSON
@@ -46,3 +50,26 @@ management:
     web:
       exposure:
         include: health,info
+  endpoint:
+    health:
+      probes:
+        enabled: true                           # /actuator/health/liveness and /readiness (Docker, Kubernetes)
+  tracing:
+    sampling:
+      probability: 1.0                          # every request is traced (production: e.g. 0.1)
+  observations:
+    enable:
+      tasks.scheduled: false                    # no trace for every relay run (twice a second)
+  metrics:
+    tags:
+      application: ${spring.application.name}
+  opentelemetry:
+    tracing:
+      export:
+        otlp:
+          endpoint: ${OTLP_ENDPOINT:http://localhost:4318}/v1/traces
+  otlp:
+    metrics:
+      export:
+        url: ${OTLP_ENDPOINT:http://localhost:4318}/v1/metrics
+        step: 10s

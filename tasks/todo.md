@@ -239,7 +239,7 @@ Ortak doğrulama komutu (aşağıda `VERIFY(<id>)` olarak geçer):
 - [x] **#46 C.3 Arama + cache** — Elasticsearch arama, Redis cache, Hazelcast stok kilidi/rate limit
 - [x] **#47 C.4 Event akışı** — Kafka ile `OrderPlaced` → stok, arama indeksi, bildirim; outbox
 - [x] **#48 C.5 Gateway + gRPC** — Spring Cloud Gateway girişi, order→catalog stok kontrolü gRPC ile
-- [ ] **#49 C.5b Gözlemlenebilirlik + deployment** — Dockerfile'lar, tek `compose.yaml`, LGTM, Helm chart + kind'da kurulum
+- [x] **#49 C.5b Gözlemlenebilirlik + deployment** — Dockerfile'lar, tek `compose.yaml`, LGTM, Helm chart + kind'da kurulum
 - [ ] **#50 C.6 Uçtan uca test** — Testcontainers ile tam akış: sipariş ver → event → indeks → cache
 - [ ] **#51 C.7 Capstone ödevleri + çözümler + doküman/PDF**
 - [ ] **#52 C.8 Genel müfredat** — `docs/syllabus.{tr,en}.md` + PDF (haftalık akış, önkoşullar, kazanımlar)

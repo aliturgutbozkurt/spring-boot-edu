@@ -10,10 +10,12 @@ spring:
     mongodb:
       representation:
         big-decimal: decimal128
-  hazelcast:
-    config: classpath:hazelcast-client.yaml
   kafka:
     bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
+    template:
+      observation-enabled: true                 # the trace context travels in the record headers …
+    listener:
+      observation-enabled: true                 # … and consumers continue the trace
     producer:
       value-serializer: org.springframework.kafka.support.serializer.JacksonJsonSerializer
       properties:
@@ -24,6 +26,8 @@ spring:
 server:
   port: ${PORT:8082}                          # behind the gateway (8080)
 bookstore:
+  hazelcast:
+    address: ${HAZELCAST_ADDRESS:localhost:5701}
   jwt:
     secret: ${BOOKSTORE_JWT_SECRET}       # no default: compose.yaml / the Helm chart set it
 management:
@@ -31,3 +35,23 @@ management:
     web:
       exposure:
         include: health,info
+  endpoint:
+    health:
+      probes:
+        enabled: true                           # /actuator/health/liveness and /readiness (Docker, Kubernetes)
+  tracing:
+    sampling:
+      probability: 1.0                          # every request is traced (production: e.g. 0.1)
+  metrics:
+    tags:
+      application: ${spring.application.name}
+  opentelemetry:
+    tracing:
+      export:
+        otlp:
+          endpoint: ${OTLP_ENDPOINT:http://localhost:4318}/v1/traces
+  otlp:
+    metrics:
+      export:
+        url: ${OTLP_ENDPOINT:http://localhost:4318}/v1/metrics
+        step: 10s
