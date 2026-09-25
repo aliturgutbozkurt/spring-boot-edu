@@ -1,0 +1,17 @@
+spring:
+  application:
+    name: 21-grpc
+  threads:
+    virtual:
+      enabled: true
+  # tag::grpc-config[]
+  grpc:
+    server:
+      port: 9090                                   # the default; gRPC runs on its own Netty server (HTTP/2)
+    client:
+      channel:
+        catalog:                                   # the logical name used by @ImportGrpcClients
+          target: static://localhost:9090          # here the application calls itself (see LessonTour)
+          default:
+            deadline: 2s                           # every call without its own deadline gives up after 2 s
+  # end::grpc-config[]

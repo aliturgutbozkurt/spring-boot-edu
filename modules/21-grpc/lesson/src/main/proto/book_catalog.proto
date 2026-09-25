@@ -1,0 +1,45 @@
+// Lesson 3.1 — the contract. Client and server are generated from this file, in any language.
+// tag::proto[]
+syntax = "proto3";
+
+package bookstore.catalog.v1;
+
+option java_package = "com.springbootedu.grpc.catalog.v1";
+option java_multiple_files = true;
+
+service BookCatalog {
+  rpc GetBook (GetBookRequest) returns (Book);                         // unary
+  rpc ListBooks (ListBooksRequest) returns (stream Book);              // server streaming
+  rpc ImportBooks (stream Book) returns (ImportSummary);               // client streaming
+  rpc Chat (stream StockQuestion) returns (stream StockAnswer);        // bidirectional streaming
+}
+
+message GetBookRequest {
+  string isbn = 1;
+}
+
+message ListBooksRequest {
+  string author = 1;              // empty: all books
+}
+
+message Book {
+  string isbn = 1;
+  string title = 2;
+  string author = 3;
+  int64 price_cents = 4;          // money as whole cents: no floating point errors
+}
+
+message ImportSummary {
+  int32 imported = 1;
+  int32 rejected = 2;
+}
+
+message StockQuestion {
+  string isbn = 1;
+}
+
+message StockAnswer {
+  string isbn = 1;
+  int32 available = 2;
+}
+// end::proto[]

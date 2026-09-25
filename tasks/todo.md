@@ -209,7 +209,7 @@ Ortak doğrulama komutu (aşağıda `VERIFY(<id>)` olarak geçer):
   - Verify: `./scripts/kind-up.sh && kubectl get nodes` → Ready; `kind-down.sh` temizliyor
 
 ### 21-grpc · #39
-- [ ] **M21.a Kod** — `.proto` sözleşmesi (BookCatalog) + protobuf-maven-plugin; unary servis (`@GrpcService`); server/client/bidi streaming; client stub (`@ImportGrpcClients` / channel factory); interceptor (loglama, deadline); hata → `Status` eşleme; health + reflection; in-process testler
+- [x] **M21.a Kod** — `.proto` sözleşmesi (BookCatalog) + protobuf-maven-plugin; unary servis (`@GrpcService`); server/client/bidi streaming; client stub (`@ImportGrpcClients` / channel factory); interceptor (loglama, deadline); hata → `Status` eşleme; health + reflection; in-process testler
 - [ ] **M21.b Ödevler** — yeni RPC ekleyip geriye uyumlu şema değişikliği; stream ile toplu sipariş; deadline aşımını test etmek
 - [ ] **M21.c Doküman** — REST vs gRPC karşılaştırması dahil. Verify: `VERIFY(21-grpc)`
 
