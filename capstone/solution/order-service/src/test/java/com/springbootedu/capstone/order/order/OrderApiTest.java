@@ -91,6 +91,8 @@ class OrderApiTest {
     void aSlowCatalogEndsInServiceUnavailable() {
         assertThat(place(customer, line(SLOW, 1))).hasStatus(HttpStatus.SERVICE_UNAVAILABLE);   // deadline 500 ms
         assertThat(ordersOf(customer)).isZero();
+        // the catalog may have reserved the stock after all: the order service gives it back (best effort)
+        assertThat(STOCK.released).hasSize(1);
     }
 
     @Test

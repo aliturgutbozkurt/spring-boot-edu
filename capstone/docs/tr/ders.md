@@ -31,7 +31,7 @@ Mimari dokümanı (`docs/tr/mimari.md`) sistemi ve kararlarını anlatır; bu re
 | `catalog-service` | kitaplar ve stok (MongoDB) | Hazelcast (kilitler), Kafka (`BookChanged`) |
 | `search-service` | arama okuma modeli (Elasticsearch) | Kafka (consumer), Redis (cache) |
 
-Her servisin kendi veritabanı vardır ve JWT'yi kendisi de kontrol eder; ilk kontrolü gateway yapar.
+Her servisin kendi veritabanı vardır. JWT'yi önce gateway kontrol eder; sipariş ve katalog servisleri onu yeniden kontrol eder (arama API'si herkese açıktır).
 
 ## 2.2 Kurs Modüllerinin Buluştuğu Yer
 
@@ -43,7 +43,7 @@ Her servisin kendi veritabanı vardır ve JWT'yi kendisi de kontrol eder; ilk ko
 | Hazelcast `IMap` kilidi | 09 | ISBN başına stok |
 | Elasticsearch | 10 | arama okuma modeli |
 | Kafka, outbox, idempotent consumer'lar | 11 | `OrderPlaced`, `BookChanged` |
-| JWT resource server | 12 | gateway ve her servis |
+| JWT resource server | 12 | gateway, sipariş ve katalog servisleri |
 | Testcontainers, fake'ler | 14 | her servisin testleri, uçtan uca test |
 | OpenTelemetry, LGTM | 15 | sipariş başına tek trace |
 | Docker, jlink | 20 | tüm servisler için tek Dockerfile |
@@ -121,7 +121,7 @@ OrderResponse place(String customerId, PlaceOrderRequest request) {
             PlaceOrderRequest.Line::isbn, PlaceOrderRequest.Line::quantity, Integer::sum, LinkedHashMap::new));
 
     // the remote call runs OUTSIDE the transaction: no database connection is held while we wait
-    List<ReservedBook> reserved = stock.reserve(id.toString(), quantities);
+    List<ReservedBook> reserved = reserveOrGiveBack(id, quantities);
     try {
         return transactions.execute(status -> save(id, customerId, reserved));
     } catch (RuntimeException e) {
@@ -244,7 +244,9 @@ Arama servisinin kendine ait verisi yoktur: indeksi yalnızca event'lerden oluş
                     .withRefreshPolicy(RefreshPolicy.IMMEDIATE)
                     .build(), BOOKS));
         } catch (RuntimeException e) {
-            redis.delete(mark);                                 // not counted: let the redelivery try again
+            // let the redelivery try again. Caveat: lines updated before the failure are counted twice then —
+            // exact counting would need one document per order (or per order line) instead of a counter
+            redis.delete(mark);
             throw e;
         }
     }
@@ -318,7 +320,7 @@ Bir istek kimin kovasını (bucket) kullanır? Giriş yapmış bir müşteri ken
 }
 ```
 
-Gateway'in security zinciri ilk kontroldür (token yoksa `401`, kataloğu değiştirmeye çalışan müşteriye `403`). `Authorization` header'ı değiştirilmeden iletilir ve her servis onu yeniden kontrol eder — derinlemesine savunma (ADR-5).
+Gateway'in security zinciri ilk kontroldür (token yoksa `401`, kataloğu değiştirmeye çalışan müşteriye `403`). `Authorization` header'ı değiştirilmeden iletilir; sipariş ve katalog servisleri onu yeniden kontrol eder — derinlemesine savunma (ADR-5).
 
 ## 3.8 Her Şeyi Kapsayan Tek Trace
 

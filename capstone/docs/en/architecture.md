@@ -110,7 +110,7 @@ The catalog service publishes `BookChanged` to `bookstore.catalog` whenever a bo
 
 ## ADR-5: JWT at the Gateway and in the Services
 
-- **Decision:** the gateway validates the bearer token and forwards it; every service is also a resource server (defence in depth). For the local system, the gateway offers a development token endpoint with demo users, and tokens are signed with an HMAC key from the environment.
+- **Decision:** the gateway validates the bearer token and forwards it; every service with protected endpoints (orders, catalog changes, the gRPC stock service) is also a resource server (defence in depth). Search is public. For the local system, the gateway offers a development token endpoint with demo users, and tokens are signed with an HMAC key from the environment.
 - **Production:** an authorization server (Spring Authorization Server, module 12, or Keycloak) with asymmetric keys (JWKS).
 
 ## ADR-6: Hazelcast IMap Lock for Stock

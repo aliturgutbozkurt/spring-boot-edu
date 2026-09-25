@@ -73,7 +73,9 @@ public class BookIndex {
                     .withRefreshPolicy(RefreshPolicy.IMMEDIATE)
                     .build(), BOOKS));
         } catch (RuntimeException e) {
-            redis.delete(mark);                                 // not counted: let the redelivery try again
+            // let the redelivery try again. Caveat: lines updated before the failure are counted twice then —
+            // exact counting would need one document per order (or per order line) instead of a counter
+            redis.delete(mark);
             throw e;
         }
     }

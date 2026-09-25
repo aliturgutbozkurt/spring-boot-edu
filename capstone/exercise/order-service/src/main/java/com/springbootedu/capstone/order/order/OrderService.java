@@ -2,6 +2,7 @@ package com.springbootedu.capstone.order.order;
 
 import com.springbootedu.capstone.contracts.events.OrderPlaced;
 import com.springbootedu.capstone.order.outbox.Outbox;
+import com.springbootedu.capstone.order.stock.CatalogUnavailableException;
 import com.springbootedu.capstone.order.stock.ReservedBook;
 import com.springbootedu.capstone.order.stock.StockClient;
 import java.time.Clock;
@@ -52,7 +53,7 @@ class OrderService {
                 PlaceOrderRequest.Line::isbn, PlaceOrderRequest.Line::quantity, Integer::sum, LinkedHashMap::new));
 
         // the remote call runs OUTSIDE the transaction: no database connection is held while we wait
-        List<ReservedBook> reserved = stock.reserve(id.toString(), quantities);
+        List<ReservedBook> reserved = reserveOrGiveBack(id, quantities);
         try {
             return new Placed(transactions.execute(status -> save(id, customerId, idempotencyKey, reserved)), true);
         } catch (DataIntegrityViolationException e) {
@@ -78,6 +79,17 @@ class OrderService {
         //  - give the stock back with stock.release(...) — before or after the database? (see the exercise text)
         //  - in one transaction: order.cancel() and an OrderCancelled event in the outbox (topic OrderCancelled.TOPIC)
         throw new UnsupportedOperationException("TODO Exercise 2");
+    }
+
+    private List<ReservedBook> reserveOrGiveBack(UUID id, Map<String, Integer> quantities) {
+        try {
+            return stock.reserve(id.toString(), quantities);
+        } catch (CatalogUnavailableException e) {
+            // a call that timed out may still have reserved the stock in the catalog: give it back
+            // (ReleaseStock is idempotent; if the catalog is really down, this fails too — see releaseAfterFailure)
+            releaseAfterFailure(id, e);
+            throw e;
+        }
     }
 
     List<OrderResponse> ordersOf(String customerId) {

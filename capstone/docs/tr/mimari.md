@@ -110,7 +110,7 @@ Katalog servisi bir kitap oluşturulduğunda veya değiştirildiğinde (başlang
 
 ## ADR-5: Gateway'de ve Servislerde JWT
 
-- **Karar:** Gateway bearer token'ı doğrular ve iletir; her servis de bir resource server'dır (derinlemesine savunma). Yerel sistem için gateway, demo kullanıcılarla bir geliştirme token endpoint'i sunar ve token'lar ortamdan gelen bir HMAC anahtarıyla imzalanır.
+- **Karar:** Gateway bearer token'ı doğrular ve iletir; korunan endpoint'leri olan her servis (siparişler, katalog değişiklikleri, gRPC stok servisi) de bir resource server'dır (derinlemesine savunma). Arama herkese açıktır. Yerel sistem için gateway, demo kullanıcılarla bir geliştirme token endpoint'i sunar ve token'lar ortamdan gelen bir HMAC anahtarıyla imzalanır.
 - **Production:** Asimetrik anahtarlı (JWKS) bir yetkilendirme sunucusu (Spring Authorization Server, modül 12, veya Keycloak).
 
 ## ADR-6: Stok için Hazelcast IMap Kilidi

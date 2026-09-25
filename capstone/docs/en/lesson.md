@@ -31,7 +31,7 @@ The architecture document (`docs/en/architecture.md`) describes the system and i
 | `catalog-service` | books and stock (MongoDB) | Hazelcast (locks), Kafka (`BookChanged`) |
 | `search-service` | the search read model (Elasticsearch) | Kafka (consumer), Redis (cache) |
 
-Every service has its own database and checks the JWT itself; the gateway checks it first.
+Every service has its own database. The gateway checks the JWT first; the order and catalog services check it again (the search API is public).
 
 ## 2.2 Where the Course Modules Meet
 
@@ -43,7 +43,7 @@ Every service has its own database and checks the JWT itself; the gateway checks
 | Hazelcast `IMap` lock | 09 | stock per ISBN |
 | Elasticsearch | 10 | search read model |
 | Kafka, outbox, idempotent consumers | 11 | `OrderPlaced`, `BookChanged` |
-| JWT resource server | 12 | gateway and every service |
+| JWT resource server | 12 | gateway, order and catalog services |
 | Testcontainers, fakes | 14 | tests of every service, the end-to-end test |
 | OpenTelemetry, LGTM | 15 | one trace per order |
 | Docker, jlink | 20 | one Dockerfile for all services |
@@ -121,7 +121,7 @@ OrderResponse place(String customerId, PlaceOrderRequest request) {
             PlaceOrderRequest.Line::isbn, PlaceOrderRequest.Line::quantity, Integer::sum, LinkedHashMap::new));
 
     // the remote call runs OUTSIDE the transaction: no database connection is held while we wait
-    List<ReservedBook> reserved = stock.reserve(id.toString(), quantities);
+    List<ReservedBook> reserved = reserveOrGiveBack(id, quantities);
     try {
         return transactions.execute(status -> save(id, customerId, reserved));
     } catch (RuntimeException e) {
@@ -244,7 +244,9 @@ The search service owns no data: its index is built only from events (ADR-4). Co
                     .withRefreshPolicy(RefreshPolicy.IMMEDIATE)
                     .build(), BOOKS));
         } catch (RuntimeException e) {
-            redis.delete(mark);                                 // not counted: let the redelivery try again
+            // let the redelivery try again. Caveat: lines updated before the failure are counted twice then —
+            // exact counting would need one document per order (or per order line) instead of a counter
+            redis.delete(mark);
             throw e;
         }
     }
@@ -318,7 +320,7 @@ Whose bucket does a request use? A signed-in customer's own, so one customer can
 }
 ```
 
-The gateway's security chain is the first check (`401` without a token, `403` for a customer who changes the catalog). The `Authorization` header is forwarded unchanged, and every service checks it again — defence in depth (ADR-5).
+The gateway's security chain is the first check (`401` without a token, `403` for a customer who changes the catalog). The `Authorization` header is forwarded unchanged, and the order and catalog services check it again — defence in depth (ADR-5).
 
 ## 3.8 One Trace Through Everything
 
