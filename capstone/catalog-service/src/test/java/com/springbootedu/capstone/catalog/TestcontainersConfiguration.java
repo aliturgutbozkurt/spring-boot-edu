@@ -3,6 +3,7 @@ package com.springbootedu.capstone.catalog;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
 import org.springframework.context.annotation.Bean;
+import org.testcontainers.kafka.KafkaContainer;
 import org.testcontainers.containers.GenericContainer;
 import org.testcontainers.mongodb.MongoDBContainer;
 
@@ -11,6 +12,8 @@ import org.testcontainers.mongodb.MongoDBContainer;
  */
 @TestConfiguration(proxyBeanMethods = false)
 public class TestcontainersConfiguration {
+
+    static final KafkaContainer KAFKA = new KafkaContainer("apache/kafka:4.2.1");
 
     static final MongoDBContainer MONGO = new MongoDBContainer("mongo:8.0.32");
 
@@ -28,5 +31,11 @@ public class TestcontainersConfiguration {
     @ServiceConnection(name = "hazelcast/hazelcast")
     GenericContainer<?> hazelcastMember() {
         return HAZELCAST;
+    }
+
+    @Bean
+    @ServiceConnection
+    KafkaContainer kafkaContainer() {
+        return KAFKA;
     }
 }

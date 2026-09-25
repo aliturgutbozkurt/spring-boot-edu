@@ -237,7 +237,7 @@ Ortak doğrulama komutu (aşağıda `VERIFY(<id>)` olarak geçer):
 - [x] **#44 C.1 Capstone mimari dokümanı (TR/EN)** — servisler, veri akışı, hangi teknoloji neden; ADR'ler. *Ask first:* servis sınırları (öneri: gateway + order + catalog + search, aralarında gRPC ve Kafka)
 - [x] **#45 C.2 Sipariş + katalog** — PostgreSQL/JPA siparişler, MongoDB katalog, JWT güvenlik
 - [x] **#46 C.3 Arama + cache** — Elasticsearch arama, Redis cache, Hazelcast stok kilidi/rate limit
-- [ ] **#47 C.4 Event akışı** — Kafka ile `OrderPlaced` → stok, arama indeksi, bildirim; outbox
+- [x] **#47 C.4 Event akışı** — Kafka ile `OrderPlaced` → stok, arama indeksi, bildirim; outbox
 - [ ] **#48 C.5 Gateway + gRPC** — Spring Cloud Gateway girişi, order→catalog stok kontrolü gRPC ile
 - [ ] **#49 C.5b Gözlemlenebilirlik + deployment** — Dockerfile'lar, tek `compose.yaml`, LGTM, Helm chart + kind'da kurulum
 - [ ] **#50 C.6 Uçtan uca test** — Testcontainers ile tam akış: sipariş ver → event → indeks → cache

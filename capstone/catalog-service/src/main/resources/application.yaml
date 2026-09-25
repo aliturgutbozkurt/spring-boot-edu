@@ -12,6 +12,12 @@ spring:
         big-decimal: decimal128
   hazelcast:
     config: classpath:hazelcast-client.yaml
+  kafka:
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
+    producer:
+      value-serializer: org.springframework.kafka.support.serializer.JacksonJsonSerializer
+      properties:
+        spring.json.add.type.headers: false     # plain JSON: consumers choose their own type
   grpc:
     server:
       port: ${GRPC_PORT:9090}

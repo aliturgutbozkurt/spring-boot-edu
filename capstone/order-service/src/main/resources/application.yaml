@@ -15,6 +15,18 @@ spring:
     open-in-view: false
     hibernate:
       ddl-auto: validate                        # Flyway owns the schema
+  kafka:
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
+    producer:
+      acks: all                                 # the relay marks a row only after the broker has it
+      # key and value are strings: the outbox already holds the event as JSON
+    consumer:
+      auto-offset-reset: earliest
+      value-deserializer: org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
+      properties:
+        spring.deserializer.value.delegate.class: org.springframework.kafka.support.serializer.JacksonJsonDeserializer
+        spring.json.use.type.headers: false     # plain JSON; each listener names its type
+        spring.json.trusted.packages: com.springbootedu.capstone.contracts.events
   grpc:
     client:
       channel:
@@ -25,6 +37,8 @@ bookstore:
     secret: ${BOOKSTORE_JWT_SECRET}             # no default: compose.yaml / the Helm chart set it
   catalog:
     deadline: 2s                                # ADR-2: a reservation gives up after 2 seconds
+  outbox:
+    relay-interval: 500ms
 management:
   endpoints:
     web:

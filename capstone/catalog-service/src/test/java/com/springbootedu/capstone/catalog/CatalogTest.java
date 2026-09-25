@@ -6,6 +6,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 import org.springframework.boot.grpc.test.autoconfigure.AutoConfigureTestGrpcTransport;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.context.annotation.Import;
 
 /**
@@ -14,6 +15,7 @@ import org.springframework.context.annotation.Import;
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 @SpringBootTest(properties = {"bookstore.jwt.secret=" + Tokens.SECRET, "bookstore.catalog.seed=false"})
+@AutoConfigureMockMvc
 @AutoConfigureTestGrpcTransport
 @Import(TestcontainersConfiguration.class)
 public @interface CatalogTest {
