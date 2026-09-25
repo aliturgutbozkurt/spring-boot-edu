@@ -211,7 +211,7 @@ Ortak doğrulama komutu (aşağıda `VERIFY(<id>)` olarak geçer):
 ### 21-grpc · #39
 - [x] **M21.a Kod** — `.proto` sözleşmesi (BookCatalog) + protobuf-maven-plugin; unary servis (`@GrpcService`); server/client/bidi streaming; client stub (`@ImportGrpcClients` / channel factory); interceptor (loglama, deadline); hata → `Status` eşleme; health + reflection; in-process testler
 - [x] **M21.b Ödevler** — yeni RPC ekleyip geriye uyumlu şema değişikliği; stream ile toplu sipariş; deadline aşımını test etmek
-- [ ] **M21.c Doküman** — REST vs gRPC karşılaştırması dahil. Verify: `VERIFY(21-grpc)`
+- [x] **M21.c Doküman** — REST vs gRPC karşılaştırması dahil. Verify: `VERIFY(21-grpc)`
 
 ### 22-kubernetes · #40
 - [ ] **M22.a Kod/Manifest** — uygulama image'ını kind'a yükleme; Deployment, Service, ConfigMap, Secret; liveness/readiness/startup probe (Actuator); requests/limits; Kustomize base + dev/prod overlay; HPA; rolling update + rollback; PostgreSQL StatefulSet (eğitim amaçlı)
