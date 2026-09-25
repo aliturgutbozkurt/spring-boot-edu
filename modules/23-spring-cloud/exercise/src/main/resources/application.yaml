@@ -1,6 +1,37 @@
 spring:
   application:
-    name: 23-spring-cloud
-  threads:
-    virtual:
-      enabled: true
+    name: 23-spring-cloud-exercises
+  cloud:
+    gateway:
+      server:
+        webflux:
+          routes:
+            - id: catalog
+              uri: lb://catalog-service
+              predicates:
+                - Path=/api/books/**
+            # TODO 1a: a route "reviews": /api/reviews/** to the service review-service (through the load balancer)
+            # TODO 2a: on that route, a CircuitBreaker filter named "reviews" with the fallback /fallback/reviews;
+            #          503 and 500 answers must count as failures too
+    discovery:
+      client:
+        simple:
+          instances:
+            catalog-service:
+              - uri: http://localhost:8081
+            review-service:
+              - uri: http://localhost:8083
+bookstore:
+  gateway:
+    api-key: ${BOOKSTORE_API_KEY:dev-key}          # a dev value only
+resilience4j:
+  circuitbreaker:
+    instances:
+      reviews:
+        sliding-window-size: 4
+        minimum-number-of-calls: 4
+        failure-rate-threshold: 50
+        wait-duration-in-open-state: 30s
+logging:
+  level:
+    root: warn
