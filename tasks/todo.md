@@ -226,7 +226,7 @@ Ortak doğrulama komutu (aşağıda `VERIFY(<id>)` olarak geçer):
 ### 24-spring-ai · #42
 - [x] **M24.a Kod** — Ollama (compose, küçük model) ; `ChatClient` + prompt şablonları; structured output → record; chat memory (JDBC); pgvector ile RAG (kitap açıklamaları, ETL pipeline); tool calling (stok sorgusu); MCP server/client girişi; testlerde mock `ChatModel`
 - [x] **M24.b Ödevler** — kitap öneri asistanı; RAG ile SSS; tool ile sipariş durumu sorgusu
-- [ ] **M24.c Doküman** — model seçimi, maliyet ve güvenlik (prompt injection) notları dahil. Verify: `VERIFY(24-spring-ai)`
+- [x] **M24.c Doküman** — model seçimi, maliyet ve güvenlik (prompt injection) notları dahil. Verify: `VERIFY(24-spring-ai)`
 
 **🔶 Checkpoint 7 (#43)**
 
