@@ -125,6 +125,9 @@ docker compose --profile all down -v               # stop and wipe data
 
 Önerilen sıra yukarıdan aşağıya. / Recommended order is top to bottom.
 
+📅 Müfredat — haftalık plan, ön koşullar, kazanımlar / Syllabus — weekly plan, prerequisites, outcomes:
+🇹🇷 [Müfredat](docs/syllabus.tr.md) ([PDF](docs/syllabus.tr.pdf)) · 🇬🇧 [Syllabus](docs/syllabus.en.md) ([PDF](docs/syllabus.en.pdf))
+
 | # | Modül / Module | Konular / Topics | Altyapı / Infra |
 |---|---|---|---|
 | 00 | Kurulum ve Modern Java / Setup & Modern Java | JDK 27, records, sealed types, pattern matching, virtual threads, scoped values | — |
@@ -152,7 +155,7 @@ docker compose --profile all down -v               # stop and wipe data
 | 22 | Kubernetes | kind, Deployments, ConfigMaps, probes, Kustomize, HPA | kind |
 | 23 | Spring Cloud | Gateway, Config Server, OpenFeign, Circuit Breaker, Spring Cloud Kubernetes | kind |
 | 24 | Spring AI | `ChatClient`, structured output, RAG with pgvector, tool calling, MCP | Ollama, PostgreSQL |
-| — | Bitirme Projesi / Capstone | Bookstore platform using every technology above | all |
+| — | [Bitirme Projesi / Capstone](capstone/README.md) | Bookstore platform: gateway + 4 services, gRPC, outbox, Kafka, Helm — every technology above | all |
 
 İlerleme / Progress: [tasks/todo.md](tasks/todo.md) · [GitHub Issues](../../issues) · [Milestones](../../milestones)
 
