@@ -1,0 +1,43 @@
+// The contract of the exercises. Numbers of existing fields never change: they are what goes over the wire.
+syntax = "proto3";
+
+package bookstore.exercises.v1;
+
+option java_package = "com.springbootedu.grpc.exercises.v1";
+option java_multiple_files = true;
+
+service BookService {
+  rpc GetBook (GetBookRequest) returns (Book);
+  rpc SearchBooks (SearchBooksRequest) returns (SearchBooksResponse);   // exercise 1
+  rpc PlaceOrders (stream OrderLine) returns (OrderSummary);            // exercise 2
+}
+
+message GetBookRequest {
+  string isbn = 1;
+}
+
+message Book {
+  string isbn = 1;
+  string title = 2;
+  int64 price_cents = 3;
+  int32 year = 4;                 // exercise 1: a new field with a new number — old clients ignore it
+}
+
+message SearchBooksRequest {
+  string title_contains = 1;
+}
+
+message SearchBooksResponse {
+  repeated Book books = 1;
+}
+
+message OrderLine {
+  string isbn = 1;
+  int32 quantity = 2;
+}
+
+message OrderSummary {
+  int32 accepted_lines = 1;
+  int32 rejected_lines = 2;
+  int64 total_cents = 3;
+}

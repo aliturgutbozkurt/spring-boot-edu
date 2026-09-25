@@ -1,0 +1,13 @@
+// Given — the Book message as an old client (version 1 of the contract) still knows it.
+syntax = "proto3";
+
+package bookstore.exercises.old;
+
+option java_package = "com.springbootedu.grpc.exercises.old";
+option java_multiple_files = true;
+
+message OldBook {
+  string isbn = 1;
+  string title = 2;
+  int64 price_cents = 3;
+}

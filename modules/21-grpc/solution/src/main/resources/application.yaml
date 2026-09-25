@@ -1,6 +1,11 @@
 spring:
   application:
-    name: 21-grpc
-  threads:
-    virtual:
-      enabled: true
+    name: 21-grpc-exercises
+  grpc:
+    client:
+      channel:
+        books:
+          target: static://localhost:9090
+logging:
+  level:
+    root: warn
