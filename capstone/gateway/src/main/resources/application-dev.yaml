@@ -1,0 +1,12 @@
+# Local development only (compose.yaml sets SPRING_PROFILES_ACTIVE=dev): the demo token endpoint of ADR-5.
+# Production gets its tokens from an authorization server instead.
+bookstore:
+  dev-tokens:
+    enabled: true
+    users:
+      - username: ayse
+        password: ${DEMO_CUSTOMER_PASSWORD:ayse-demo}
+        roles: USER
+      - username: admin
+        password: ${DEMO_ADMIN_PASSWORD:admin-demo}
+        roles: USER, ADMIN

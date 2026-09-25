@@ -32,6 +32,8 @@ spring:
       channel:
         catalog:
           target: ${CATALOG_GRPC_TARGET:static://localhost:9090}
+server:
+  port: ${PORT:8081}                          # behind the gateway (8080)
 bookstore:
   jwt:
     secret: ${BOOKSTORE_JWT_SECRET}             # no default: compose.yaml / the Helm chart set it

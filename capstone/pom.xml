@@ -16,5 +16,6 @@
         <module>catalog-service</module>
         <module>order-service</module>
         <module>search-service</module>
+        <module>gateway</module>
     </modules>
 </project>

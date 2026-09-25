@@ -1,0 +1,52 @@
+spring:
+  application:
+    name: gateway
+  cloud:
+    gateway:
+      server:
+        webflux:
+          routes:
+            - id: orders
+              uri: ${bookstore.services.orders}
+              predicates:
+                - Path=/api/orders/**
+              filters:
+                - &rate-limit
+                  name: RequestRateLimiter             # token bucket in Redis, shared by all gateway instances
+                  args:
+                    redis-rate-limiter.replenishRate: ${bookstore.rate-limit.replenish-rate}
+                    redis-rate-limiter.burstCapacity: ${bookstore.rate-limit.burst-capacity}
+                    key-resolver: "#{@customerOrIpKeyResolver}"
+            - id: catalog
+              uri: ${bookstore.services.catalog}
+              predicates:
+                - Path=/api/catalog/**
+              filters:
+                - *rate-limit
+            - id: search
+              uri: ${bookstore.services.search}
+              predicates:
+                - Path=/api/search/**
+              filters:
+                - *rate-limit
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+server:
+  port: ${PORT:8080}
+bookstore:
+  jwt:
+    secret: ${BOOKSTORE_JWT_SECRET}             # no default: compose.yaml / the Helm chart set it
+  services:
+    orders: ${ORDER_SERVICE_URL:http://localhost:8081}
+    catalog: ${CATALOG_SERVICE_URL:http://localhost:8082}
+    search: ${SEARCH_SERVICE_URL:http://localhost:8083}
+  rate-limit:
+    replenish-rate: 10                          # requests per second and customer (or IP)
+    burst-capacity: 20
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,gateway

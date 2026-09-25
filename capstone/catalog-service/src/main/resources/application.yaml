@@ -21,6 +21,8 @@ spring:
   grpc:
     server:
       port: ${GRPC_PORT:9090}
+server:
+  port: ${PORT:8082}                          # behind the gateway (8080)
 bookstore:
   jwt:
     secret: ${BOOKSTORE_JWT_SECRET}       # no default: compose.yaml / the Helm chart set it

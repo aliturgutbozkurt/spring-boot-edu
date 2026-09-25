@@ -22,6 +22,8 @@ spring:
   mvc:
     problemdetails:
       enabled: true
+server:
+  port: ${PORT:8083}                          # behind the gateway (8080)
 bookstore:
   search:
     cache-ttl: 60s                              # ADR-7: results are cached briefly; index updates evict them
