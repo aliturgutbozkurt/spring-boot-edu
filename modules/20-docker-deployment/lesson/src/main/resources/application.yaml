@@ -39,7 +39,7 @@ management:
   endpoint:
     health:
       probes:
-        enabled: true                   # /actuator/health/liveness and /readiness (automatic on Kubernetes)
+        enabled: true                   # /actuator/health/liveness and /readiness (the default in Boot 4)
       group:
         readiness:
           include: readinessState,db    # not ready without the database …
