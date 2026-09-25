@@ -1,0 +1,5 @@
+hazelcast-client:
+  cluster-name: bookstore
+  network:
+    cluster-members:
+      - ${HAZELCAST_ADDRESS:localhost:5701}

@@ -1,0 +1,25 @@
+spring:
+  application:
+    name: catalog-service
+  threads:
+    virtual:
+      enabled: true
+  mongodb:
+    uri: ${MONGODB_URI:mongodb://localhost:27017/catalog}
+  data:
+    mongodb:
+      representation:
+        big-decimal: decimal128
+  hazelcast:
+    config: classpath:hazelcast-client.yaml
+  grpc:
+    server:
+      port: ${GRPC_PORT:9090}
+bookstore:
+  jwt:
+    secret: ${BOOKSTORE_JWT_SECRET}       # no default: compose.yaml / the Helm chart set it
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info

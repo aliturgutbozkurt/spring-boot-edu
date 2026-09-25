@@ -81,6 +81,7 @@
         <module>modules/24-spring-ai/lesson</module>
         <module>modules/24-spring-ai/solution</module>
         <!-- course-modules:end -->
+        <module>capstone</module>
     </modules>
 
     <profiles>

@@ -1,0 +1,44 @@
+// The catalog's stock, called by the order service (ADR-2: synchronous, with a deadline).
+syntax = "proto3";
+
+package bookstore.catalog.v1;
+
+option java_package = "com.springbootedu.capstone.contracts.stock.v1";
+option java_multiple_files = true;
+
+service StockService {
+  // Reserves all lines or none. Idempotent per order_ref: a retry returns the first result.
+  // NOT_FOUND: unknown ISBN · FAILED_PRECONDITION: not enough stock
+  rpc ReserveStock (ReserveStockRequest) returns (ReserveStockResponse);
+  // Gives the stock of a reservation back (when the order could not be saved).
+  rpc ReleaseStock (ReleaseStockRequest) returns (ReleaseStockResponse);
+}
+
+message ReserveStockRequest {
+  string order_ref = 1;
+  repeated StockLine lines = 2;
+}
+
+message StockLine {
+  string isbn = 1;
+  int32 quantity = 2;
+}
+
+message ReserveStockResponse {
+  repeated ReservedLine lines = 1;
+}
+
+message ReservedLine {
+  string isbn = 1;
+  string title = 2;
+  int32 quantity = 3;
+  int64 unit_price_cents = 4;       // money as whole cents
+}
+
+message ReleaseStockRequest {
+  string order_ref = 1;
+}
+
+message ReleaseStockResponse {
+  bool released = 1;
+}
