@@ -216,7 +216,7 @@ Ortak doğrulama komutu (aşağıda `VERIFY(<id>)` olarak geçer):
 ### 22-kubernetes · #40
 - [x] **M22.a Kod/Manifest** — uygulama image'ını kind'a yükleme; Deployment, Service, ConfigMap, Secret; liveness/readiness/startup probe (Actuator); requests/limits; Kustomize base + dev/prod overlay; HPA; rolling update + rollback; PostgreSQL StatefulSet (eğitim amaçlı)
 - [x] **M22.b Ödevler** — ConfigMap değişikliğini uygulamaya yansıtmak; bozuk sürümü rollback etmek; HPA ile yük altında ölçekleme
-- [ ] **M22.c Doküman** — Verify: `VERIFY(22-kubernetes)` + `kubectl apply -k` ile pod'lar Ready, `kubectl rollout status` başarılı
+- [x] **M22.c Doküman** — Verify: `VERIFY(22-kubernetes)` + `kubectl apply -k` ile pod'lar Ready, `kubectl rollout status` başarılı
 
 ### 23-spring-cloud · #41
 - [ ] **M23.a Kod** — Spring Cloud Gateway (route, filter, rate limit — Redis); Config Server (Git backend) + client refresh; OpenFeign vs HTTP interface karşılaştırması; Spring Cloud LoadBalancer; Circuit Breaker (Resilience4j) + fallback; Spring Cloud Kubernetes ile ConfigMap okuma ve discovery; compose ile lokal, kind ile k8s çalıştırma
