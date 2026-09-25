@@ -1,0 +1,23 @@
+spring:
+  application:
+    name: search-service
+  threads:
+    virtual:
+      enabled: true
+  elasticsearch:
+    uris: ${ELASTICSEARCH_URIS:http://localhost:9200}
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+  mvc:
+    problemdetails:
+      enabled: true
+bookstore:
+  search:
+    cache-ttl: 60s                              # ADR-7: results are cached briefly; index updates evict them
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info

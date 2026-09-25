@@ -15,5 +15,6 @@
         <module>contracts</module>
         <module>catalog-service</module>
         <module>order-service</module>
+        <module>search-service</module>
     </modules>
 </project>
