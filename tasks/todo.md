@@ -228,7 +228,7 @@ Ortak doğrulama komutu (aşağıda `VERIFY(<id>)` olarak geçer):
 - [x] **M24.b Ödevler** — kitap öneri asistanı; RAG ile SSS; tool ile sipariş durumu sorgusu
 - [x] **M24.c Doküman** — model seçimi, maliyet ve güvenlik (prompt injection) notları dahil. Verify: `VERIFY(24-spring-ai)`
 
-**🔶 Checkpoint 7 (#43)**
+**🔶 Checkpoint 7 (#43)** — ✅ geçti (2026-09-25): `kind-up.sh` sıfırdan küme kurdu; AI testleri sahte modellerle, gerçek LLM yok.
 
 ---
 
