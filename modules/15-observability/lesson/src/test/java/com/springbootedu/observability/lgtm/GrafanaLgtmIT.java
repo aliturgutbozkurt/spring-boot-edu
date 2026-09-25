@@ -53,12 +53,13 @@ class GrafanaLgtmIT {
         assertThat(result).isNotNull();
 
         RestClient prometheus = RestClient.create(Lgtm.LGTM.getPrometheusHttpUrl());
-        await().atMost(Duration.ofSeconds(60)).pollInterval(Duration.ofSeconds(2)).untilAsserted(() ->
+        await().atMost(Duration.ofSeconds(60)).pollInterval(Duration.ofSeconds(2)).ignoreExceptions().untilAsserted(() ->
                 assertThat(prometheus.get().uri("/api/v1/query?query={q}", "bookstore_orders_placed_total")
                         .retrieve().body(String.class)).contains("\"channel\":\"web\""));
 
         RestClient tempo = RestClient.create(Lgtm.LGTM.getTempoUrl());
-        await().atMost(Duration.ofSeconds(60)).pollInterval(Duration.ofSeconds(2)).untilAsserted(() ->
+        // Tempo answers 404 until the trace is stored: ignoreExceptions() keeps polling instead of failing at once
+        await().atMost(Duration.ofSeconds(60)).pollInterval(Duration.ofSeconds(2)).ignoreExceptions().untilAsserted(() ->
                 assertThat(tempo.get().uri("/api/traces/{id}", result.traceId())
                         .retrieve().body(String.class)).contains("calculate-price"));   // the @Observed span
     }
