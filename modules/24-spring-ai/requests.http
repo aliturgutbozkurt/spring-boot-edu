@@ -1,0 +1,17 @@
+# HTTP examples for module 24-spring-ai. Start the lesson first (the first start downloads the Ollama models):
+#   ./mvnw -pl modules/24-spring-ai/lesson spring-boot:run
+
+### 3.2 A question (memory per conversation)
+GET http://localhost:8080/api/assistant/ask?conversation=me&question=Which+book+should+I+read+to+learn+Spring?
+
+### 3.4 Memory: the same conversation remembers
+GET http://localhost:8080/api/assistant/ask?conversation=me&question=What+did+I+ask+before?
+
+### 3.5 Tool calling: the model asks the database
+GET http://localhost:8080/api/assistant/ask?conversation=me&question=Is+ISBN+9781617297571+in+stock?
+
+### 3.3 Structured output: JSON → record
+GET http://localhost:8080/api/assistant/recommend?mood=curious+about+distributed+systems
+
+### 3.6 RAG over the book descriptions
+GET http://localhost:8080/api/assistant/books?question=Which+book+explains+design+patterns+for+beginners?

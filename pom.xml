@@ -74,10 +74,12 @@
         <module>modules/22-kubernetes/lesson</module>
         <module>modules/22-kubernetes/solution</module>
         <module>modules/23-spring-cloud/lesson</module>
-        <module>modules/23-spring-cloud/solution</module>
         <module>modules/23-spring-cloud/services/catalog-service</module>
         <module>modules/23-spring-cloud/services/config-server</module>
         <module>modules/23-spring-cloud/services/gateway</module>
+        <module>modules/23-spring-cloud/solution</module>
+        <module>modules/24-spring-ai/lesson</module>
+        <module>modules/24-spring-ai/solution</module>
         <!-- course-modules:end -->
     </modules>
 
@@ -110,6 +112,7 @@
                 <module>modules/21-grpc/exercise</module>
                 <module>modules/22-kubernetes/exercise</module>
                 <module>modules/23-spring-cloud/exercise</module>
+                <module>modules/24-spring-ai/exercise</module>
                 <!-- exercise-modules:end -->
             </modules>
         </profile>

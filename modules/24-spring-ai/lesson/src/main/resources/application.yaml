@@ -1,0 +1,50 @@
+spring:
+  application:
+    name: 24-spring-ai
+  threads:
+    virtual:
+      enabled: true
+  flyway:
+    schemas: springai
+  datasource:
+    hikari:
+      schema: springai
+  # tag::ai-config[]
+  ai:
+    ollama:
+      init:
+        pull-model-strategy: when_missing      # download the models on the first start (a few hundred MB)
+      chat:
+        options:
+          model: qwen3:1.7b                    # small, runs on a laptop, supports tool calling
+          temperature: 0.2
+      embedding:
+        options:
+          model: nomic-embed-text              # 768 dimensions
+    vectorstore:
+      pgvector:
+        initialize-schema: true                # creates the extension and the table
+        schema-name: springai
+        dimensions: 768
+    chat:
+      memory:
+        repository:
+          jdbc:
+            initialize-schema: always
+    mcp:
+      server:
+        name: bookstore-tools
+        protocol: STREAMABLE                   # POST /mcp; set explicitly — without it no /mcp endpoint is registered
+  # end::ai-config[]
+  docker:
+    compose:
+      # Reuse the root compose.yaml; only the listed profiles are started.
+      file: ../../../compose.yaml
+      profiles:
+        active: postgres,ai
+      # Keep containers running between restarts (stop them with: docker compose --profile all down)
+      lifecycle-management: start-only
+      # Run "docker compose up" even if another module already started some services:
+      # it is idempotent and starts only what is missing (default "if-running" would skip it)
+      start:
+        skip: never

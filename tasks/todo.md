@@ -224,7 +224,7 @@ Ortak doğrulama komutu (aşağıda `VERIFY(<id>)` olarak geçer):
 - [x] **M23.c Doküman** — "Spring Cloud mu, Kubernetes native mi?" karar rehberi dahil. Verify: `VERIFY(23-spring-cloud)`
 
 ### 24-spring-ai · #42
-- [ ] **M24.a Kod** — Ollama (compose, küçük model) ; `ChatClient` + prompt şablonları; structured output → record; chat memory (JDBC); pgvector ile RAG (kitap açıklamaları, ETL pipeline); tool calling (stok sorgusu); MCP server/client girişi; testlerde mock `ChatModel`
+- [x] **M24.a Kod** — Ollama (compose, küçük model) ; `ChatClient` + prompt şablonları; structured output → record; chat memory (JDBC); pgvector ile RAG (kitap açıklamaları, ETL pipeline); tool calling (stok sorgusu); MCP server/client girişi; testlerde mock `ChatModel`
 - [ ] **M24.b Ödevler** — kitap öneri asistanı; RAG ile SSS; tool ile sipariş durumu sorgusu
 - [ ] **M24.c Doküman** — model seçimi, maliyet ve güvenlik (prompt injection) notları dahil. Verify: `VERIFY(24-spring-ai)`
 
